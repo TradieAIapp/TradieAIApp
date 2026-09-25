@@ -1,188 +1,27 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111827">
-<title>TradieAIApp V9</title>
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f3f4f6;color:#111827}button,input,textarea,select{font:inherit}header{background:#111827;color:#fff;padding:16px 18px;font-size:22px;font-weight:700;position:sticky;top:0;z-index:5}.wrap{max-width:760px;margin:auto;padding:14px}.tabs{display:flex;gap:8px;margin-bottom:12px}.tabs button{flex:1;padding:13px;border:0;border-radius:10px;background:#d1d5db;font-weight:700}.tabs button.active{background:#111827;color:#fff}.card{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 5px #0001}.row{display:flex;gap:8px;align-items:center}.row>*{min-width:0}.grow{flex:1}.label{font-size:13px;font-weight:700;color:#4b5563;margin:10px 0 5px}.input,textarea,select{width:100%;padding:12px;border:1px solid #d1d5db;border-radius:9px;background:#fff}.input:focus,textarea:focus,select:focus{outline:2px solid #9ca3af}.btn{border:0;border-radius:9px;padding:11px 13px;background:#e5e7eb;font-weight:700;cursor:pointer}.btn.primary{background:#111827;color:#fff}.btn.green{background:#15803d;color:#fff}.btn.danger{background:#fee2e2;color:#991b1b}.btn.voice{min-width:48px;padding:11px;background:#eef2ff}.muted{color:#6b7280;font-size:13px}.hidden{display:none!important}.job{padding:13px;border:1px solid #e5e7eb;border-radius:10px;margin-top:8px;cursor:pointer}.job strong{display:block}.opening{border-top:1px solid #e5e7eb;margin-top:12px;padding-top:12px}.opening-head{display:flex;justify-content:space-between;gap:8px}.sketch-thumb{width:100%;max-height:220px;object-fit:contain;background:#fafafa;border:1px solid #e5e7eb;border-radius:8px;margin-top:8px}.measure{display:grid;grid-template-columns:1fr 1fr;gap:8px}.measure .mrow{display:flex;gap:6px}.measure .mrow .input{flex:1}.status{font-size:13px;color:#374151;margin-top:6px;min-height:18px}
-#sketchCanvas{width:100%;height:300px;display:block;background:#fff;border:2px solid #d1d5db;border-radius:10px;touch-action:none !important;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}.tools{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin:8px 0}.tools button.active{background:#111827;color:#fff}.hint{font-size:12px;color:#6b7280;margin-top:5px}
-</style></head>
-<body>
-<header>TradieAIApp</header>
-<div class="wrap">
-<div class="tabs"><button id="jobsTab" class="active" onclick="showPage('jobs')">Jobs</button><button id="newTab" onclick="showPage('new')">New Job</button></div>
-<section id="jobsPage">
-<div class="card"><input id="search" class="input" placeholder="Search jobs or customers" oninput="renderJobs()"></div>
-<div class="card"><div class="row"><h3 style="margin:0" class="grow">Jobs</h3><button class="btn primary" onclick="showPage('new')">+ New Job</button></div><div id="jobsList"></div></div>
-</section>
-<section id="newPage" class="hidden">
-<div class="card"><h3 style="margin-top:0">New Job</h3><div class="label">Customer</div><input id="customer" class="input" placeholder="Customer name"><div class="label">Job / Site</div><input id="site" class="input" placeholder="Job or site name"><div class="label">Notes</div><textarea id="jobNotes" rows="3" placeholder="Job notes"></textarea><button class="btn primary" style="margin-top:10px;width:100%" onclick="createJob()">Create Job</button></div>
-</section>
-<section id="jobPage" class="hidden">
-<div class="card"><div class="row"><button class="btn" onclick="backJobs()">← Jobs</button><h3 id="jobTitle" class="grow" style="margin:0"></h3></div><div id="jobInfo" class="muted" style="margin-top:5px"></div></div>
-<div class="card"><h3 style="margin-top:0">Add Opening</h3>
-<div class="label">Room</div><div class="row"><input id="room" class="input grow" placeholder="e.g. Kitchen"><button class="btn voice" onclick="speakRoom()">🎙️</button></div><div id="voiceStatus" class="status"></div>
-<div class="label">Measurements (mm)</div><div class="measure"><div><div class="muted">Height</div><div class="mrow"><input id="height" type="number" inputmode="numeric" class="input" placeholder="Height"><button class="btn voice" onclick="speakMeasurement('height')">🎙️</button></div></div><div><div class="muted">Width</div><div class="mrow"><input id="width" type="number" inputmode="numeric" class="input" placeholder="Width"><button class="btn voice" onclick="speakMeasurement('width')">🎙️</button></div></div></div><div id="measureStatus" class="status"></div>
-<div class="label">Opening type</div><select id="sketchType" class="input"><option>Window</option><option>Door</option><option>Sliding Door</option></select>
-<div class="label">Photo</div><input id="photo" type="file" accept="image/*" capture="environment" class="input">
-<div class="label">Opening notes</div><textarea id="openingNotes" rows="2" placeholder="Opening notes"></textarea>
-<div class="label">Sketch</div><div class="tools"><button id="freeTool" class="btn active" onclick="setTool('free')">Draw Lines</button><button id="openTool" class="btn" onclick="setTool('opening')">Add Opening</button><button id="snapTool" class="btn" onclick="cleanSketch()">Snap / Clean Up</button></div><button class="btn" style="width:100%;margin-top:2px" onclick="clearSketch()">Clear Drawing</button><canvas id="sketchCanvas" width="700" height="300"></canvas><div class="hint">Draw the window with your finger. When finished, tap <b>Snap / Clean Up</b>. To show an opening, tap <b>Add Opening</b> then tap the sash/panel — the app places the V for you.</div><div class="row" style="margin-top:9px"><button class="btn green grow" onclick="saveSketch()">Save Sketch</button><button class="btn grow" onclick="undoSketch()">Undo</button></div><div id="sketchStatus" class="status"></div>
-<button class="btn primary" style="width:100%;margin-top:12px" onclick="addOpening()">Add Opening</button>
-</div>
-<div class="card"><h3 style="margin-top:0">Openings</h3><div id="openings"></div></div>
-</section>
-</div>
-<script>
-const KEY='tradieai_jobs_v2';let jobs=JSON.parse(localStorage.getItem(KEY)||'[]'),current=null,tool='free',strokes=[],openingMarks=[],history=[],drawing=false,currentStroke=[];
-const $=id=>document.getElementById(id);const canvas=$('sketchCanvas'),ctx=canvas.getContext('2d');
-function saveData(){localStorage.setItem(KEY,JSON.stringify(jobs))}
-function renderJobs(){let q=$('search').value.toLowerCase();$('jobsList').innerHTML=jobs.filter(j=>(j.customer+' '+j.site).toLowerCase().includes(q)).map((j,i)=>`<div class="card" onclick="openJob(${i})"><b>${esc(j.customer)}</b><div>${esc(j.site)}</div><small>${j.openings.length} opening${j.openings.length===1?'':'s'}</small></div>`).join('')||'<div class="empty">No jobs yet.</div>'}
-function esc(v){return String(v||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function show(id){showPage(id==='home'?'jobs':id==='new'?'new':id==='job'?'job':'jobs')}
-function showPage(page){['jobsPage','newPage','jobPage'].forEach(x=>$(x).classList.add('hidden'));let map={jobs:'jobsPage',new:'newPage',job:'jobPage'};$(map[page]||'jobsPage').classList.remove('hidden');$('jobsTab').classList.toggle('active',page==='jobs');$('newTab').classList.toggle('active',page==='new') }
-function backJobs(){showPage('jobs');renderJobs()}
-function newJob(){current={customer:'',site:'',notes:'',openings:[]};$('customer').value='';$('site').value='';$('jobNotes').value='';showPage('new')}
-function createJob(){current.customer=$('customer').value.trim()||'Unnamed Customer';current.site=$('site').value.trim()||'Unnamed Job';current.notes=$('jobNotes').value.trim();jobs.unshift(current);saveData();openJob(0)}
-function openJob(i){current=jobs[i];$('jobTitle').textContent=current.site;$('jobInfo').textContent=current.customer+(current.notes?' — '+current.notes:'');renderOpenings();showPage('job')}
-function renderOpenings(){let el=$('openings');el.innerHTML=current.openings.map((o,i)=>`<div class="card"><b>${esc(o.room)}</b> — ${o.height} × ${o.width} mm <span class="pill">${esc(o.type||'Window')}</span>${o.photo?'<div><img class="thumb" src="'+o.photo+'"></div>':''}${o.sketch?'<div><img class="sketchSaved" src="'+o.sketch+'"></div>':''}${o.notes?'<div class="notes">'+esc(o.notes)+'</div>':''}</div>`).join('')||'<div class="empty">No openings added yet.</div>'}
-function resetForm(){['room','height','width','openingNotes'].forEach(id=>$(id).value='');$('photo').value='';$('voiceStatus').textContent='';$('measureStatus').textContent='';$('sketchStatus').textContent='';$('sketchType').value='Window';clearSketch();window.currentDraftSketch=null}
-function backHome(){renderJobs();show('home')}
-function addOpeningForm(){resetForm();show('newOpening')}
-function speakMeasurement(id,label){label=label||((id==='height')?'height':'width');if(!('webkitSpeechRecognition'in window||'SpeechRecognition'in window)){alert('Voice recognition is not supported in this browser. Try Chrome on Android.');return}let R=window.SpeechRecognition||window.webkitSpeechRecognition,r=new R();r.lang='en-AU';r.interimResults=false;r.maxAlternatives=3;r.onstart=()=>{$('measureStatus').textContent='Listening for '+label+'…';};r.onerror=()=>{$('measureStatus').textContent='Could not hear the measurement. Try again.'};r.onresult=e=>{let txt=e.results[0][0].transcript;let n=parseSpokenNumber(txt);if(n!==null){$(id).value=n;$('measureStatus').textContent=label+' set to '+n+' mm';}else $('measureStatus').textContent='Heard “'+txt+'” but could not find a number.'};r.start()}
-function speakRoom(){if(!('webkitSpeechRecognition'in window||'SpeechRecognition'in window)){alert('Voice recognition is not supported in this browser. Try Chrome on Android.');return}let R=window.SpeechRecognition||window.webkitSpeechRecognition,r=new R();r.lang='en-AU';r.interimResults=false;r.onstart=()=>{$('voiceStatus').textContent='Listening…'};r.onerror=()=>{$('voiceStatus').textContent='Could not hear the room name.'};r.onresult=e=>{$('room').value=e.results[0][0].transcript;$('voiceStatus').textContent='Room: '+e.results[0][0].transcript};r.start()}
-function voiceField(id,label){return speakMeasurement(id,label)}
-function voiceRoom(){return speakRoom()}
-function parseSpokenNumber(text){text=text.toLowerCase().replace(/,/g,'');let m=text.match(/\d+(?:\.\d+)?/);if(m)return Math.round(parseFloat(m[0]));let words=text.replace(/-/g,' ').split(/\s+/);let small={zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19,twenty:20,thirty:30,forty:40,fifty:50,sixty:60,seventy:70,eighty:80,ninety:90};let total=0,cur=0,found=false;for(let w of words){if(small[w]!=null){cur+=small[w];found=true}else if(w==='hundred'){cur*=100}else if(w==='thousand'){total+=cur*1000;cur=0}else if(w==='and'||w==='millimetres'||w==='millimeter'||w==='millimeters'||w==='mm'){}else if(!isNaN(Number(w))){cur+=Number(w);found=true}}let n=total+cur;return found&&n>0?Math.round(n):null}
-function setTool(t){tool=t;$('freeTool').classList.toggle('active',t==='free');$('openTool').classList.toggle('active',t==='opening');$('sketchStatus').textContent=t==='free'?'Draw freely with your finger.':'Tap the sash/panel where you want the opening symbol.'}
-function pos(e){let r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height}}
-function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.lineWidth=5;ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle='#111827';strokes.forEach(s=>{if(!s.length)return;ctx.beginPath();ctx.moveTo(s[0].x,s[0].y);for(let i=1;i<s.length;i++)ctx.lineTo(s[i].x,s[i].y);ctx.stroke()});openingMarks.forEach(m=>drawOpeningMark(m));if(currentStroke.length){ctx.beginPath();ctx.moveTo(currentStroke[0].x,currentStroke[0].y);for(let i=1;i<currentStroke.length;i++)ctx.lineTo(currentStroke[i].x,currentStroke[i].y);ctx.stroke()}}
-function drawOpeningMark(m){ctx.save();ctx.strokeStyle='#111827';ctx.lineWidth=4;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(m.x-m.size,m.y-m.size*0.7);ctx.lineTo(m.x,m.y+m.size*0.7);ctx.lineTo(m.x+m.size,m.y-m.size*0.7);ctx.stroke();ctx.restore()}
-function cloneState(){return {strokes:strokes.map(s=>s.map(p=>({...p}))),openingMarks:openingMarks.map(m=>({...m}))}}
-function restoreState(st){strokes=st.strokes.map(s=>s.map(p=>({...p})));openingMarks=st.openingMarks.map(m=>({...m}))}
-function pushHistory(){history.push(cloneState());if(history.length>30)history.shift()}
-function nearPoint(p,pts,threshold=22){let best=null,bd=threshold;for(let q of pts){let d=Math.hypot(p.x-q.x,p.y-q.y);if(d<bd){bd=d;best={x:q.x,y:q.y}}}return best}
-function endpoints(){let pts=[];strokes.forEach(s=>{if(s.length){pts.push(s[0],s[s.length-1])}});return pts}
-function snapAngleSegment(a,b){
-  const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1;
-  const ang=Math.abs(Math.atan2(dy,dx)*180/Math.PI);
-  const h=Math.min(ang,180-ang), v=Math.abs(90-ang);
-  if(h<=8) return [{...a},{x:b.x,y:a.y,kind:'h'}];
-  if(v<=8) return [{...a},{x:a.x,y:b.y,kind:'v'}];
-  return [{...a},{...b}];
-}
-function cleanStroke(points){
-  if(points.length<2)return [];
-  const simple=rdp(points,10);
-  if(simple.length<2)return [];
-  const out=[];
-  for(let i=0;i<simple.length-1;i++){
-    const a=simple[i], b=simple[i+1];
-    if(Math.hypot(b.x-a.x,b.y-a.y)<12)continue;
-    const seg=snapAngleSegment(a,b);
-    if(i===0)out.push(seg[0]);
-    out.push(seg[1]);
-  }
-  // Rebuild each corner so horizontal/vertical segments meet exactly.
-  for(let i=1;i<out.length-1;i++){
-    const prev=out[i-1], cur=out[i], next=out[i+1];
-    const pHoriz=Math.abs(prev.y-cur.y)<3;
-    const nVert=Math.abs(next.x-cur.x)<3;
-    const pVert=Math.abs(prev.x-cur.x)<3;
-    const nHoriz=Math.abs(next.y-cur.y)<3;
-    if(pHoriz&&nVert) out[i]={x:next.x,y:prev.y};
-    else if(pVert&&nHoriz) out[i]={x:prev.x,y:next.y};
-  }
-  return out.length>1?[out]:[];
-}
-function cleanSketch(){
-  if(!strokes.length){$('sketchStatus').textContent='Draw some lines first.';return}
-  pushHistory();
-  let cleaned=[];
-  strokes.forEach(s=>{const parts=cleanStroke(s);if(parts.length)cleaned.push(parts[0])});
-  // Cluster nearby endpoints. This connects corners without pulling the whole drawing around.
-  const pts=[];
-  cleaned.forEach(s=>{pts.push(s[0],s[s.length-1])});
-  for(let i=0;i<pts.length;i++){
-    for(let j=i+1;j<pts.length;j++){
-      if(Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y)<=28){
-        const x=(pts[i].x+pts[j].x)/2,y=(pts[i].y+pts[j].y)/2;
-        pts[i].x=pts[j].x=x;pts[i].y=pts[j].y=y;
-      }
-    }
-  }
-  let k=0;cleaned.forEach(s=>{s[0]=pts[k++];s[s.length-1]=pts[k++];});
-  strokes=cleaned;
-  $('sketchStatus').textContent='Cleaned — straight lines connected; angled lines left alone.';
-  draw();
-}
-function getAxisLines(){
-  const lines=[];
-  strokes.forEach(s=>{
-    for(let i=0;i<s.length-1;i++){
-      const a=s[i],b=s[i+1];
-      if(Math.abs(a.x-b.x)<=10 && Math.abs(a.y-b.y)>25) lines.push({type:'v',x:(a.x+b.x)/2,y1:Math.min(a.y,b.y),y2:Math.max(a.y,b.y)});
-      else if(Math.abs(a.y-b.y)<=10 && Math.abs(a.x-b.x)>25) lines.push({type:'h',y:(a.y+b.y)/2,x1:Math.min(a.x,b.x),x2:Math.max(a.x,b.x)});
-    }
-  });
-  return lines;
-}
-function panelAt(p){
-  const lines=getAxisLines();
-  const vs=lines.filter(l=>l.type==='v'&&p.y>=l.y1-18&&p.y<=l.y2+18).map(l=>l.x).sort((a,b)=>a-b);
-  const hs=lines.filter(l=>l.type==='h'&&p.x>=l.x1-18&&p.x<=l.x2+18).map(l=>l.y).sort((a,b)=>a-b);
-  const left=vs.filter(x=>x<p.x).pop(),right=vs.find(x=>x>p.x),top=hs.filter(y=>y<p.y).pop(),bottom=hs.find(y=>y>p.y);
-  if(left!=null&&right!=null&&top!=null&&bottom!=null)return {left,right,top,bottom};
-  return null;
-}
-function addOpeningMark(p){
-  const panel=panelAt(p);
-  pushHistory();
-  let x=p.x,y=p.y,size=26;
-  if(panel){
-    x=(panel.left+panel.right)/2;y=(panel.top+panel.bottom)/2;
-    size=Math.max(18,Math.min(34,(panel.right-panel.left)*0.18,(panel.bottom-panel.top)*0.18));
-  }
-  openingMarks.push({x,y,size,panel:panel||null});
-  $('sketchStatus').textContent=panel?'Opening added to this panel.':'Opening added — tap inside another panel to add another.';
-  draw();
-}
-let activePointer=null;
-function startDraw(e){
-  if(e.cancelable)e.preventDefault();
-  drawing=true;
-  activePointer=e.pointerId;
-  try{canvas.setPointerCapture(e.pointerId)}catch(_){}
-  currentStroke=[pos(e)];
-  $('sketchStatus').textContent='Drawing…';
-  draw();
-}
-function moveDraw(e){
-  if(!drawing || e.pointerId!==activePointer)return;
-  if(e.cancelable)e.preventDefault();
-  const p=pos(e),last=currentStroke[currentStroke.length-1];
-  if(Math.hypot(p.x-last.x,p.y-last.y)>0.5){currentStroke.push(p);draw()}
-}
-function endDraw(e){
-  if(!drawing || e.pointerId!==activePointer)return;
-  if(e.cancelable)e.preventDefault();
-  if(currentStroke.length>1){pushHistory();strokes.push(currentStroke.map(p=>({...p})))}
-  drawing=false;currentStroke=[];activePointer=null;
-  $('sketchStatus').textContent='Line added. Keep drawing or tap Snap / Clean Up.';
-  try{canvas.releasePointerCapture(e.pointerId)}catch(_){}
-  draw();
-}
-canvas.addEventListener('pointerdown',e=>{
-  if(e.button!==0 && e.pointerType!=='touch')return;
-  if(tool==='opening'){if(e.cancelable)e.preventDefault();addOpeningMark(pos(e));return}
-  startDraw(e);
-},{passive:false});
-canvas.addEventListener('pointermove',moveDraw,{passive:false});
-canvas.addEventListener('pointerup',endDraw,{passive:false});
-canvas.addEventListener('pointercancel',endDraw,{passive:false});
-canvas.addEventListener('lostpointercapture',e=>{if(drawing)endDraw(e)},{passive:false});
-function clearSketch(){strokes=[];currentStroke=[];history=[];draw()}
-function undoSketch(){let h=history.pop();if(h){restoreState(h);draw();$('sketchStatus').textContent='Undid last change.'}}
-function saveSketch(){if(!strokes.length){$('sketchStatus').textContent='Draw the opening first.';return}let data=canvas.toDataURL('image/png');window.currentDraftSketch={image:data,type:$('sketchType').value};$('sketchStatus').textContent='Sketch saved to this opening.'}
-function addOpening(){if(!current)return;let room=$('room').value.trim(),h=$('height').value,w=$('width').value;if(!room){alert('Enter or speak the room name');return}if(!h||!w){alert('Enter height and width');return}if(!window.currentDraftSketch&&strokes.length)saveSketch();let file=$('photo').files[0];let finish=photo=>{current.openings.push({room,height:Number(h),width:Number(w),type:$('sketchType').value,notes:$('openingNotes').value.trim(),photo:photo||'',sketch:window.currentDraftSketch?.image||'',sketchType:window.currentDraftSketch?.type||$('sketchType').value});saveData();renderOpenings();resetForm();show('job')};if(file){let r=new FileReader();r.onload=()=>finish(r.result);r.readAsDataURL(file)}else finish('')}
-renderJobs();draw();
+<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="theme-color" content="#111827"><title>TradieAIApp</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f3f4f6;color:#111827}header{background:#111827;color:#fff;padding:18px 16px;position:sticky;top:0;z-index:5}header h1{margin:0;font-size:22px}.wrap{max-width:720px;margin:auto;padding:16px}.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 8px #0001}button,input,textarea,select{font:inherit}button{border:0;border-radius:10px;padding:12px 14px;background:#111827;color:#fff;font-weight:700;cursor:pointer}button.secondary{background:#e5e7eb;color:#111827}button.danger{background:#b91c1c}.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;font-size:13px;font-weight:700;margin:10px 0 6px}input,textarea,select{width:100%;padding:11px;border:1px solid #d1d5db;border-radius:9px;background:#fff}textarea{min-height:80px;resize:vertical}.voice{flex:0 0 auto;padding:9px 11px;background:#2563eb}.hidden{display:none}.job{padding:13px;border:1px solid #e5e7eb;border-radius:10px;margin:8px 0}.job b{display:block}.pill{display:inline-block;padding:5px 8px;border-radius:99px;background:#e5e7eb;font-size:12px;margin-top:5px}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.toolbar button{flex:1;min-width:110px}.panelBtns button{min-width:55px}.builder{border:1px solid #d1d5db;border-radius:12px;padding:12px;background:#fafafa}.drawing{width:100%;aspect-ratio:1.5;border:2px solid #111827;background:white;position:relative;display:flex;overflow:hidden;margin:12px 0}.panel{flex:1;border-right:2px solid #111827;position:relative;display:flex;align-items:center;justify-content:center;min-width:0}.panel:last-child{border-right:0}.panel.selected{background:#dbeafe}.panel .mark{position:absolute;font-size:32px;font-weight:900;color:#2563eb;pointer-events:none}.hint{font-size:13px;color:#4b5563}.savedSketch{width:100%;margin-top:8px;border:1px solid #d1d5db;border-radius:8px}.openingCard{border:1px solid #d1d5db;border-radius:10px;padding:10px;margin-top:10px}.topnav{display:flex;gap:8px;margin-bottom:12px}.topnav button{flex:1}.muted{color:#6b7280;font-size:13px}
+</style></head><body><header><div class="wrap" style="padding:0"><h1>TradieAIApp</h1></div></header><main class="wrap">
+<section id="home"><div class="topnav"><button onclick="show('new')">+ New Job</button><button class="secondary" onclick="show('jobs')">Recent Jobs</button></div><div id="homeMsg" class="card"><b>Ready to go.</b><div class="muted">Create a job or open a recent one.</div></div></section>
+<section id="jobs" class="hidden"><div class="card"><div class="row"><input id="search" placeholder="Search jobs or customers" oninput="renderJobs()"><button class="secondary" onclick="show('home')">Back</button></div></div><div id="jobList"></div></section>
+<section id="new" class="hidden"><div class="card"><div class="toolbar"><button class="secondary" onclick="show('home')">← Back</button></div><h2>New Job</h2><label>Customer</label><input id="customer" placeholder="Customer name"><label>Job / Site</label><input id="site" placeholder="Job name or address"><label>Notes</label><textarea id="jobnotes" placeholder="Job notes"></textarea><button style="width:100%;margin-top:12px" onclick="createJob()">Create Job</button></div></section>
+<section id="job" class="hidden"><div class="card"><div class="toolbar"><button class="secondary" onclick="show('jobs');renderJobs()">← Jobs</button><button class="secondary" onclick="show('home')">Home</button></div><h2 id="jobTitle"></h2><div id="jobInfo" class="muted"></div></div><div class="card"><h3>Add Opening</h3><label>Room name</label><div class="row"><input id="room" placeholder="Kitchen"><button class="voice" onclick="voiceField('room')">🎙️</button></div><div class="grid"><div><label>Height (mm)</label><div class="row"><input id="height" inputmode="numeric" placeholder="1200"><button class="voice" onclick="voiceField('height')">🎙️</button></div></div><div><label>Width (mm)</label><div class="row"><input id="width" inputmode="numeric" placeholder="1800"><button class="voice" onclick="voiceField('width')">🎙️</button></div></div></div><label>Type</label><select id="type"><option>Window</option><option>Door</option><option>Sliding Door</option></select><button style="width:100%;margin-top:12px" onclick="openBuilder()">Build Opening</button></div><div class="card"><h3>Saved Openings</h3><div id="openings"></div></div></section>
+<section id="builder" class="hidden"><div class="card"><button class="secondary" onclick="show('job')">← Back</button><h2>Build Opening</h2><div class="hint">Choose the number of panels, then tap the panel(s) that open.</div><div class="toolbar panelBtns" style="margin-top:12px"><button onclick="setPanels(1)">1</button><button onclick="setPanels(2)">2</button><button onclick="setPanels(3)">3</button><button onclick="setPanels(4)">4</button></div><div id="drawing" class="drawing"></div><div class="hint">Selected panel(s) are blue. Tap again to deselect.</div><div id="directionArea" class="builder hidden"><label>Opening direction</label><div class="toolbar"><button onclick="setDirection('Left')">← Left</button><button onclick="setDirection('Right')">Right →</button><button onclick="setDirection('Sliding Left')">⇆ Sliding Left</button><button onclick="setDirection('Sliding Right')">⇆ Sliding Right</button></div><div id="directionText" class="pill">No direction selected</div></div><button style="width:100%;margin-top:12px" onclick="saveOpening()">Save Opening</button></div></section>
+</main><script>
+let jobs=JSON.parse(localStorage.getItem('tradieJobs')||'[]'), current=null, panels=2, selected=[], direction='';
+function persist(){localStorage.setItem('tradieJobs',JSON.stringify(jobs))}
+function show(id){['home','jobs','new','job','builder'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id));if(id==='jobs')renderJobs();if(id==='home'){} }
+function createJob(){let c=document.getElementById('customer').value.trim(),s=document.getElementById('site').value.trim();if(!c&& !s){alert('Enter a customer or job/site.');return}current={id:Date.now().toString(),customer:c,site:s,notes:document.getElementById('jobnotes').value.trim(),openings:[]};jobs.unshift(current);persist();openJob(current.id)}
+function openJob(id){current=jobs.find(j=>j.id===id);if(!current)return;document.getElementById('jobTitle').textContent=current.site||current.customer||'Job';document.getElementById('jobInfo').textContent=[current.customer,current.site].filter(Boolean).join(' • ');renderOpenings();show('job')}
+function renderJobs(){let q=(document.getElementById('search')?.value||'').toLowerCase();let list=jobs.filter(j=>(j.customer+' '+j.site).toLowerCase().includes(q));document.getElementById('jobList').innerHTML=list.length?list.map(j=>`<div class="card job" onclick="openJob('${j.id}')"><b>${esc(j.site||j.customer||'Job')}</b><span class="muted">${esc(j.customer||'')}</span><div><span class="pill">${j.openings.length} opening${j.openings.length===1?'':'s'}</span></div></div>`).join(''):'<div class="card">No jobs found.</div>'}
+function renderOpenings(){let el=document.getElementById('openings');if(!current.openings.length){el.innerHTML='<div class="muted">No openings saved yet.</div>';return}el.innerHTML=current.openings.map((o,i)=>`<div class="openingCard"><b>${esc(o.room||'Unnamed room')} — ${esc(o.type)}</b><div class="muted">${o.height} × ${o.width} mm • ${o.panels} panels • ${o.openingPanels.length?('Opening: panels '+o.openingPanels.join(', ')+ ' — '+o.direction):'No opening selected'}</div><div class="drawing" style="aspect-ratio:2.2;margin:8px 0">${Array.from({length:o.panels},(_,p)=>`<div class="panel ${o.openingPanels.includes(p)?'selected':''}" style="height:100%">${o.openingPanels.includes(p)?`<span class="mark">${o.direction.includes('Left')?'←':o.direction.includes('Right')?'→':'⇆'}</span>`:''}</div>`).join('')}</div></div>`).join('')}
+function openBuilder(){if(!current)return;let room=document.getElementById('room').value.trim(),h=document.getElementById('height').value.trim(),w=document.getElementById('width').value.trim();if(!room||!h||!w){alert('Enter room, height and width first.');return}panels=document.getElementById('type').value==='Sliding Door'?2:2;selected=[];direction='';document.getElementById('directionArea').classList.add('hidden');document.getElementById('directionText').textContent='No direction selected';draw();show('builder')}
+function setPanels(n){panels=n;selected=[];direction='';document.getElementById('directionArea').classList.add('hidden');document.getElementById('directionText').textContent='No direction selected';draw()}
+function draw(){let d=document.getElementById('drawing');d.innerHTML='';for(let i=0;i<panels;i++){let p=document.createElement('div');p.className='panel'+(selected.includes(i)?' selected':'');p.innerHTML=selected.includes(i)?'<span class="mark">'+(direction.includes('Left')?'←':direction.includes('Right')?'→':'⇆')+'</span>':'';p.onclick=()=>togglePanel(i);d.appendChild(p)}}
+function togglePanel(i){selected=selected.includes(i)?selected.filter(x=>x!==i):[...selected,i];document.getElementById('directionArea').classList.toggle('hidden',selected.length===0);draw()}
+function setDirection(d){direction=d;document.getElementById('directionText').textContent=d;draw()}
+function saveOpening(){if(!selected.length){alert('Tap a panel to choose the opening.');return}if(!direction){alert('Choose an opening direction.');return}current.openings.push({room:document.getElementById('room').value.trim(),height:document.getElementById('height').value.trim(),width:document.getElementById('width').value.trim(),type:document.getElementById('type').value,panels,openingPanels:selected.slice(),direction});persist();document.getElementById('room').value='';document.getElementById('height').value='';document.getElementById('width').value='';renderOpenings();show('job')}
+function voiceField(id){if(!('webkitSpeechRecognition'in window||'SpeechRecognition'in window)){alert('Voice recognition is not supported by this browser. Try Chrome on Android.');return}let R=window.SpeechRecognition||window.webkitSpeechRecognition,r=new R();r.lang='en-AU';r.interimResults=false;r.maxAlternatives=1;r.onresult=e=>{let t=e.results[0][0].transcript.trim();if(id==='room')document.getElementById(id).value=t;else document.getElementById(id).value=parseNumber(t)||t};r.onerror=()=>alert('Voice recognition could not hear that. Try again.');r.start()}
+function parseNumber(s){s=s.toLowerCase().replace(/,/g,' ').trim();let m=s.match(/\d+(?:\.\d+)?/);if(m)return m[0];let nums={zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19,twenty:20,thirty:30,forty:40,fifty:50,sixty:60,seventy:70,eighty:80,ninety:90};let words=s.replace(/-/g,' ').split(/\s+/),total=0,cur=0;for(let w of words){if(nums[w]!=null)cur+=nums[w];else if(w==='hundred'){cur*=100}else if(w==='thousand'){total+=cur*1000;cur=0}}let n=total+cur;return n||''}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+show('home');
 </script></body></html>
