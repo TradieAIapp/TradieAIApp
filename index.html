@@ -26,14 +26,14 @@
 <div class="label">Opening type</div><select id="sketchType" class="input"><option>Window</option><option>Door</option><option>Sliding Door</option></select>
 <div class="label">Photo</div><input id="photo" type="file" accept="image/*" capture="environment" class="input">
 <div class="label">Opening notes</div><textarea id="openingNotes" rows="2" placeholder="Opening notes"></textarea>
-<div class="label">Sketch</div><div class="tools"><button id="freeTool" class="btn active" onclick="setTool('free')">Draw Lines</button><button id="snapTool" class="btn" onclick="cleanSketch()">Snap / Clean Up</button><button class="btn" onclick="clearSketch()">Clear</button></div><canvas id="sketchCanvas" width="700" height="300"></canvas><div class="hint">Use your finger like a pencil. Draw any lines you need, including the V opening symbol. Nothing is straightened while you draw. When the whole opening is finished, tap <b>Snap / Clean Up</b>. It will straighten lines and connect nearby corners. Draw a V over a sash to show the opening direction.</div><div class="row" style="margin-top:9px"><button class="btn green grow" onclick="saveSketch()">Save Sketch</button><button class="btn grow" onclick="undoSketch()">Undo</button></div><div id="sketchStatus" class="status"></div>
+<div class="label">Sketch</div><div class="tools"><button id="freeTool" class="btn active" onclick="setTool('free')">Draw Lines</button><button id="openTool" class="btn" onclick="setTool('opening')">Add Opening</button><button id="snapTool" class="btn" onclick="cleanSketch()">Snap / Clean Up</button></div><button class="btn" style="width:100%;margin-top:2px" onclick="clearSketch()">Clear Drawing</button><canvas id="sketchCanvas" width="700" height="300"></canvas><div class="hint">Draw the window with your finger. When finished, tap <b>Snap / Clean Up</b>. To show an opening, tap <b>Add Opening</b> then tap the sash/panel — the app places the V for you.</div><div class="row" style="margin-top:9px"><button class="btn green grow" onclick="saveSketch()">Save Sketch</button><button class="btn grow" onclick="undoSketch()">Undo</button></div><div id="sketchStatus" class="status"></div>
 <button class="btn primary" style="width:100%;margin-top:12px" onclick="addOpening()">Add Opening</button>
 </div>
 <div class="card"><h3 style="margin-top:0">Openings</h3><div id="openings"></div></div>
 </section>
 </div>
 <script>
-const KEY='tradieai_jobs_v2';let jobs=JSON.parse(localStorage.getItem(KEY)||'[]'),current=null,tool='free',strokes=[],history=[],drawing=false,currentStroke=[];
+const KEY='tradieai_jobs_v2';let jobs=JSON.parse(localStorage.getItem(KEY)||'[]'),current=null,tool='free',strokes=[],openingMarks=[],history=[],drawing=false,currentStroke=[];
 const $=id=>document.getElementById(id);const canvas=$('sketchCanvas'),ctx=canvas.getContext('2d');
 function saveData(){localStorage.setItem(KEY,JSON.stringify(jobs))}
 function renderJobs(){let q=$('search').value.toLowerCase();$('jobsList').innerHTML=jobs.filter(j=>(j.customer+' '+j.site).toLowerCase().includes(q)).map((j,i)=>`<div class="card" onclick="openJob(${i})"><b>${esc(j.customer)}</b><div>${esc(j.site)}</div><small>${j.openings.length} opening${j.openings.length===1?'':'s'}</small></div>`).join('')||'<div class="empty">No jobs yet.</div>'}
@@ -53,11 +53,13 @@ function speakRoom(){if(!('webkitSpeechRecognition'in window||'SpeechRecognition
 function voiceField(id,label){return speakMeasurement(id,label)}
 function voiceRoom(){return speakRoom()}
 function parseSpokenNumber(text){text=text.toLowerCase().replace(/,/g,'');let m=text.match(/\d+(?:\.\d+)?/);if(m)return Math.round(parseFloat(m[0]));let words=text.replace(/-/g,' ').split(/\s+/);let small={zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19,twenty:20,thirty:30,forty:40,fifty:50,sixty:60,seventy:70,eighty:80,ninety:90};let total=0,cur=0,found=false;for(let w of words){if(small[w]!=null){cur+=small[w];found=true}else if(w==='hundred'){cur*=100}else if(w==='thousand'){total+=cur*1000;cur=0}else if(w==='and'||w==='millimetres'||w==='millimeter'||w==='millimeters'||w==='mm'){}else if(!isNaN(Number(w))){cur+=Number(w);found=true}}let n=total+cur;return found&&n>0?Math.round(n):null}
-function setTool(t){tool=t;$('freeTool').classList.toggle('active',t==='free')}
+function setTool(t){tool=t;$('freeTool').classList.toggle('active',t==='free');$('openTool').classList.toggle('active',t==='opening');$('sketchStatus').textContent=t==='free'?'Draw freely with your finger.':'Tap the sash/panel where you want the opening symbol.'}
 function pos(e){let r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height}}
-function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.lineWidth=5;ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle='#111827';strokes.forEach(s=>{if(!s.length)return;ctx.beginPath();ctx.moveTo(s[0].x,s[0].y);for(let i=1;i<s.length;i++)ctx.lineTo(s[i].x,s[i].y);ctx.stroke()});if(currentStroke.length){ctx.beginPath();ctx.moveTo(currentStroke[0].x,currentStroke[0].y);for(let i=1;i<currentStroke.length;i++)ctx.lineTo(currentStroke[i].x,currentStroke[i].y);ctx.stroke()}}
-function cloneStrokes(){return strokes.map(s=>s.map(p=>({...p})))}
-function pushHistory(){history.push(cloneStrokes());if(history.length>30)history.shift()}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.lineWidth=5;ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle='#111827';strokes.forEach(s=>{if(!s.length)return;ctx.beginPath();ctx.moveTo(s[0].x,s[0].y);for(let i=1;i<s.length;i++)ctx.lineTo(s[i].x,s[i].y);ctx.stroke()});openingMarks.forEach(m=>drawOpeningMark(m));if(currentStroke.length){ctx.beginPath();ctx.moveTo(currentStroke[0].x,currentStroke[0].y);for(let i=1;i<currentStroke.length;i++)ctx.lineTo(currentStroke[i].x,currentStroke[i].y);ctx.stroke()}}
+function drawOpeningMark(m){ctx.save();ctx.strokeStyle='#111827';ctx.lineWidth=4;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(m.x-m.size,m.y-m.size*0.7);ctx.lineTo(m.x,m.y+m.size*0.7);ctx.lineTo(m.x+m.size,m.y-m.size*0.7);ctx.stroke();ctx.restore()}
+function cloneState(){return {strokes:strokes.map(s=>s.map(p=>({...p}))),openingMarks:openingMarks.map(m=>({...m}))}}
+function restoreState(st){strokes=st.strokes.map(s=>s.map(p=>({...p})));openingMarks=st.openingMarks.map(m=>({...m}))}
+function pushHistory(){history.push(cloneState());if(history.length>30)history.shift()}
 function nearPoint(p,pts,threshold=22){let best=null,bd=threshold;for(let q of pts){let d=Math.hypot(p.x-q.x,p.y-q.y);if(d<bd){bd=d;best={x:q.x,y:q.y}}}return best}
 function endpoints(){let pts=[];strokes.forEach(s=>{if(s.length){pts.push(s[0],s[s.length-1])}});return pts}
 function straightSegment(points){let a=points[0],b=points[points.length-1];let dx=b.x-a.x,dy=b.y-a.y;if(Math.hypot(dx,dy)<12)return null;if(Math.abs(dx)>=Math.abs(dy)*1.7){b={x:b.x,y:a.y}}else if(Math.abs(dy)>=Math.abs(dx)*1.7){b={x:a.x,y:b.y}}return [{...a},{...b}]}
@@ -91,6 +93,7 @@ function endDraw(e){
 }
 canvas.addEventListener('pointerdown',e=>{
   if(e.button!==0 && e.pointerType!=='touch')return;
+  if(tool==='opening'){if(e.cancelable)e.preventDefault();addOpeningMark(pos(e));return}
   startDraw(e);
 },{passive:false});
 canvas.addEventListener('pointermove',moveDraw,{passive:false});
@@ -98,9 +101,8 @@ canvas.addEventListener('pointerup',endDraw,{passive:false});
 canvas.addEventListener('pointercancel',endDraw,{passive:false});
 canvas.addEventListener('lostpointercapture',e=>{if(drawing)endDraw(e)},{passive:false});
 function clearSketch(){strokes=[];currentStroke=[];history=[];draw()}
-function undoSketch(){let h=history.pop();if(h){strokes=h;draw();$('sketchStatus').textContent='Undid last change.'}}
+function undoSketch(){let h=history.pop();if(h){restoreState(h);draw();$('sketchStatus').textContent='Undid last change.'}}
 function saveSketch(){if(!strokes.length){$('sketchStatus').textContent='Draw the opening first.';return}let data=canvas.toDataURL('image/png');window.currentDraftSketch={image:data,type:$('sketchType').value};$('sketchStatus').textContent='Sketch saved to this opening.'}
 function addOpening(){if(!current)return;let room=$('room').value.trim(),h=$('height').value,w=$('width').value;if(!room){alert('Enter or speak the room name');return}if(!h||!w){alert('Enter height and width');return}if(!window.currentDraftSketch&&strokes.length)saveSketch();let file=$('photo').files[0];let finish=photo=>{current.openings.push({room,height:Number(h),width:Number(w),type:$('sketchType').value,notes:$('openingNotes').value.trim(),photo:photo||'',sketch:window.currentDraftSketch?.image||'',sketchType:window.currentDraftSketch?.type||$('sketchType').value});saveData();renderOpenings();resetForm();show('job')};if(file){let r=new FileReader();r.onload=()=>finish(r.result);r.readAsDataURL(file)}else finish('')}
 renderJobs();draw();
 </script></body></html>
-
