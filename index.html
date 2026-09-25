@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111827">
-<title>TradieAIApp</title>
+<title>TradieAIApp V7</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f3f4f6;color:#111827}button,input,textarea,select{font:inherit}header{background:#111827;color:#fff;padding:16px 18px;font-size:22px;font-weight:700;position:sticky;top:0;z-index:5}.wrap{max-width:760px;margin:auto;padding:14px}.tabs{display:flex;gap:8px;margin-bottom:12px}.tabs button{flex:1;padding:13px;border:0;border-radius:10px;background:#d1d5db;font-weight:700}.tabs button.active{background:#111827;color:#fff}.card{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 5px #0001}.row{display:flex;gap:8px;align-items:center}.row>*{min-width:0}.grow{flex:1}.label{font-size:13px;font-weight:700;color:#4b5563;margin:10px 0 5px}.input,textarea,select{width:100%;padding:12px;border:1px solid #d1d5db;border-radius:9px;background:#fff}.input:focus,textarea:focus,select:focus{outline:2px solid #9ca3af}.btn{border:0;border-radius:9px;padding:11px 13px;background:#e5e7eb;font-weight:700;cursor:pointer}.btn.primary{background:#111827;color:#fff}.btn.green{background:#15803d;color:#fff}.btn.danger{background:#fee2e2;color:#991b1b}.btn.voice{min-width:48px;padding:11px;background:#eef2ff}.muted{color:#6b7280;font-size:13px}.hidden{display:none!important}.job{padding:13px;border:1px solid #e5e7eb;border-radius:10px;margin-top:8px;cursor:pointer}.job strong{display:block}.opening{border-top:1px solid #e5e7eb;margin-top:12px;padding-top:12px}.opening-head{display:flex;justify-content:space-between;gap:8px}.sketch-thumb{width:100%;max-height:220px;object-fit:contain;background:#fafafa;border:1px solid #e5e7eb;border-radius:8px;margin-top:8px}.measure{display:grid;grid-template-columns:1fr 1fr;gap:8px}.measure .mrow{display:flex;gap:6px}.measure .mrow .input{flex:1}.status{font-size:13px;color:#374151;margin-top:6px;min-height:18px}
-#sketchCanvas{width:100%;height:300px;display:block;background:#fff;border:2px solid #d1d5db;border-radius:10px;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}.tools{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin:8px 0}.tools button.active{background:#111827;color:#fff}.hint{font-size:12px;color:#6b7280;margin-top:5px}
+#sketchCanvas{width:100%;height:300px;display:block;background:#fff;border:2px solid #d1d5db;border-radius:10px;touch-action:none !important;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}.tools{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin:8px 0}.tools button.active{background:#111827;color:#fff}.hint{font-size:12px;color:#6b7280;margin-top:5px}
 </style></head>
 <body>
 <header>TradieAIApp</header>
@@ -26,7 +26,7 @@
 <div class="label">Opening type</div><select id="sketchType" class="input"><option>Window</option><option>Door</option><option>Sliding Door</option></select>
 <div class="label">Photo</div><input id="photo" type="file" accept="image/*" capture="environment" class="input">
 <div class="label">Opening notes</div><textarea id="openingNotes" rows="2" placeholder="Opening notes"></textarea>
-<div class="label">Sketch</div><div class="tools"><button id="freeTool" class="btn active" onclick="setTool('free')">Draw Lines</button><button id="snapTool" class="btn" onclick="cleanSketch()">Snap / Clean Up</button><button class="btn" onclick="clearSketch()">Clear</button></div><canvas id="sketchCanvas" width="700" height="300"></canvas><div class="hint">Draw any lines you need with your finger. When the whole opening is finished, tap <b>Snap / Clean Up</b>. It will straighten lines and connect nearby corners. Draw a V over a sash to show the opening direction.</div><div class="row" style="margin-top:9px"><button class="btn green grow" onclick="saveSketch()">Save Sketch</button><button class="btn grow" onclick="undoSketch()">Undo</button></div><div id="sketchStatus" class="status"></div>
+<div class="label">Sketch</div><div class="tools"><button id="freeTool" class="btn active" onclick="setTool('free')">Draw Lines</button><button id="snapTool" class="btn" onclick="cleanSketch()">Snap / Clean Up</button><button class="btn" onclick="clearSketch()">Clear</button></div><canvas id="sketchCanvas" width="700" height="300"></canvas><div class="hint">Use your finger like a pencil. Draw any lines you need, including the V opening symbol. Nothing is straightened while you draw. When the whole opening is finished, tap <b>Snap / Clean Up</b>. It will straighten lines and connect nearby corners. Draw a V over a sash to show the opening direction.</div><div class="row" style="margin-top:9px"><button class="btn green grow" onclick="saveSketch()">Save Sketch</button><button class="btn grow" onclick="undoSketch()">Undo</button></div><div id="sketchStatus" class="status"></div>
 <button class="btn primary" style="width:100%;margin-top:12px" onclick="addOpening()">Add Opening</button>
 </div>
 <div class="card"><h3 style="margin-top:0">Openings</h3><div id="openings"></div></div>
@@ -43,7 +43,7 @@ function showPage(page){['jobsPage','newPage','jobPage'].forEach(x=>$(x).classLi
 function backJobs(){showPage('jobs');renderJobs()}
 function newJob(){current={customer:'',site:'',notes:'',openings:[]};$('customer').value='';$('site').value='';$('jobNotes').value='';showPage('new')}
 function createJob(){current.customer=$('customer').value.trim()||'Unnamed Customer';current.site=$('site').value.trim()||'Unnamed Job';current.notes=$('jobNotes').value.trim();jobs.unshift(current);saveData();openJob(0)}
-function openJob(i){current=jobs[i];$('jobTitle').textContent=current.site;$('jobCustomer').textContent=current.customer;renderOpenings();show('job')}
+function openJob(i){current=jobs[i];$('jobTitle').textContent=current.site;$('jobInfo').textContent=current.customer+(current.notes?' — '+current.notes:'');renderOpenings();showPage('job')}
 function renderOpenings(){let el=$('openings');el.innerHTML=current.openings.map((o,i)=>`<div class="card"><b>${esc(o.room)}</b> — ${o.height} × ${o.width} mm <span class="pill">${esc(o.type||'Window')}</span>${o.photo?'<div><img class="thumb" src="'+o.photo+'"></div>':''}${o.sketch?'<div><img class="sketchSaved" src="'+o.sketch+'"></div>':''}${o.notes?'<div class="notes">'+esc(o.notes)+'</div>':''}</div>`).join('')||'<div class="empty">No openings added yet.</div>'}
 function resetForm(){['room','height','width','openingNotes'].forEach(id=>$(id).value='');$('photo').value='';$('voiceStatus').textContent='';$('measureStatus').textContent='';$('sketchStatus').textContent='';$('sketchType').value='Window';clearSketch();window.currentDraftSketch=null}
 function backHome(){renderJobs();show('home')}
@@ -64,21 +64,43 @@ function straightSegment(points){let a=points[0],b=points[points.length-1];let d
 function angle(a,b,c){let ab={x:b.x-a.x,y:b.y-a.y},cb={x:b.x-c.x,y:b.y-c.y};let den=Math.hypot(ab.x,ab.y)*Math.hypot(cb.x,cb.y);if(!den)return 180;return Math.acos(Math.max(-1,Math.min(1,(ab.x*cb.x+ab.y*cb.y)/den)))*180/Math.PI}
 function cleanStroke(points){if(points.length<2)return [];let a=points[0],b=points[points.length-1];let maxDev=0,idx=0;let dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1;for(let i=1;i<points.length-1;i++){let d=Math.abs(dy*points[i].x-dx*points[i].y+b.x*a.y-b.y*a.x)/len;if(d>maxDev){maxDev=d;idx=i}}if(points.length>=5&&maxDev>18){let mid=points[idx];let first=straightSegment([a,mid]);let second=straightSegment([mid,b]);if(first&&second){let ang=angle(a,mid,b);if(ang<145)return [first,second]}}let line=straightSegment(points);return line?[line]:[]}
 function cleanSketch(){if(!strokes.length){$('sketchStatus').textContent='Draw some lines first.';return}pushHistory();let raw=[];strokes.forEach(s=>{let parts=cleanStroke(s);parts.forEach(p=>raw.push(p))});let pts=[];raw.forEach(s=>{pts.push(s[0],s[1])});let cleaned=raw.map(s=>s.map(p=>{let q=nearPoint(p,pts,20);return q||p}));for(let i=0;i<cleaned.length;i++){for(let j=i+1;j<cleaned.length;j++){let pairs=[[0,0],[0,1],[1,0],[1,1]];for(let [a,b] of pairs){let p=cleaned[i][a],q=cleaned[j][b];if(Math.hypot(p.x-q.x,p.y-q.y)<20){let x=(p.x+q.x)/2,y=(p.y+q.y)/2;cleaned[i][a]={x,y};cleaned[j][b]={x,y}}}}}strokes=cleaned;$('sketchStatus').textContent='Sketch cleaned and snapped.';draw()}
-let activePointer=null,touchDrawing=false;
-function startDraw(e){if(e&&e.cancelable)e.preventDefault();drawing=true;touchDrawing=!!(e.type&&e.type.startsWith('touch'));activePointer=e.pointerId!=null?e.pointerId:'touch';currentStroke=[pos(e)];draw()}
-function moveDraw(e){if(!drawing)return;if(e&&e.cancelable)e.preventDefault();if(!touchDrawing&&e.pointerId!=null&&activePointer!==e.pointerId)return;let p=pos(e),last=currentStroke[currentStroke.length-1];if(Math.hypot(p.x-last.x,p.y-last.y)>1){currentStroke.push(p);draw()}}
-function endDraw(e){if(!drawing)return;if(e&&e.cancelable)e.preventDefault();if(!touchDrawing&&e.pointerId!=null&&activePointer!==e.pointerId)return;if(currentStroke.length>1){pushHistory();strokes.push(currentStroke.map(p=>({...p})))}drawing=false;currentStroke=[];activePointer=null;touchDrawing=false;draw()}
-canvas.addEventListener('pointerdown',e=>{if(e.pointerType!=='touch')startDraw(e)},{passive:false});
-canvas.addEventListener('pointermove',e=>{if(e.pointerType!=='touch')moveDraw(e)},{passive:false});
-canvas.addEventListener('pointerup',e=>{if(e.pointerType!=='touch')endDraw(e)},{passive:false});
-canvas.addEventListener('pointercancel',e=>{if(e.pointerType!=='touch')endDraw(e)},{passive:false});
-canvas.addEventListener('touchstart',e=>{if(e.touches.length===1){e.preventDefault();startDraw(e.touches[0])}},{passive:false});
-canvas.addEventListener('touchmove',e=>{if(e.touches.length===1){e.preventDefault();moveDraw(e.touches[0])}},{passive:false});
-canvas.addEventListener('touchend',e=>{e.preventDefault();endDraw(e.changedTouches[0])},{passive:false});
-canvas.addEventListener('touchcancel',e=>{e.preventDefault();endDraw(e.changedTouches[0])},{passive:false});
+let activePointer=null;
+function startDraw(e){
+  if(e.cancelable)e.preventDefault();
+  drawing=true;
+  activePointer=e.pointerId;
+  try{canvas.setPointerCapture(e.pointerId)}catch(_){}
+  currentStroke=[pos(e)];
+  $('sketchStatus').textContent='Drawing…';
+  draw();
+}
+function moveDraw(e){
+  if(!drawing || e.pointerId!==activePointer)return;
+  if(e.cancelable)e.preventDefault();
+  const p=pos(e),last=currentStroke[currentStroke.length-1];
+  if(Math.hypot(p.x-last.x,p.y-last.y)>0.5){currentStroke.push(p);draw()}
+}
+function endDraw(e){
+  if(!drawing || e.pointerId!==activePointer)return;
+  if(e.cancelable)e.preventDefault();
+  if(currentStroke.length>1){pushHistory();strokes.push(currentStroke.map(p=>({...p})))}
+  drawing=false;currentStroke=[];activePointer=null;
+  $('sketchStatus').textContent='Line added. Keep drawing or tap Snap / Clean Up.';
+  try{canvas.releasePointerCapture(e.pointerId)}catch(_){}
+  draw();
+}
+canvas.addEventListener('pointerdown',e=>{
+  if(e.button!==0 && e.pointerType!=='touch')return;
+  startDraw(e);
+},{passive:false});
+canvas.addEventListener('pointermove',moveDraw,{passive:false});
+canvas.addEventListener('pointerup',endDraw,{passive:false});
+canvas.addEventListener('pointercancel',endDraw,{passive:false});
+canvas.addEventListener('lostpointercapture',e=>{if(drawing)endDraw(e)},{passive:false});
 function clearSketch(){strokes=[];currentStroke=[];history=[];draw()}
 function undoSketch(){let h=history.pop();if(h){strokes=h;draw();$('sketchStatus').textContent='Undid last change.'}}
 function saveSketch(){if(!strokes.length){$('sketchStatus').textContent='Draw the opening first.';return}let data=canvas.toDataURL('image/png');window.currentDraftSketch={image:data,type:$('sketchType').value};$('sketchStatus').textContent='Sketch saved to this opening.'}
 function addOpening(){if(!current)return;let room=$('room').value.trim(),h=$('height').value,w=$('width').value;if(!room){alert('Enter or speak the room name');return}if(!h||!w){alert('Enter height and width');return}if(!window.currentDraftSketch&&strokes.length)saveSketch();let file=$('photo').files[0];let finish=photo=>{current.openings.push({room,height:Number(h),width:Number(w),type:$('sketchType').value,notes:$('openingNotes').value.trim(),photo:photo||'',sketch:window.currentDraftSketch?.image||'',sketchType:window.currentDraftSketch?.type||$('sketchType').value});saveData();renderOpenings();resetForm();show('job')};if(file){let r=new FileReader();r.onload=()=>finish(r.result);r.readAsDataURL(file)}else finish('')}
 renderJobs();draw();
 </script></body></html>
+
