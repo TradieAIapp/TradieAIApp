@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111827">
-<title>TradieAIApp V7</title>
+<title>TradieAIApp V9</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f3f4f6;color:#111827}button,input,textarea,select{font:inherit}header{background:#111827;color:#fff;padding:16px 18px;font-size:22px;font-weight:700;position:sticky;top:0;z-index:5}.wrap{max-width:760px;margin:auto;padding:14px}.tabs{display:flex;gap:8px;margin-bottom:12px}.tabs button{flex:1;padding:13px;border:0;border-radius:10px;background:#d1d5db;font-weight:700}.tabs button.active{background:#111827;color:#fff}.card{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 5px #0001}.row{display:flex;gap:8px;align-items:center}.row>*{min-width:0}.grow{flex:1}.label{font-size:13px;font-weight:700;color:#4b5563;margin:10px 0 5px}.input,textarea,select{width:100%;padding:12px;border:1px solid #d1d5db;border-radius:9px;background:#fff}.input:focus,textarea:focus,select:focus{outline:2px solid #9ca3af}.btn{border:0;border-radius:9px;padding:11px 13px;background:#e5e7eb;font-weight:700;cursor:pointer}.btn.primary{background:#111827;color:#fff}.btn.green{background:#15803d;color:#fff}.btn.danger{background:#fee2e2;color:#991b1b}.btn.voice{min-width:48px;padding:11px;background:#eef2ff}.muted{color:#6b7280;font-size:13px}.hidden{display:none!important}.job{padding:13px;border:1px solid #e5e7eb;border-radius:10px;margin-top:8px;cursor:pointer}.job strong{display:block}.opening{border-top:1px solid #e5e7eb;margin-top:12px;padding-top:12px}.opening-head{display:flex;justify-content:space-between;gap:8px}.sketch-thumb{width:100%;max-height:220px;object-fit:contain;background:#fafafa;border:1px solid #e5e7eb;border-radius:8px;margin-top:8px}.measure{display:grid;grid-template-columns:1fr 1fr;gap:8px}.measure .mrow{display:flex;gap:6px}.measure .mrow .input{flex:1}.status{font-size:13px;color:#374151;margin-top:6px;min-height:18px}
 #sketchCanvas{width:100%;height:300px;display:block;background:#fff;border:2px solid #d1d5db;border-radius:10px;touch-action:none !important;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}.tools{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin:8px 0}.tools button.active{background:#111827;color:#fff}.hint{font-size:12px;color:#6b7280;margin-top:5px}
@@ -64,8 +64,76 @@ function nearPoint(p,pts,threshold=22){let best=null,bd=threshold;for(let q of p
 function endpoints(){let pts=[];strokes.forEach(s=>{if(s.length){pts.push(s[0],s[s.length-1])}});return pts}
 function straightSegment(points){let a=points[0],b=points[points.length-1];let dx=b.x-a.x,dy=b.y-a.y;if(Math.hypot(dx,dy)<12)return null;if(Math.abs(dx)>=Math.abs(dy)*1.7){b={x:b.x,y:a.y}}else if(Math.abs(dy)>=Math.abs(dx)*1.7){b={x:a.x,y:b.y}}return [{...a},{...b}]}
 function angle(a,b,c){let ab={x:b.x-a.x,y:b.y-a.y},cb={x:b.x-c.x,y:b.y-c.y};let den=Math.hypot(ab.x,ab.y)*Math.hypot(cb.x,cb.y);if(!den)return 180;return Math.acos(Math.max(-1,Math.min(1,(ab.x*cb.x+ab.y*cb.y)/den)))*180/Math.PI}
-function cleanStroke(points){if(points.length<2)return [];let a=points[0],b=points[points.length-1];let maxDev=0,idx=0;let dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1;for(let i=1;i<points.length-1;i++){let d=Math.abs(dy*points[i].x-dx*points[i].y+b.x*a.y-b.y*a.x)/len;if(d>maxDev){maxDev=d;idx=i}}if(points.length>=5&&maxDev>18){let mid=points[idx];let first=straightSegment([a,mid]);let second=straightSegment([mid,b]);if(first&&second){let ang=angle(a,mid,b);if(ang<145)return [first,second]}}let line=straightSegment(points);return line?[line]:[]}
-function cleanSketch(){if(!strokes.length){$('sketchStatus').textContent='Draw some lines first.';return}pushHistory();let raw=[];strokes.forEach(s=>{let parts=cleanStroke(s);parts.forEach(p=>raw.push(p))});let pts=[];raw.forEach(s=>{pts.push(s[0],s[1])});let cleaned=raw.map(s=>s.map(p=>{let q=nearPoint(p,pts,20);return q||p}));for(let i=0;i<cleaned.length;i++){for(let j=i+1;j<cleaned.length;j++){let pairs=[[0,0],[0,1],[1,0],[1,1]];for(let [a,b] of pairs){let p=cleaned[i][a],q=cleaned[j][b];if(Math.hypot(p.x-q.x,p.y-q.y)<20){let x=(p.x+q.x)/2,y=(p.y+q.y)/2;cleaned[i][a]={x,y};cleaned[j][b]={x,y}}}}}strokes=cleaned;$('sketchStatus').textContent='Sketch cleaned and snapped.';draw()}
+function rdp(points,tol){
+  if(points.length<=2)return points.map(p=>({...p}));
+  let a=points[0],b=points[points.length-1],max=0,idx=-1;
+  const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1;
+  for(let i=1;i<points.length-1;i++){
+    const d=Math.abs(dy*points[i].x-dx*points[i].y+b.x*a.y-b.y*a.x)/len;
+    if(d>max){max=d;idx=i}
+  }
+  if(max>tol){const l=rdp(points.slice(0,idx+1),tol),r=rdp(points.slice(idx),tol);return l.slice(0,-1).concat(r)}
+  return [{...a},{...b}];
+}
+function snapPointToAxis(a,b){
+  const dx=b.x-a.x,dy=b.y-a.y,ad=Math.hypot(dx,dy)||1,ang=Math.atan2(dy,dx)*180/Math.PI;
+  let deg=((ang%180)+180)%180;
+  if(Math.min(deg,180-deg)<10)return [{...a},{x:b.x,y:a.y}];
+  if(Math.abs(deg-90)<10)return [{...a},{x:a.x,y:b.y}];
+  return [{...a},{...b}];
+}
+function cleanStroke(points){
+  if(points.length<2)return [];
+  const simple=rdp(points,7);
+  if(simple.length<2)return [];
+  const out=[];
+  for(let i=0;i<simple.length-1;i++){
+    const a=simple[i],b=simple[i+1];
+    if(Math.hypot(b.x-a.x,b.y-a.y)<8)continue;
+    const seg=snapPointToAxis(a,b);
+    if(i===0)out.push(seg[0]);
+    out.push(seg[1]);
+  }
+  return out.length>1?[out]:[];
+}
+function cleanSketch(){
+  if(!strokes.length){$('sketchStatus').textContent='Draw some lines first.';return}
+  pushHistory();
+  let cleaned=[];
+  strokes.forEach(s=>{const parts=cleanStroke(s);if(parts.length)cleaned.push(parts[0])});
+  // Snap only endpoints that are genuinely close; never alter diagonal angles.
+  for(let i=0;i<cleaned.length;i++){
+    for(let j=i+1;j<cleaned.length;j++){
+      [[0,0],[0,cleaned[j].length-1],[cleaned[i].length-1,0],[cleaned[i].length-1,cleaned[j].length-1]].forEach(([a,b])=>{
+        const p=cleaned[i][a],q=cleaned[j][b];
+        if(Math.hypot(p.x-q.x,p.y-q.y)<18){const x=(p.x+q.x)/2,y=(p.y+q.y)/2;cleaned[i][a]={x,y};cleaned[j][b]={x,y}}
+      });
+    }
+  }
+  strokes=cleaned;
+  $('sketchStatus').textContent='Sketch cleaned. Diagonal opening marks are preserved.';
+  draw();
+}
+function getPanelBounds(){
+  const lines=[];
+  strokes.forEach(s=>{if(s.length>=2){const a=s[0],b=s[s.length-1];if(Math.abs(a.x-b.x)<14||Math.abs(a.y-b.y)<14)lines.push({a,b})}});
+  const xs=[],ys=[];lines.forEach(l=>{xs.push(l.a.x,l.b.x);ys.push(l.a.y,l.b.y)});
+  if(!xs.length)return null;
+  return {minX:Math.min(...xs),maxX:Math.max(...xs),minY:Math.min(...ys),maxY:Math.max(...ys)};
+}
+function addOpeningMark(p){
+  pushHistory();
+  const box=getPanelBounds();
+  let x=p.x,y=p.y,size=30;
+  if(box && p.x>=box.minX-12&&p.x<=box.maxX+12&&p.y>=box.minY-12&&p.y<=box.maxY+12){
+    // Put the opening symbol in the panel that was tapped, rather than exactly under the finger.
+    x=Math.max(box.minX+size,Math.min(box.maxX-size,p.x));
+    y=Math.max(box.minY+size,Math.min(box.maxY-size,p.y));
+  }
+  openingMarks.push({x,y,size});
+  $('sketchStatus').textContent='Opening added. Tap another panel to add another.';
+  draw();
+}
 let activePointer=null;
 function startDraw(e){
   if(e.cancelable)e.preventDefault();
