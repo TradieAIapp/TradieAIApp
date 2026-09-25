@@ -10,10 +10,10 @@
 <body>
 <header>TradieAIApp</header>
 <div class="wrap">
-<div class="tabs"><button id="jobsTab" class="active" onclick="showPage('jobs')">Jobs</button><button id="newTab" onclick="newJob()">New Job</button></div>
+<div class="tabs"><button id="jobsTab" class="active" onclick="showPage('jobs')">Jobs</button><button id="newTab" onclick="showPage('new')">New Job</button></div>
 <section id="jobsPage">
 <div class="card"><input id="search" class="input" placeholder="Search jobs or customers" oninput="renderJobs()"></div>
-<div class="card"><div class="row"><h3 style="margin:0" class="grow">Jobs</h3><button class="btn primary" onclick="newJob()">+ New Job</button></div><div id="jobsList"></div></div>
+<div class="card"><div class="row"><h3 style="margin:0" class="grow">Jobs</h3><button class="btn primary" onclick="showPage('new')">+ New Job</button></div><div id="jobsList"></div></div>
 </section>
 <section id="newPage" class="hidden">
 <div class="card"><h3 style="margin-top:0">New Job</h3><div class="label">Customer</div><input id="customer" class="input" placeholder="Customer name"><div class="label">Job / Site</div><input id="site" class="input" placeholder="Job or site name"><div class="label">Notes</div><textarea id="jobNotes" rows="3" placeholder="Job notes"></textarea><button class="btn primary" style="margin-top:10px;width:100%" onclick="createJob()">Create Job</button></div>
@@ -41,8 +41,8 @@ function esc(v){return String(v||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&l
 function show(id){showPage(id==='home'?'jobs':id==='new'?'new':id==='job'?'job':'jobs')}
 function showPage(page){['jobsPage','newPage','jobPage'].forEach(x=>$(x).classList.add('hidden'));let map={jobs:'jobsPage',new:'newPage',job:'jobPage'};$(map[page]||'jobsPage').classList.remove('hidden');$('jobsTab').classList.toggle('active',page==='jobs');$('newTab').classList.toggle('active',page==='new') }
 function backJobs(){showPage('jobs');renderJobs()}
-function newJob(){current={customer:'',site:'',notes:'',openings:[]};$('customer').value='';$('site').value='';$('jobNotes').value='';showPage('new');setTimeout(()=>$('customer').focus(),50)}
-function createJob(){const job={customer:$('customer').value.trim()||'Unnamed Customer',site:$('site').value.trim()||'Unnamed Job',notes:$('jobNotes').value.trim(),openings:[]};jobs.unshift(job);current=job;saveData();$('jobTitle').textContent=job.site;$('jobInfo').textContent=job.customer+(job.notes?' — '+job.notes:'');renderOpenings();showPage('job')}
+function newJob(){current={customer:'',site:'',notes:'',openings:[]};$('customer').value='';$('site').value='';$('jobNotes').value='';showPage('new')}
+function createJob(){current.customer=$('customer').value.trim()||'Unnamed Customer';current.site=$('site').value.trim()||'Unnamed Job';current.notes=$('jobNotes').value.trim();jobs.unshift(current);saveData();openJob(0)}
 function openJob(i){current=jobs[i];$('jobTitle').textContent=current.site;$('jobInfo').textContent=current.customer+(current.notes?' — '+current.notes:'');renderOpenings();showPage('job')}
 function renderOpenings(){let el=$('openings');el.innerHTML=current.openings.map((o,i)=>`<div class="card"><b>${esc(o.room)}</b> — ${o.height} × ${o.width} mm <span class="pill">${esc(o.type||'Window')}</span>${o.photo?'<div><img class="thumb" src="'+o.photo+'"></div>':''}${o.sketch?'<div><img class="sketchSaved" src="'+o.sketch+'"></div>':''}${o.notes?'<div class="notes">'+esc(o.notes)+'</div>':''}</div>`).join('')||'<div class="empty">No openings added yet.</div>'}
 function resetForm(){['room','height','width','openingNotes'].forEach(id=>$(id).value='');$('photo').value='';$('voiceStatus').textContent='';$('measureStatus').textContent='';$('sketchStatus').textContent='';$('sketchType').value='Window';clearSketch();window.currentDraftSketch=null}
@@ -62,94 +62,88 @@ function restoreState(st){strokes=st.strokes.map(s=>s.map(p=>({...p})));openingM
 function pushHistory(){history.push(cloneState());if(history.length>30)history.shift()}
 function nearPoint(p,pts,threshold=22){let best=null,bd=threshold;for(let q of pts){let d=Math.hypot(p.x-q.x,p.y-q.y);if(d<bd){bd=d;best={x:q.x,y:q.y}}}return best}
 function endpoints(){let pts=[];strokes.forEach(s=>{if(s.length){pts.push(s[0],s[s.length-1])}});return pts}
-function straightSegment(points){let a=points[0],b=points[points.length-1];let dx=b.x-a.x,dy=b.y-a.y;if(Math.hypot(dx,dy)<12)return null;if(Math.abs(dx)>=Math.abs(dy)*1.7){b={x:b.x,y:a.y}}else if(Math.abs(dy)>=Math.abs(dx)*1.7){b={x:a.x,y:b.y}}return [{...a},{...b}]}
-function angle(a,b,c){let ab={x:b.x-a.x,y:b.y-a.y},cb={x:b.x-c.x,y:b.y-c.y};let den=Math.hypot(ab.x,ab.y)*Math.hypot(cb.x,cb.y);if(!den)return 180;return Math.acos(Math.max(-1,Math.min(1,(ab.x*cb.x+ab.y*cb.y)/den)))*180/Math.PI}
-function rdp(points,tol){
-  if(points.length<=2)return points.map(p=>({...p}));
-  let a=points[0],b=points[points.length-1],max=0,idx=-1;
+function snapAngleSegment(a,b){
   const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1;
-  for(let i=1;i<points.length-1;i++){
-    const d=Math.abs(dy*points[i].x-dx*points[i].y+b.x*a.y-b.y*a.x)/len;
-    if(d>max){max=d;idx=i}
-  }
-  if(max>tol){const l=rdp(points.slice(0,idx+1),tol),r=rdp(points.slice(idx),tol);return l.slice(0,-1).concat(r)}
+  const ang=Math.abs(Math.atan2(dy,dx)*180/Math.PI);
+  const h=Math.min(ang,180-ang), v=Math.abs(90-ang);
+  if(h<=8) return [{...a},{x:b.x,y:a.y,kind:'h'}];
+  if(v<=8) return [{...a},{x:a.x,y:b.y,kind:'v'}];
   return [{...a},{...b}];
-}
-function snapPointToAxis(a,b){
-  const dx=b.x-a.x,dy=b.y-a.y,ad=Math.hypot(dx,dy)||1,ang=Math.atan2(dy,dx)*180/Math.PI;
-  let deg=((ang%180)+180)%180;
-  if(Math.min(deg,180-deg)<10)return [{...a},{x:b.x,y:a.y}];
-  if(Math.abs(deg-90)<10)return [{...a},{x:a.x,y:b.y}];
-  return [{...a},{...b}];
-}
-function simplifyStroke(points,tol=5){
-  if(points.length<=2)return points.map(p=>({...p}));
-  const out=[{...points[0]}];
-  let last=points[0];
-  for(let i=1;i<points.length-1;i++){
-    const p=points[i];
-    if(Math.hypot(p.x-last.x,p.y-last.y)>=tol){out.push({...p});last=p;}
-  }
-  out.push({...points[points.length-1]});
-  return out;
-}
-function strokeAngle(points){
-  const a=points[0],b=points[points.length-1];
-  return Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI;
-}
-function maxDeviation(points,a,b){
-  const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1;
-  let max=0;
-  for(let i=1;i<points.length-1;i++){
-    const p=points[i];
-    const d=Math.abs(dy*p.x-dx*p.y+b.x*a.y-b.y*a.x)/len;
-    if(d>max)max=d;
-  }
-  return max;
 }
 function cleanStroke(points){
   if(points.length<2)return [];
-  const pts=simplifyStroke(points,4);
-  if(pts.length<2)return [];
-  const a=pts[0],b=pts[pts.length-1];
-  const len=Math.hypot(b.x-a.x,b.y-a.y);
-  if(len<12)return [];
-  const ang=Math.abs(strokeAngle(pts));
-  const norm=((ang%180)+180)%180;
-  // Only snap genuinely horizontal/vertical strokes. Diagonal strokes stay diagonal.
-  if(norm<=7 || norm>=173){return [[{...a},{x:b.x,y:a.y}]];}
-  if(Math.abs(norm-90)<=7){return [[{...a},{x:a.x,y:b.y}]];}
-  // Preserve diagonal/other freehand strokes, but simplify them so they do not jitter.
-  const dev=maxDeviation(pts,a,b);
-  if(dev<10)return [[{...a},{...b}]];
-  return [pts];
+  const simple=rdp(points,10);
+  if(simple.length<2)return [];
+  const out=[];
+  for(let i=0;i<simple.length-1;i++){
+    const a=simple[i], b=simple[i+1];
+    if(Math.hypot(b.x-a.x,b.y-a.y)<12)continue;
+    const seg=snapAngleSegment(a,b);
+    if(i===0)out.push(seg[0]);
+    out.push(seg[1]);
+  }
+  // Rebuild each corner so horizontal/vertical segments meet exactly.
+  for(let i=1;i<out.length-1;i++){
+    const prev=out[i-1], cur=out[i], next=out[i+1];
+    const pHoriz=Math.abs(prev.y-cur.y)<3;
+    const nVert=Math.abs(next.x-cur.x)<3;
+    const pVert=Math.abs(prev.x-cur.x)<3;
+    const nHoriz=Math.abs(next.y-cur.y)<3;
+    if(pHoriz&&nVert) out[i]={x:next.x,y:prev.y};
+    else if(pVert&&nHoriz) out[i]={x:prev.x,y:next.y};
+  }
+  return out.length>1?[out]:[];
 }
 function cleanSketch(){
   if(!strokes.length){$('sketchStatus').textContent='Draw some lines first.';return}
   pushHistory();
   let cleaned=[];
-  strokes.forEach(s=>{const parts=cleanStroke(s);parts.forEach(p=>cleaned.push(p));});
-  // Snap only endpoints that are genuinely close. Use one stable anchor instead of averaging repeatedly.
-  const threshold=16;
-  const anchors=[];
-  cleaned.forEach(s=>s.forEach((p,idx)=>anchors.push({s,idx,p})));
-  for(let i=0;i<anchors.length;i++){
-    const a=anchors[i];
-    if(a.idx!==0 && a.idx!==a.s.length-1)continue;
-    let best=null,bestD=threshold;
-    for(let j=i+1;j<anchors.length;j++){
-      const b=anchors[j];
-      if(b.s===a.s || (b.idx!==0 && b.idx!==b.s.length-1))continue;
-      const d=Math.hypot(a.p.x-b.p.x,a.p.y-b.p.y);
-      if(d<bestD){best=b;bestD=d;}
-    }
-    if(best){
-      const anchor={x:Math.round((a.p.x+best.p.x)/2),y:Math.round((a.p.y+best.p.y)/2)};
-      a.s[a.idx]=anchor;best.s[best.idx]=anchor;
+  strokes.forEach(s=>{const parts=cleanStroke(s);if(parts.length)cleaned.push(parts[0])});
+  // Cluster nearby endpoints. This connects corners without pulling the whole drawing around.
+  const pts=[];
+  cleaned.forEach(s=>{pts.push(s[0],s[s.length-1])});
+  for(let i=0;i<pts.length;i++){
+    for(let j=i+1;j<pts.length;j++){
+      if(Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y)<=28){
+        const x=(pts[i].x+pts[j].x)/2,y=(pts[i].y+pts[j].y)/2;
+        pts[i].x=pts[j].x=x;pts[i].y=pts[j].y=y;
+      }
     }
   }
+  let k=0;cleaned.forEach(s=>{s[0]=pts[k++];s[s.length-1]=pts[k++];});
   strokes=cleaned;
-  $('sketchStatus').textContent='Sketch cleaned. Horizontal/vertical lines snapped; angled lines preserved.';
+  $('sketchStatus').textContent='Cleaned — straight lines connected; angled lines left alone.';
+  draw();
+}
+function getAxisLines(){
+  const lines=[];
+  strokes.forEach(s=>{
+    for(let i=0;i<s.length-1;i++){
+      const a=s[i],b=s[i+1];
+      if(Math.abs(a.x-b.x)<=10 && Math.abs(a.y-b.y)>25) lines.push({type:'v',x:(a.x+b.x)/2,y1:Math.min(a.y,b.y),y2:Math.max(a.y,b.y)});
+      else if(Math.abs(a.y-b.y)<=10 && Math.abs(a.x-b.x)>25) lines.push({type:'h',y:(a.y+b.y)/2,x1:Math.min(a.x,b.x),x2:Math.max(a.x,b.x)});
+    }
+  });
+  return lines;
+}
+function panelAt(p){
+  const lines=getAxisLines();
+  const vs=lines.filter(l=>l.type==='v'&&p.y>=l.y1-18&&p.y<=l.y2+18).map(l=>l.x).sort((a,b)=>a-b);
+  const hs=lines.filter(l=>l.type==='h'&&p.x>=l.x1-18&&p.x<=l.x2+18).map(l=>l.y).sort((a,b)=>a-b);
+  const left=vs.filter(x=>x<p.x).pop(),right=vs.find(x=>x>p.x),top=hs.filter(y=>y<p.y).pop(),bottom=hs.find(y=>y>p.y);
+  if(left!=null&&right!=null&&top!=null&&bottom!=null)return {left,right,top,bottom};
+  return null;
+}
+function addOpeningMark(p){
+  const panel=panelAt(p);
+  pushHistory();
+  let x=p.x,y=p.y,size=26;
+  if(panel){
+    x=(panel.left+panel.right)/2;y=(panel.top+panel.bottom)/2;
+    size=Math.max(18,Math.min(34,(panel.right-panel.left)*0.18,(panel.bottom-panel.top)*0.18));
+  }
+  openingMarks.push({x,y,size,panel:panel||null});
+  $('sketchStatus').textContent=panel?'Opening added to this panel.':'Opening added — tap inside another panel to add another.';
   draw();
 }
 let activePointer=null;
