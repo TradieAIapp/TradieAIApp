@@ -10,10 +10,10 @@
 <body>
 <header>TradieAIApp</header>
 <div class="wrap">
-<div class="tabs"><button id="jobsTab" class="active" onclick="showPage('jobs')">Jobs</button><button id="newTab" onclick="showPage('new')">New Job</button></div>
+<div class="tabs"><button id="jobsTab" class="active" onclick="showPage('jobs')">Jobs</button><button id="newTab" onclick="newJob()">New Job</button></div>
 <section id="jobsPage">
 <div class="card"><input id="search" class="input" placeholder="Search jobs or customers" oninput="renderJobs()"></div>
-<div class="card"><div class="row"><h3 style="margin:0" class="grow">Jobs</h3><button class="btn primary" onclick="showPage('new')">+ New Job</button></div><div id="jobsList"></div></div>
+<div class="card"><div class="row"><h3 style="margin:0" class="grow">Jobs</h3><button class="btn primary" onclick="newJob()">+ New Job</button></div><div id="jobsList"></div></div>
 </section>
 <section id="newPage" class="hidden">
 <div class="card"><h3 style="margin-top:0">New Job</h3><div class="label">Customer</div><input id="customer" class="input" placeholder="Customer name"><div class="label">Job / Site</div><input id="site" class="input" placeholder="Job or site name"><div class="label">Notes</div><textarea id="jobNotes" rows="3" placeholder="Job notes"></textarea><button class="btn primary" style="margin-top:10px;width:100%" onclick="createJob()">Create Job</button></div>
@@ -41,8 +41,8 @@ function esc(v){return String(v||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&l
 function show(id){showPage(id==='home'?'jobs':id==='new'?'new':id==='job'?'job':'jobs')}
 function showPage(page){['jobsPage','newPage','jobPage'].forEach(x=>$(x).classList.add('hidden'));let map={jobs:'jobsPage',new:'newPage',job:'jobPage'};$(map[page]||'jobsPage').classList.remove('hidden');$('jobsTab').classList.toggle('active',page==='jobs');$('newTab').classList.toggle('active',page==='new') }
 function backJobs(){showPage('jobs');renderJobs()}
-function newJob(){current={customer:'',site:'',notes:'',openings:[]};$('customer').value='';$('site').value='';$('jobNotes').value='';showPage('new')}
-function createJob(){current.customer=$('customer').value.trim()||'Unnamed Customer';current.site=$('site').value.trim()||'Unnamed Job';current.notes=$('jobNotes').value.trim();jobs.unshift(current);saveData();openJob(0)}
+function newJob(){current={customer:'',site:'',notes:'',openings:[]};$('customer').value='';$('site').value='';$('jobNotes').value='';showPage('new');setTimeout(()=>$('customer').focus(),50)}
+function createJob(){const job={customer:$('customer').value.trim()||'Unnamed Customer',site:$('site').value.trim()||'Unnamed Job',notes:$('jobNotes').value.trim(),openings:[]};jobs.unshift(job);current=job;saveData();$('jobTitle').textContent=job.site;$('jobInfo').textContent=job.customer+(job.notes?' — '+job.notes:'');renderOpenings();showPage('job')}
 function openJob(i){current=jobs[i];$('jobTitle').textContent=current.site;$('jobInfo').textContent=current.customer+(current.notes?' — '+current.notes:'');renderOpenings();showPage('job')}
 function renderOpenings(){let el=$('openings');el.innerHTML=current.openings.map((o,i)=>`<div class="card"><b>${esc(o.room)}</b> — ${o.height} × ${o.width} mm <span class="pill">${esc(o.type||'Window')}</span>${o.photo?'<div><img class="thumb" src="'+o.photo+'"></div>':''}${o.sketch?'<div><img class="sketchSaved" src="'+o.sketch+'"></div>':''}${o.notes?'<div class="notes">'+esc(o.notes)+'</div>':''}</div>`).join('')||'<div class="empty">No openings added yet.</div>'}
 function resetForm(){['room','height','width','openingNotes'].forEach(id=>$(id).value='');$('photo').value='';$('voiceStatus').textContent='';$('measureStatus').textContent='';$('sketchStatus').textContent='';$('sketchType').value='Window';clearSketch();window.currentDraftSketch=null}
@@ -82,56 +82,74 @@ function snapPointToAxis(a,b){
   if(Math.abs(deg-90)<10)return [{...a},{x:a.x,y:b.y}];
   return [{...a},{...b}];
 }
+function simplifyStroke(points,tol=5){
+  if(points.length<=2)return points.map(p=>({...p}));
+  const out=[{...points[0]}];
+  let last=points[0];
+  for(let i=1;i<points.length-1;i++){
+    const p=points[i];
+    if(Math.hypot(p.x-last.x,p.y-last.y)>=tol){out.push({...p});last=p;}
+  }
+  out.push({...points[points.length-1]});
+  return out;
+}
+function strokeAngle(points){
+  const a=points[0],b=points[points.length-1];
+  return Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI;
+}
+function maxDeviation(points,a,b){
+  const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1;
+  let max=0;
+  for(let i=1;i<points.length-1;i++){
+    const p=points[i];
+    const d=Math.abs(dy*p.x-dx*p.y+b.x*a.y-b.y*a.x)/len;
+    if(d>max)max=d;
+  }
+  return max;
+}
 function cleanStroke(points){
   if(points.length<2)return [];
-  const simple=rdp(points,7);
-  if(simple.length<2)return [];
-  const out=[];
-  for(let i=0;i<simple.length-1;i++){
-    const a=simple[i],b=simple[i+1];
-    if(Math.hypot(b.x-a.x,b.y-a.y)<8)continue;
-    const seg=snapPointToAxis(a,b);
-    if(i===0)out.push(seg[0]);
-    out.push(seg[1]);
-  }
-  return out.length>1?[out]:[];
+  const pts=simplifyStroke(points,4);
+  if(pts.length<2)return [];
+  const a=pts[0],b=pts[pts.length-1];
+  const len=Math.hypot(b.x-a.x,b.y-a.y);
+  if(len<12)return [];
+  const ang=Math.abs(strokeAngle(pts));
+  const norm=((ang%180)+180)%180;
+  // Only snap genuinely horizontal/vertical strokes. Diagonal strokes stay diagonal.
+  if(norm<=7 || norm>=173){return [[{...a},{x:b.x,y:a.y}]];}
+  if(Math.abs(norm-90)<=7){return [[{...a},{x:a.x,y:b.y}]];}
+  // Preserve diagonal/other freehand strokes, but simplify them so they do not jitter.
+  const dev=maxDeviation(pts,a,b);
+  if(dev<10)return [[{...a},{...b}]];
+  return [pts];
 }
 function cleanSketch(){
   if(!strokes.length){$('sketchStatus').textContent='Draw some lines first.';return}
   pushHistory();
   let cleaned=[];
-  strokes.forEach(s=>{const parts=cleanStroke(s);if(parts.length)cleaned.push(parts[0])});
-  // Snap only endpoints that are genuinely close; never alter diagonal angles.
-  for(let i=0;i<cleaned.length;i++){
-    for(let j=i+1;j<cleaned.length;j++){
-      [[0,0],[0,cleaned[j].length-1],[cleaned[i].length-1,0],[cleaned[i].length-1,cleaned[j].length-1]].forEach(([a,b])=>{
-        const p=cleaned[i][a],q=cleaned[j][b];
-        if(Math.hypot(p.x-q.x,p.y-q.y)<18){const x=(p.x+q.x)/2,y=(p.y+q.y)/2;cleaned[i][a]={x,y};cleaned[j][b]={x,y}}
-      });
+  strokes.forEach(s=>{const parts=cleanStroke(s);parts.forEach(p=>cleaned.push(p));});
+  // Snap only endpoints that are genuinely close. Use one stable anchor instead of averaging repeatedly.
+  const threshold=16;
+  const anchors=[];
+  cleaned.forEach(s=>s.forEach((p,idx)=>anchors.push({s,idx,p})));
+  for(let i=0;i<anchors.length;i++){
+    const a=anchors[i];
+    if(a.idx!==0 && a.idx!==a.s.length-1)continue;
+    let best=null,bestD=threshold;
+    for(let j=i+1;j<anchors.length;j++){
+      const b=anchors[j];
+      if(b.s===a.s || (b.idx!==0 && b.idx!==b.s.length-1))continue;
+      const d=Math.hypot(a.p.x-b.p.x,a.p.y-b.p.y);
+      if(d<bestD){best=b;bestD=d;}
+    }
+    if(best){
+      const anchor={x:Math.round((a.p.x+best.p.x)/2),y:Math.round((a.p.y+best.p.y)/2)};
+      a.s[a.idx]=anchor;best.s[best.idx]=anchor;
     }
   }
   strokes=cleaned;
-  $('sketchStatus').textContent='Sketch cleaned. Diagonal opening marks are preserved.';
-  draw();
-}
-function getPanelBounds(){
-  const lines=[];
-  strokes.forEach(s=>{if(s.length>=2){const a=s[0],b=s[s.length-1];if(Math.abs(a.x-b.x)<14||Math.abs(a.y-b.y)<14)lines.push({a,b})}});
-  const xs=[],ys=[];lines.forEach(l=>{xs.push(l.a.x,l.b.x);ys.push(l.a.y,l.b.y)});
-  if(!xs.length)return null;
-  return {minX:Math.min(...xs),maxX:Math.max(...xs),minY:Math.min(...ys),maxY:Math.max(...ys)};
-}
-function addOpeningMark(p){
-  pushHistory();
-  const box=getPanelBounds();
-  let x=p.x,y=p.y,size=30;
-  if(box && p.x>=box.minX-12&&p.x<=box.maxX+12&&p.y>=box.minY-12&&p.y<=box.maxY+12){
-    // Put the opening symbol in the panel that was tapped, rather than exactly under the finger.
-    x=Math.max(box.minX+size,Math.min(box.maxX-size,p.x));
-    y=Math.max(box.minY+size,Math.min(box.maxY-size,p.y));
-  }
-  openingMarks.push({x,y,size});
-  $('sketchStatus').textContent='Opening added. Tap another panel to add another.';
+  $('sketchStatus').textContent='Sketch cleaned. Horizontal/vertical lines snapped; angled lines preserved.';
   draw();
 }
 let activePointer=null;
