@@ -65,7 +65,7 @@ function openingMark(type,dir,dhSide){
   if(type==='Double Hung Window'){
     if(dir==='Horizontal'){
       const inwardRight=dhSide==='left';
-      return '<span class="mark fullV"><svg viewBox="0 0 100 100"><line x1="'+(inwardRight?'8':'92')+'" y1="50" x2="'+(inwardRight?'92':'8')+'" y2="50"/><path d="M'+(inwardRight?'80 42 L92 50 L80 58':'M20 42 L8 50 L20 58')+'"/></svg></span>';
+      return '<span class="mark fullV"><svg viewBox="0 0 100 100"><line x1="'+(inwardRight?'8':'92')+'" y1="50" x2="'+(inwardRight?'92':'8')+'" y2="50"/><line x1="'+(inwardRight?'92':'8')+'" y1="50" x2="'+(inwardRight?'80':'20')+'" y2="42"/><line x1="'+(inwardRight?'92':'8')+'" y1="50" x2="'+(inwardRight?'80':'20')+'" y2="58"/></svg></span>';
     }
     const inwardDown=dhSide==='top';
     return '<span class="mark fullV"><svg viewBox="0 0 100 100"><line x1="50" y1="'+(inwardDown?'8':'92')+'" x2="50" y2="'+(inwardDown?'92':'8')+'"/><path d="'+(inwardDown?'M42 80 L50 92 L58 80':'M42 20 L50 8 L58 20')+'"/></svg></span>';
