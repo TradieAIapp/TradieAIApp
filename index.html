@@ -7,6 +7,7 @@
 <section id="job" class="hidden"><div class="card"><div class="toolbar"><button class="secondary" onclick="show('jobs');renderJobs()">← Jobs</button><button class="secondary" onclick="show('home')">Home</button></div><h2 id="jobTitle"></h2><div id="jobInfo" class="muted"></div></div><div class="card"><h3>Add Opening</h3><label>Room name</label><div class="row"><input id="room" placeholder="Kitchen"><button class="voice" onclick="voiceField('room')">🎙️</button></div><div class="grid"><div><label>Height (mm)</label><div class="row"><input id="height" inputmode="numeric" placeholder="1200"><button class="voice" onclick="voiceField('height')">🎙️</button></div></div><div><label>Width (mm)</label><div class="row"><input id="width" inputmode="numeric" placeholder="1800"><button class="voice" onclick="voiceField('width')">🎙️</button></div></div></div><label>Type</label><select id="type" onchange="typeChanged()"><option>Window</option><option>Fixed Window</option><option>Awning Window</option><option>Casement Window</option><option>Double Hung Window</option><option>Bifold Window</option><option>Door</option><option>Hinged Door</option><option>Sliding Door</option></select><button style="width:100%;margin-top:12px" onclick="openBuilder()">Build Opening</button></div><div class="card"><h3>Saved Openings</h3><div id="openings"></div></div></section>
 <section id="builder" class="hidden"><div class="card"><button class="secondary" onclick="show('job')">← Back</button><h2>Build Opening</h2><div class="hint">Tap each panel to give it its own type. One window can have an awning panel beside a fixed panel.</div><label>Panel layout</label><div class="toolbar panelBtns" style="margin-top:8px"><button onclick="setLayout(1,1)">1 panel</button><button onclick="setLayout(2,1)">2 panels</button><button onclick="setLayout(3,1)">3 panels</button><button onclick="setLayout(4,1)">4 panels</button><button onclick="setLayout(4,2)">2 × 2 Transom</button></div><div id="drawing" class="drawing vertical"></div><div class="hint">Tap a panel to edit it.</div><div id="panelEditor" class="builder hidden"><b id="selectedPanelLabel">Panel 1</b><label>Panel type</label><select id="panelType" onchange="panelTypeChanged()"></select><div id="panelDirectionArea"><label>Opening direction</label><div id="directionButtons" class="toolbar"></div><div id="directionText" class="pill">Choose direction</div></div></div><div class="transomTools"><label style="margin-top:0"><input type="checkbox" id="hasTransom" onchange="toggleTransom()" style="width:auto;margin-right:8px">Add transom</label><div id="transomControls" class="hidden"><div class="hint">Drag the blue line on the drawing, or use the slider.</div><input id="transomRange" type="range" min="20" max="80" value="50" oninput="setTransomPct(this.value)"><div id="transomLabel" class="pill">Transom at 50%</div></div></div><button style="width:100%;margin-top:12px" onclick="saveOpening()">Save Opening</button></div></section>
 </main><script>
+window.__tradieBoot=true;
 let jobs=[]; try { const raw=localStorage.getItem('tradieJobs'); jobs=raw?JSON.parse(raw):[]; if(!Array.isArray(jobs)) jobs=[]; } catch(e) { jobs=[]; } let current=null, editingOpening=-1;
 const typeDirections={
   'Window':[['Left','← Left'],['Right','Right →'],['Fixed','F — Fixed']],
@@ -104,8 +105,16 @@ function newJob(){try{current=null;editingOpening=-1;document.getElementById('cu
 function createJob(){const customer=document.getElementById('customer').value.trim(),site=document.getElementById('site').value.trim(),notes=document.getElementById('jobnotes').value.trim();if(!customer&&!site){alert('Enter a customer or job/site.');return}current={id:Date.now(),customer,site,notes,openings:[]};jobs.unshift(current);persist();document.getElementById('customer').value='';document.getElementById('site').value='';document.getElementById('jobnotes').value='';show('job')}
 function openJob(id){current=jobs.find(j=>j.id===id)||null;if(current)show('job')}
 function renderJobs(){const q=(document.getElementById('search').value||'').toLowerCase();const list=document.getElementById('jobList');const matches=jobs.filter(j=>[j.customer,j.site,j.notes].join(' ').toLowerCase().includes(q));list.innerHTML=matches.length?matches.map(j=>`<div class="job" onclick="openJob(${j.id})"><b>${esc(j.site||'Untitled Job')}</b><div>${esc(j.customer||'')}</div><span class="pill">${(j.openings||[]).length} openings</span></div>`).join(''):'<div class="card muted">No jobs found.</div>'}
-document.getElementById('type').addEventListener('change',typeChanged);
-const newJobBtn=document.getElementById('newJobBtn');
-if(newJobBtn)newJobBtn.addEventListener('click',newJob);
-show('home');
+document.addEventListener('DOMContentLoaded',function(){
+  const nb=document.getElementById('newJobBtn');
+  const rb=document.querySelector('.topnav button.secondary');
+  if(nb){nb.onclick=function(e){e.preventDefault();newJob();};}
+  if(rb){rb.onclick=function(e){e.preventDefault();show('jobs');};}
+  const start=document.querySelector('#homeMsg button');
+  if(start){start.onclick=function(e){e.preventDefault();newJob();};}
+  const backBtns=document.querySelectorAll('#new .toolbar button');
+  backBtns.forEach(b=>b.onclick=function(e){e.preventDefault();show('home');});
+  const typ=document.getElementById('type'); if(typ)typ.addEventListener('change',typeChanged);
+  show('home');
+});
 </script></body></html>
