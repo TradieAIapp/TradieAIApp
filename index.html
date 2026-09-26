@@ -60,12 +60,13 @@ function openBuilder(){
 }
 function openingMark(type,dir){
   if(dir==='Fixed'||type==='Fixed Window') return '<span class="mark f">F</span>';
-  if(type==='Awning Window') return '<span class="mark"><svg viewBox="0 0 100 100"><line x1="12" y1="12" x2="50" y2="88"/><line x1="88" y1="12" x2="50" y2="88"/></svg></span>';
-  if(type==='Casement Window'){const left=dir==='Left';return '<span class="mark"><svg viewBox="0 0 100 100"><line x1="'+(left?'12':'88')+'" y1="50" x2="50" y2="12"/><line x1="'+(left?'12':'88')+'" y1="50" x2="50" y2="88"/></svg></span>'}
-  if(type==='Double Hung Window') return dir==='Fixed'?'<span class="mark f">F</span>':'<span class="mark"><svg viewBox="0 0 100 100"><line x1="50" y1="50" x2="50" y2="12"/><path d="M42 22 L50 12 L58 22"/><line x1="50" y1="50" x2="50" y2="88"/><path d="M42 78 L50 88 L58 78"/></svg></span>';
-  if(type==='Window'&&dir==='Left') return '<span class="mark"><svg viewBox="0 0 100 100"><line x1="12" y1="50" x2="50" y2="12"/><line x1="12" y1="50" x2="50" y2="88"/></svg></span>';
-  if(type==='Window'&&dir==='Right') return '<span class="mark"><svg viewBox="0 0 100 100"><line x1="88" y1="50" x2="50" y2="12"/><line x1="88" y1="50" x2="50" y2="88"/></svg></span>';
-  const arrow=dir==='Left'?'←':dir==='Right'?'→':dir==='Sliding Left'?'⇆':dir==='Sliding Right'?'⇆':'';return arrow?'<span class="mark" style="font-size:34px;font-weight:900">'+arrow+'</span>':'';
+  if(type==='Awning Window') return '<span class="mark"><svg viewBox="0 0 100 100"><line x1="5" y1="5" x2="50" y2="95"/><line x1="95" y1="5" x2="50" y2="95"/></svg></span>';
+  if(type==='Casement Window'){const left=dir==='Left';return '<span class="mark"><svg viewBox="0 0 100 100"><line x1="'+(left?'5':'95')+'" y1="50" x2="'+(left?'95':'5')+'" y2="5"/><line x1="'+(left?'5':'95')+'" y1="50" x2="'+(left?'95':'5')+'" y2="95"/></svg></span>'}
+  if(type==='Double Hung Window') return dir==='Fixed'?'<span class="mark f">F</span>':'<span class="mark"><svg viewBox="0 0 100 100"><line x1="5" y1="50" x2="95" y2="50"/><line x1="50" y1="45" x2="50" y2="12"/><path d="M42 22 L50 12 L58 22"/><line x1="50" y1="55" x2="50" y2="88"/><path d="M42 78 L50 88 L58 78"/></svg></span>';
+  if(type==='Window'&&dir==='Left') return '<span class="mark"><svg viewBox="0 0 100 100"><line x1="5" y1="50" x2="95" y2="5"/><line x1="5" y1="50" x2="95" y2="95"/></svg></span>';
+  if(type==='Window'&&dir==='Right') return '<span class="mark"><svg viewBox="0 0 100 100"><line x1="95" y1="50" x2="5" y2="5"/><line x1="95" y1="50" x2="5" y2="95"/></svg></span>';
+  if(type==='Hinged Door'){const left=dir==='Left';return '<span class="mark"><svg viewBox="0 0 100 100"><line x1="'+(left?'5':'95')+'" y1="50" x2="'+(left?'95':'5')+'" y2="5"/><line x1="'+(left?'5':'95')+'" y1="50" x2="'+(left?'95':'5')+'" y2="95"/></svg></span>'}
+  const arrow=dir==='Left'?'←':dir==='Right'?'→':dir==='Sliding Left'?'←':dir==='Sliding Right'?'→':'';return arrow?'<span class="mark" style="font-size:34px;font-weight:900">'+arrow+'</span>':'';
 }
 function draw(){
   const d=document.getElementById('drawing');
