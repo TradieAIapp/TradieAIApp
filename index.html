@@ -1,126 +1,18 @@
-<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="theme-color" content="#111827"><title>TradieAIApp</title><style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f3f4f6;color:#111827}header{background:#111827;color:#fff;padding:18px 16px;position:sticky;top:0;z-index:5}header h1{margin:0;font-size:22px}.wrap{max-width:720px;margin:auto;padding:16px}.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 8px #0001}button,input,textarea,select{font:inherit}button{border:0;border-radius:10px;padding:12px 14px;background:#111827;color:#fff;font-weight:700;cursor:pointer}button.secondary{background:#e5e7eb;color:#111827}button.danger{background:#b91c1c}.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;font-size:13px;font-weight:700;margin:10px 0 6px}input,textarea,select{width:100%;padding:11px;border:1px solid #d1d5db;border-radius:9px;background:#fff}textarea{min-height:80px;resize:vertical}.voice{flex:0 0 auto;padding:9px 11px;background:#2563eb}.hidden{display:none}.job{padding:13px;border:1px solid #e5e7eb;border-radius:10px;margin:8px 0}.job b{display:block}.pill{display:inline-block;padding:5px 8px;border-radius:99px;background:#e5e7eb;font-size:12px;margin-top:5px}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.toolbar button{flex:1;min-width:110px}.selectedType{outline:3px solid #2563eb;background:#2563eb}.panelBtns button{min-width:55px}.builder{border:1px solid #d1d5db;border-radius:12px;padding:12px;background:#fafafa}.drawing{width:100%;aspect-ratio:1.5;border:2px solid #111827;background:white;position:relative;display:grid;overflow:hidden;margin:12px 0}.drawing.transom{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);aspect-ratio:1.5}.drawing.vertical{grid-template-columns:repeat(var(--cols),1fr);grid-template-rows:1fr}.panel{border-right:2px solid #111827;border-bottom:0;position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:0}.drawing.transom .panel:nth-child(2n){border-right:0}.drawing.transom .panel:nth-child(-n+2){border-bottom:2px solid #111827}.panel{flex:1;border-right:2px solid #111827;position:relative;display:flex;align-items:center;justify-content:center;min-width:0}.drawing.vertical .panel:last-child{border-right:0}.panel.selected{background:#dbeafe}.panel .mark{position:absolute;inset:10px;display:flex;align-items:center;justify-content:center;color:#2563eb;pointer-events:none}.panel .mark svg{width:72%;height:72%;overflow:visible}.panel .mark svg line,.panel .mark svg path{stroke:currentColor;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}.panel .mark.f{font-size:42px;font-weight:900}.hint{font-size:13px;color:#4b5563}.savedSketch{width:100%;margin-top:8px;border:1px solid #d1d5db;border-radius:8px}.openingCard{border:1px solid #d1d5db;border-radius:10px;padding:10px;margin-top:10px}.savedDrawing{width:100%;aspect-ratio:1.5;border:2px solid #111827;background:#fff;position:relative;display:grid;overflow:hidden;margin-top:8px}.savedDrawing .panel{border-right:2px solid #111827;border-bottom:0}.savedDrawing .panel:nth-child(''){border-right:0}.savedDrawing.transom .panel{border-bottom:0}.savedDrawing.transom .panel.toprow{border-bottom:2px solid #111827}.savedDrawing .panel.lastcol{border-right:0}.savedDrawing .panel.toprow{border-bottom:2px solid #111827}.savedDrawing .mark{position:absolute;inset:10px;display:flex;align-items:center;justify-content:center;color:#2563eb;pointer-events:none}.savedDrawing .mark svg{width:72%;height:72%;overflow:visible}.savedDrawing .mark svg line,.savedDrawing .mark svg path{stroke:currentColor;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}.savedDrawing .mark.f{font-size:42px;font-weight:900}.transomTools{margin-top:10px;padding:10px;border:1px solid #d1d5db;border-radius:10px;background:#fff}.transomDrag{position:absolute;left:0;right:0;height:22px;margin-top:-11px;cursor:ns-resize;z-index:3}.transomDrag:before{content:"";position:absolute;left:0;right:0;top:10px;border-top:4px dashed #2563eb}.transomHandle{position:absolute;left:50%;top:2px;transform:translateX(-50%);background:#2563eb;color:#fff;border-radius:99px;padding:2px 8px;font-size:11px;font-weight:700;white-space:nowrap}.transomLine{position:absolute;left:0;right:0;border-top:2px solid #111827;z-index:2;pointer-events:none}.topnav{display:flex;gap:8px;margin-bottom:12px}.topnav button{flex:1}.muted{color:#6b7280;font-size:13px}
-</style></head><body><header><div class="wrap" style="padding:0"><h1>TradieAIApp</h1></div></header><main class="wrap">
-<section id="home"><div class="topnav"><button id="newJobBtn" type="button">+ New Job</button><button class="secondary" onclick="show('jobs')">Recent Jobs</button></div><div id="homeMsg" class="card"><b>Ready to go.</b><div class="muted">Create a job or open a recent one.</div><button type="button" class="secondary" style="margin-top:10px" onclick="show('new');newJob()">Start New Job</button></div></section>
-<section id="jobs" class="hidden"><div class="card"><div class="row"><input id="search" placeholder="Search jobs or customers" oninput="renderJobs()"><button class="secondary" onclick="show('home')">Back</button></div></div><div id="jobList"></div></section>
-<section id="new" class="hidden"><div class="card"><div class="toolbar"><button class="secondary" onclick="show('home')">← Back</button></div><h2>New Job</h2><label>Customer</label><input id="customer" placeholder="Customer name"><label>Job / Site</label><input id="site" placeholder="Job name or address"><label>Notes</label><textarea id="jobnotes" placeholder="Job notes"></textarea><button style="width:100%;margin-top:12px" onclick="createJob()">Create Job</button></div></section>
-<section id="job" class="hidden"><div class="card"><div class="toolbar"><button class="secondary" onclick="show('jobs');renderJobs()">← Jobs</button><button class="secondary" onclick="show('home')">Home</button></div><h2 id="jobTitle"></h2><div id="jobInfo" class="muted"></div></div><div class="card"><h3>Add Opening</h3><label>Room name</label><div class="row"><input id="room" placeholder="Kitchen"><button class="voice" onclick="voiceField('room')">🎙️</button></div><div class="grid"><div><label>Height (mm)</label><div class="row"><input id="height" inputmode="numeric" placeholder="1200"><button class="voice" onclick="voiceField('height')">🎙️</button></div></div><div><label>Width (mm)</label><div class="row"><input id="width" inputmode="numeric" placeholder="1800"><button class="voice" onclick="voiceField('width')">🎙️</button></div></div></div><label>Type</label><select id="type" onchange="typeChanged()"><option>Window</option><option>Fixed Window</option><option>Awning Window</option><option>Casement Window</option><option>Double Hung Window</option><option>Bifold Window</option><option>Door</option><option>Hinged Door</option><option>Sliding Door</option></select><button style="width:100%;margin-top:12px" onclick="openBuilder()">Build Opening</button></div><div class="card"><h3>Saved Openings</h3><div id="openings"></div></div></section>
-<section id="builder" class="hidden"><div class="card"><button class="secondary" onclick="show('job')">← Back</button><h2>Build Opening</h2><div class="hint">Tap each panel to give it its own type. One window can have an awning panel beside a fixed panel.</div><label>Panel layout</label><div class="toolbar panelBtns" style="margin-top:8px"><button onclick="setLayout(1,1)">1 panel</button><button onclick="setLayout(2,1)">2 panels</button><button onclick="setLayout(3,1)">3 panels</button><button onclick="setLayout(4,1)">4 panels</button><button onclick="setLayout(2,2)">2 × 2 Transom</button></div><div id="drawing" class="drawing vertical"></div><div class="hint">Tap a panel to edit it.</div><div id="panelEditor" class="builder hidden"><b id="selectedPanelLabel">Panel 1</b><label>Panel type</label><div id="panelTypeButtons" class="toolbar"></div><div id="panelDirectionArea"><label>Opening direction</label><div id="directionButtons" class="toolbar"></div><div id="directionText" class="pill">Choose direction</div></div></div><div class="transomTools"><label style="margin-top:0"><input type="checkbox" id="hasTransom" onchange="toggleTransom()" style="width:auto;margin-right:8px">Add transom</label><div id="transomControls" class="hidden"><div class="hint">Drag the blue line on the drawing, or use the slider.</div><input id="transomRange" type="range" min="20" max="80" value="50" oninput="setTransomPct(this.value)"><div id="transomLabel" class="pill">Transom at 50%</div></div></div><button style="width:100%;margin-top:12px" onclick="saveOpening()">Save Opening</button></div></section>
-</main><script>
-window.__tradieBoot=true;
-let jobs=[]; try { const raw=localStorage.getItem('tradieJobs'); jobs=raw?JSON.parse(raw):[]; if(!Array.isArray(jobs)) jobs=[]; } catch(e) { jobs=[]; } let current=null, editingOpening=-1;
-const typeDirections={
-  'Window':[['Left','← Left'],['Right','Right →'],['Fixed','F — Fixed']],
-  'Fixed Window':[['Fixed','F — Fixed']],
-  'Awning Window':[['Top','Awning V'],['Bottom','Awning V'],['Fixed','F — Fixed']],
-  'Casement Window':[['Left','Casement V'],['Right','Casement V'],['Fixed','F — Fixed']],
-  'Double Hung Window':[['Both','↕ Both Sashes'],['Fixed','F — Fixed']],
-  'Bifold Window':[['Left','← Bifold Left'],['Right','Bifold Right →'],['Fixed','F — Fixed']],
-  'Door':[['Left','← Left'],['Right','Right →'],['Fixed','F — Fixed']],
-  'Hinged Door':[['Left','← Hinged Left'],['Right','Hinged Right →'],['Fixed','F — Fixed']],
-  'Sliding Door':[['Sliding Left','← Sliding Left'],['Sliding Right','Sliding Right →'],['Fixed','F — Fixed']]
-};
-let panels=2,layoutCols=2,layoutRows=1,selectedPanel=0,panelConfigs=[],hasTransom=false,transomPct=50;
-function currentType(){return document.getElementById('type').value}
-function defaultPanelType(){return ''}
-function makeConfig(type){return {type:type||'',direction:(type==='Fixed Window'||type==='Fixed')?'Fixed':''}}
-function resetConfigs(){panelConfigs=Array.from({length:panels},()=>makeConfig(defaultPanelType()));selectedPanel=0}
-function typeChanged(){let t=currentType(); if(t==='Double Hung Window') setLayout(1,1); else if(t==='Bifold Window'||t==='Sliding Door') setLayout(2,1); else setLayout(2,1)}
-function setLayout(cols,rows){layoutCols=cols;layoutRows=rows;panels=cols*rows;resetConfigs();draw();showPanelEditor()}
-function setPanels(n){setLayout(n,1)}
-function showPanelEditor(){
-  const ed=document.getElementById('panelEditor');ed.classList.remove('hidden');
-  document.getElementById('selectedPanelLabel').textContent=`Panel ${selectedPanel+1}`;
-  renderPanelTypeOptions();renderDirections();
-}
-function renderPanelTypeOptions(){
-  const base=currentType();
-  const allowed=(base.includes('Door')||base==='Door')?['Fixed Window','Door','Hinged Door','Sliding Door']:['Fixed Window','Window','Awning Window','Casement Window','Double Hung Window','Bifold Window'];
-  const btns=document.getElementById('panelTypeButtons');
-  const current=panelConfigs[selectedPanel]?.type||'';
-  btns.innerHTML=allowed.map(x=>`<button class="${current===x?'selectedType':''}" onclick="setPanelType('${x.replace(/'/g,"\\'")}')">${x.replace(' Window','')}</button>`).join('');
-}
-function renderDirections(){
-  const type=panelConfigs[selectedPanel]?.type||'';
-  const area=document.getElementById('panelDirectionArea');
-  if(!type){ area.classList.add('hidden'); document.getElementById('directionButtons').innerHTML=''; document.getElementById('directionText').textContent='Select a panel type'; return; }
-  area.classList.remove('hidden');
-  const btns=document.getElementById('directionButtons');
-  const dirs=typeDirections[type]||typeDirections['Window'];
-  if(type==='Fixed Window'){
-    area.querySelector('label').textContent='Panel status';btns.innerHTML='';document.getElementById('directionText').textContent='F — Fixed / non-opening';panelConfigs[selectedPanel].direction='Fixed';return;
-  }
-  area.querySelector('label').textContent='Opening direction';
-  btns.innerHTML=dirs.map(([v,l])=>`<button onclick="setPanelDirection('${v}')">${l}</button>`).join('');
-  const d=panelConfigs[selectedPanel].direction;document.getElementById('directionText').textContent=d?(dirs.find(x=>x[0]===d)?.[1]||d):'Choose direction';
-}
-function openBuilder(){
-  if(!current)return;let room=document.getElementById('room').value.trim(),h=document.getElementById('height').value.trim(),w=document.getElementById('width').value.trim(),type=currentType();
-  if(!room||!h||!w){alert('Enter room, height and width first.');return}
-  if(type==='Double Hung Window') setLayout(1,1); else if(type==='Bifold Window'||type==='Sliding Door') setLayout(2,1); else setLayout(2,1);
-  hasTransom=false;transomPct=50;showPanelEditor();show('builder');
-}
-function openingMark(type,dir){
-  if(dir==='Fixed'||type==='Fixed Window') return '<span class="mark f">F</span>';
-  if(type==='Awning Window') return '<span class="mark"><svg viewBox="0 0 100 100"><line x1="5" y1="5" x2="50" y2="95"/><line x1="95" y1="5" x2="50" y2="95"/></svg></span>';
-  if(type==='Casement Window'){const left=dir==='Left';return '<span class="mark"><svg viewBox="0 0 100 100"><line x1="'+(left?'5':'95')+'" y1="50" x2="'+(left?'95':'5')+'" y2="5"/><line x1="'+(left?'5':'95')+'" y1="50" x2="'+(left?'95':'5')+'" y2="95"/></svg></span>'}
-  if(type==='Double Hung Window') return dir==='Fixed'?'<span class="mark f">F</span>':'<span class="mark"><svg viewBox="0 0 100 100"><line x1="5" y1="50" x2="95" y2="50"/><line x1="50" y1="45" x2="50" y2="12"/><path d="M42 22 L50 12 L58 22"/><line x1="50" y1="55" x2="50" y2="88"/><path d="M42 78 L50 88 L58 78"/></svg></span>';
-  if(type==='Window'&&dir==='Left') return '<span class="mark"><svg viewBox="0 0 100 100"><line x1="5" y1="50" x2="95" y2="5"/><line x1="5" y1="50" x2="95" y2="95"/></svg></span>';
-  if(type==='Window'&&dir==='Right') return '<span class="mark"><svg viewBox="0 0 100 100"><line x1="95" y1="50" x2="5" y2="5"/><line x1="95" y1="50" x2="5" y2="95"/></svg></span>';
-  if(type==='Hinged Door'){const left=dir==='Left';return '<span class="mark"><svg viewBox="0 0 100 100"><line x1="'+(left?'5':'95')+'" y1="50" x2="'+(left?'95':'5')+'" y2="5"/><line x1="'+(left?'5':'95')+'" y1="50" x2="'+(left?'95':'5')+'" y2="95"/></svg></span>'}
-  if(type==='Sliding Door'){const arrow=dir==='Sliding Left'?'←':dir==='Sliding Right'?'→':'';return arrow?'<span class="mark" style="font-size:34px;font-weight:900">'+arrow+'</span>':'';}
-  const arrow=dir==='Left'?'←':dir==='Right'?'→':'';return arrow?'<span class="mark" style="font-size:34px;font-weight:900">'+arrow+'</span>':'';
-}
-function draw(){
-  const d=document.getElementById('drawing');
-  d.className='drawing '+(layoutRows===2?'transom':'vertical');
-  d.style.setProperty('--cols',layoutCols);
-  d.style.gridTemplateColumns=`repeat(${layoutCols},1fr)`;
-  d.style.gridTemplateRows=layoutRows===2?`repeat(2,1fr)`:'1fr';
-  d.innerHTML='';
-  for(let i=0;i<panels;i++){const cfg=panelConfigs[i]||makeConfig();let p=document.createElement('div');p.className='panel'+(selectedPanel===i?' selected':'');p.innerHTML=openingMark(cfg.type,cfg.direction);p.onclick=()=>{selectedPanel=i;draw();showPanelEditor()};d.appendChild(p)}
-  if(hasTransom && layoutRows===2){const line=document.createElement('div');line.className='transomDrag';line.style.top=transomPct+'%';line.innerHTML='<span class="transomHandle">Drag transom</span>';line.onpointerdown=startTransomDrag;d.appendChild(line)}
-  syncTransomUI();
-}
-function startTransomDrag(e){e.preventDefault();const d=document.getElementById('drawing');const move=ev=>{const r=d.getBoundingClientRect();let pct=((ev.clientY-r.top)/r.height)*100;setTransomPct(Math.max(20,Math.min(80,pct)),false)};const up=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up)};window.addEventListener('pointermove',move);window.addEventListener('pointerup',up)}
-function toggleTransom(){hasTransom=document.getElementById('hasTransom').checked;if(hasTransom){layoutRows=2;layoutCols=Math.max(1,layoutCols);panels=layoutCols*2;panelConfigs=Array.from({length:panels},(_,i)=>panelConfigs[i]||makeConfig());}else{layoutRows=1;panels=layoutCols;panelConfigs=panelConfigs.slice(0,panels)};draw()}
-function setTransomPct(v,redraw=true){transomPct=Number(v);document.getElementById('transomRange').value=transomPct;document.getElementById('transomLabel').textContent='Transom at '+Math.round(transomPct)+'%';if(redraw)draw();else syncTransomUI()}
-function syncTransomUI(){const cb=document.getElementById('hasTransom');const ctl=document.getElementById('transomControls');if(!cb)return;cb.checked=hasTransom;ctl.classList.toggle('hidden',!hasTransom);if(hasTransom){document.getElementById('transomRange').value=transomPct;document.getElementById('transomLabel').textContent='Transom at '+Math.round(transomPct)+'%'}}
-function setPanelType(type){panelConfigs[selectedPanel].type=type;panelConfigs[selectedPanel].direction=type==='Fixed Window'?'Fixed':'';renderPanelTypeOptions();renderDirections();draw()}
-function setPanelDirection(d){panelConfigs[selectedPanel].direction=d;document.getElementById('directionText').textContent=(typeDirections[panelConfigs[selectedPanel].type]||[]).find(x=>x[0]===d)?.[1]||d;draw()}
-function saveOpening(){
-  const room=document.getElementById('room').value.trim(),height=document.getElementById('height').value.trim(),width=document.getElementById('width').value.trim();
-  if(!panelConfigs.length){alert('Build the opening first.');return}
-  if(panelConfigs.some(c=>!c.type)){alert('Select a window or door type for each panel.');return}
-  if(panelConfigs.some(c=>!c.type)){alert('Select a window or door type for each panel.');return}
-  if(panelConfigs.some(c=>c.type!=='Fixed Window'&&!c.direction)){alert('Choose an opening direction for each panel.');return}
-  const types=[...new Set(panelConfigs.map(c=>c.type))],summary=types.length===1?types[0]:types.join(' + ');
-  const data={room,height,width,type:summary,panels,layoutRows,layoutCols,hasTransom,transomPct:Number(transomPct),panelConfigs:panelConfigs.map(c=>({...c}))};
-  if(editingOpening>=0) current.openings[editingOpening]=data; else current.openings.push(data);
-  editingOpening=-1; persist();document.getElementById('room').value='';document.getElementById('height').value='';document.getElementById('width').value='';renderOpenings();show('job');
-}
-function persist(){localStorage.setItem('tradieJobs',JSON.stringify(jobs))}
-function renderOpenings(){const el=document.getElementById('openings');el.innerHTML='';if(!current.openings.length){el.innerHTML='<div class="muted">No openings saved yet.</div>';return}current.openings.forEach((o,idx)=>{const card=document.createElement('div');card.className='openingCard';card.innerHTML='<b>Opening '+(idx+1)+' — '+esc(o.room)+'</b><div class="muted">'+esc(o.height)+' × '+esc(o.width)+' mm · '+esc(o.type)+'</div>';card.appendChild(makeSavedDrawing(o));const eb=document.createElement('button');eb.className='secondary';eb.style.marginTop='8px';eb.textContent='Edit Opening / Transom';eb.onclick=()=>editOpening(idx);card.appendChild(eb);el.appendChild(card)})}
-function editOpening(idx){const o=current.openings[idx];editingOpening=idx;document.getElementById('room').value=o.room||'';document.getElementById('height').value=o.height||'';document.getElementById('width').value=o.width||'';document.getElementById('type').value=(o.panelConfigs&&o.panelConfigs[0]&&o.panelConfigs[0].type)||'Window';layoutCols=o.layoutCols||1;layoutRows=o.hasTransom?2:1;panels=(o.panelConfigs||[]).length||layoutCols;panelConfigs=(o.panelConfigs||[]).map(c=>({...c}));hasTransom=!!o.hasTransom;transomPct=o.transomPct||50;selectedPanel=0;show('builder');draw();showPanelEditor()}
-function makeSavedDrawing(o){const d=document.createElement('div');d.className='savedDrawing'+(o.hasTransom?' transom':'');d.style.gridTemplateColumns=`repeat(${o.layoutCols||1},1fr)`;d.style.gridTemplateRows=o.hasTransom?'1fr 1fr':'1fr';const configs=o.panelConfigs||[];const count=(o.layoutCols||1)*(o.hasTransom?2:1);for(let i=0;i<count;i++){const cfg=configs[i]||{type:'Fixed Window',direction:'Fixed'};const p=document.createElement('div');const col=(i%(o.layoutCols||1));const row=Math.floor(i/(o.layoutCols||1));p.className='panel'+(col===(o.layoutCols||1)-1?' lastcol':'')+(o.hasTransom&&row===0?' toprow':'');p.innerHTML=openingMark(cfg.type,cfg.direction);d.appendChild(p)}if(o.hasTransom){const line=document.createElement('div');line.className='transomLine';line.style.top=(o.transomPct||50)+'%';d.appendChild(line)}return d}
-function voiceField(id){if(!('webkitSpeechRecognition'in window||'SpeechRecognition'in window)){alert('Voice recognition is not supported by this browser. Try Chrome on Android.');return}let R=window.SpeechRecognition||window.webkitSpeechRecognition,r=new R();r.lang='en-AU';r.interimResults=false;r.maxAlternatives=1;r.onresult=e=>{let t=e.results[0][0].transcript.trim();if(id==='room')document.getElementById(id).value=t;else document.getElementById(id).value=parseNumber(t)||t};r.onerror=()=>alert('Voice recognition could not hear that. Try again.');r.start()}
-function parseNumber(s){s=s.toLowerCase().replace(/,/g,' ').trim();let m=s.match(/\d+(?:\.\d+)?/);if(m)return m[0];let nums={zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19,twenty:20,thirty:30,forty:40,fifty:50,sixty:60,seventy:70,eighty:80,ninety:90};let words=s.replace(/-/g,' ').split(/\s+/),total=0,cur=0;for(let w of words){if(nums[w]!=null)cur+=nums[w];else if(w==='hundred'){cur*=100}else if(w==='thousand'){total+=cur*1000;cur=0}}let n=total+cur;return n||''}
-function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function show(id){const target=document.getElementById(id);if(!target)return;document.querySelectorAll('main>section').forEach(x=>x.classList.add('hidden'));target.classList.remove('hidden');if(id==='jobs')renderJobs();if(id==='job'&&current){document.getElementById('jobTitle').textContent=current.site||'Job';document.getElementById('jobInfo').textContent=current.customer||'';renderOpenings()}}
-function newJob(){try{current=null;editingOpening=-1;document.getElementById('customer').value='';document.getElementById('site').value='';document.getElementById('jobnotes').value='';show('new');setTimeout(()=>document.getElementById('customer').focus(),50)}catch(e){console.error(e);alert('New Job could not be opened. Please refresh the app.')}}
-function createJob(){const customer=document.getElementById('customer').value.trim(),site=document.getElementById('site').value.trim(),notes=document.getElementById('jobnotes').value.trim();if(!customer&&!site){alert('Enter a customer or job/site.');return}current={id:Date.now(),customer,site,notes,openings:[]};jobs.unshift(current);persist();document.getElementById('customer').value='';document.getElementById('site').value='';document.getElementById('jobnotes').value='';show('job')}
-function openJob(id){current=jobs.find(j=>j.id===id)||null;if(current)show('job')}
-function renderJobs(){const q=(document.getElementById('search').value||'').toLowerCase();const list=document.getElementById('jobList');const matches=jobs.filter(j=>[j.customer,j.site,j.notes].join(' ').toLowerCase().includes(q));list.innerHTML=matches.length?matches.map(j=>`<div class="job" onclick="openJob(${j.id})"><b>${esc(j.site||'Untitled Job')}</b><div>${esc(j.customer||'')}</div><span class="pill">${(j.openings||[]).length} openings</span></div>`).join(''):'<div class="card muted">No jobs found.</div>'}
-document.addEventListener('DOMContentLoaded',function(){
-  const nb=document.getElementById('newJobBtn');
-  const rb=document.querySelector('.topnav button.secondary');
-  if(nb){nb.onclick=function(e){e.preventDefault();newJob();};}
-  if(rb){rb.onclick=function(e){e.preventDefault();show('jobs');};}
-  const start=document.querySelector('#homeMsg button');
-  if(start){start.onclick=function(e){e.preventDefault();newJob();};}
-  const backBtns=document.querySelectorAll('#new .toolbar button');
-  backBtns.forEach(b=>b.onclick=function(e){e.preventDefault();show('home');});
-  const typ=document.getElementById('type'); if(typ)typ.addEventListener('change',typeChanged);
-  show('home');
-});
-</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#111827"><title>TradieAIApp</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header><div class="wrap head"><h1>TradieAIApp</h1></div></header>
+<main class="wrap">
+<section id="home"><div class="topnav"><button id="newJobBtn" type="button">+ New Job</button><button id="recentBtn" class="secondary" type="button">Recent Jobs</button></div><div class="card"><b>Ready to go.</b><div class="muted">Create a job or open a recent one.</div><button id="startNewBtn" class="secondary wide gap" type="button">Start New Job</button></div></section>
+<section id="jobs" class="hidden"><div class="card"><div class="row"><input id="search" placeholder="Search jobs or customers"><button id="backHomeBtn" class="secondary">Back</button></div></div><div id="jobList"></div></section>
+<section id="new" class="hidden"><div class="card"><button class="secondary" id="newBack">← Back</button><h2>New Job</h2><label>Customer</label><input id="customer" placeholder="Customer name"><label>Job / Site</label><input id="site" placeholder="Job name or address"><label>Notes</label><textarea id="jobnotes" placeholder="Job notes"></textarea><button id="createJobBtn" class="wide gap">Create Job</button></div></section>
+<section id="job" class="hidden"><div class="card"><div class="toolbar"><button class="secondary" id="jobsBack">← Jobs</button><button class="secondary" id="homeBack">Home</button></div><h2 id="jobTitle"></h2><div id="jobInfo" class="muted"></div></div><div class="card"><h3>Add Opening</h3><label>Room name</label><div class="row"><input id="room" placeholder="Kitchen"><button class="voice" data-voice="room">🎙️</button></div><div class="grid"><div><label>Height (mm)</label><div class="row"><input id="height" inputmode="numeric" placeholder="1200"><button class="voice" data-voice="height">🎙️</button></div></div><div><label>Width (mm)</label><div class="row"><input id="width" inputmode="numeric" placeholder="1800"><button class="voice" data-voice="width">🎙️</button></div></div></div><label>Opening family</label><select id="type"><option>Window</option><option>Fixed Window</option><option>Awning Window</option><option>Casement Window</option><option>Double Hung Window</option><option>Bifold Window</option><option>Door</option><option>Hinged Door</option><option>Sliding Door</option></select><button id="buildBtn" class="wide gap">Build Opening</button></div><div class="card"><h3>Saved Openings</h3><div id="openings"></div></div></section>
+<section id="builder" class="hidden"><div class="card"><button class="secondary" id="builderBack">← Back</button><h2>Build Opening</h2><div class="hint">Choose a layout, then tap each section and choose its type. Every section starts blank.</div><div class="toolbar panelBtns gap"><button data-layout="1x1">1 panel</button><button data-layout="2x1">2 panels</button><button data-layout="3x1">3 panels</button><button data-layout="4x1">4 panels</button><button data-layout="2x2">2 × 2 Transom</button></div><div id="drawing" class="drawing"></div><div class="hint">Tap any section to edit it.</div><div id="panelEditor" class="panelEditor hidden"><b id="selectedPanelLabel">Panel 1</b><div id="typeButtons" class="typeGrid"></div></div><div class="transomTools"><button id="addTransomBtn" class="secondary wide">Add Transom</button><div id="transomControls" class="hidden"><div class="hint gap">Drag the blue line. The black transom line moves with it.</div><input id="transomRange" type="range" min="20" max="80" value="50"><div id="transomLabel" class="pill">Transom at 50%</div></div></div><button id="saveOpeningBtn" class="wide gap">Save Opening</button></div></section>
+</main>
+<script src="app.js"></script>
+</body></html>
