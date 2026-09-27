@@ -163,7 +163,8 @@ function setDoorSwing(v){if(panelConfigs[selectedPanel]){panelConfigs[selectedPa
 function saveOpening(){
   const room=document.getElementById('room').value.trim(),height=document.getElementById('height').value.trim(),width=document.getElementById('width').value.trim();
   if(!panelConfigs.length){alert('Build the opening first.');return}
-  if(panelConfigs.some(c=>c.type==='Hinged Door'&&(!c.hinge||!c.swing))){alert('Choose hinge side and opening direction for each hinged door.');return}\n  if(panelConfigs.some(c=>c.type!=='Fixed Window'&&c.type!=='Hinged Door'&&!c.direction)){alert('Choose an opening direction for each panel.');return}
+  if(panelConfigs.some(c=>c.type==='Hinged Door'&&(!c.hinge||!c.swing))){alert('Choose hinge side and opening direction for each hinged door.');return}
+  if(panelConfigs.some(c=>c.type!=='Fixed Window'&&c.type!=='Hinged Door'&&!c.direction)){alert('Choose an opening direction for each panel.');return}
   const types=[...new Set(panelConfigs.map(c=>c.type))],summary=types.length===1?types[0]:types.join(' + '); const doorNote=panelConfigs.filter(c=>c.type==='Hinged Door'&&c.swing&&c.hinge).map(c=>'Opening '+c.swing+' · '+c.hinge+' hand hinged').join(' / ');
   const data={room,height,width,type:summary,doorNote,panels,layoutRows,layoutCols,hasTransom,transomPct,panelConfigs:panelConfigs.map(c=>({...c}))};
   if(editingOpening>=0) current.openings[editingOpening]=data; else current.openings.push(data);
