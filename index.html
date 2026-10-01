@@ -1,0 +1,1621 @@
+<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="theme-color" content="#111827"><title>TradieAIApp</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f3f4f6;color:#111827}header{background:#111827;color:#fff;padding:18px 16px;position:sticky;top:0;z-index:5}header h1{margin:0;font-size:22px}.wrap{max-width:720px;margin:auto;padding:16px}.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 8px #0001}button,input,textarea,select{font:inherit}button{border:0;border-radius:10px;padding:12px 14px;background:#111827;color:#fff;font-weight:700;cursor:pointer}button.secondary{background:#e5e7eb;color:#111827}button.danger{background:#b91c1c}.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;font-size:13px;font-weight:700;margin:10px 0 6px}input,textarea,select{width:100%;padding:11px;border:1px solid #d1d5db;border-radius:9px;background:#fff}textarea{min-height:80px;resize:vertical}.voice{flex:0 0 auto;padding:9px 11px;background:#2563eb}.hidden{display:none}.job{padding:13px;border:1px solid #e5e7eb;border-radius:10px;margin:8px 0}.job b{display:block}.pill{display:inline-block;padding:5px 8px;border-radius:99px;background:#e5e7eb;font-size:12px;margin-top:5px}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.toolbar button{flex:1;min-width:110px}.panelBtns button{min-width:55px}.builder{border:1px solid #d1d5db;border-radius:12px;padding:12px;background:#fafafa}.drawing{width:100%;aspect-ratio:1.5;border:2px solid #111827;background:white;position:relative;display:grid;overflow:hidden;margin:12px 0}.drawing.transom{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);aspect-ratio:1.5}.drawing.vertical{grid-template-columns:repeat(var(--cols),1fr);grid-template-rows:1fr}.panel{border-right:2px solid #111827;border-bottom:0;position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:0}.drawing.transom .panel:nth-child(2n){border-right:0}.drawing.transom .panel:nth-child(-n+2){border-bottom:2px solid #111827}.panel{flex:1;border-right:2px solid #111827;position:relative;display:flex;align-items:center;justify-content:center;min-width:0;box-shadow:inset 0 0 0 7px #20262b,inset 0 0 0 10px #596168}.drawing.vertical .panel:last-child{border-right:0}.panel.selected{background:#dbeafe}.panel .mark{position:absolute;inset:10px;display:flex;align-items:center;justify-content:center;color:#2563eb;pointer-events:none}.panel .mark svg{width:72%;height:72%;overflow:visible}.panel .mark.fullV{inset:2px}.panel .mark.fullV svg{width:98%;height:96%}.panel .mark.fullV svg line,.panel .mark.fullV svg path{stroke-width:6}.panel .doorMark{inset:10px}.panel .doorMark svg{width:100%;height:100%;position:relative;z-index:1}.panel .mark svg line,.panel .mark svg path{stroke:currentColor;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}.panel .mark.f{font-size:42px;font-weight:900}.dhFrame{overflow:hidden}.dhSash{position:relative;width:100%;height:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:inset 0 0 0 6px #20262b,inset 0 0 0 9px #596168}.dhSash.selected{background:#dbeafe}.dhHorizontal .dhSash{width:50%;height:100%;float:left}.dhVertical .dhSash:first-child{border-bottom:2px solid #111827}.dhHorizontal .dhSash:first-child{border-right:2px solid #111827}.dhSash .mark{inset:2px}.dhSash .mark svg{width:92%;height:92%}.hint{font-size:13px;color:#4b5563}.savedSketch{width:100%;margin-top:8px;border:2px solid #111827;border-radius:8px;background:#fff;filter:contrast(1.25)}.openingCard{border:1px solid #d1d5db;border-radius:10px;padding:10px;margin-top:10px}.savedDrawing{width:100%;aspect-ratio:1.5;border:2px solid #111827;background:#fff;position:relative;display:grid;overflow:hidden;margin-top:8px}.savedDrawing .panel{border-right:2px solid #111827;border-bottom:0}.savedDrawing .panel:nth-child(''){border-right:0}.savedDrawing.transom .panel{border-bottom:2px solid #111827}.savedDrawing.transom .panel:nth-child(-n+99){border-bottom:0}.savedDrawing .panel.lastcol{border-right:0}.savedDrawing .panel.toprow{border-bottom:2px solid #111827}.savedDrawing .mark{position:absolute;inset:10px;display:flex;align-items:center;justify-content:center;color:#2563eb;pointer-events:none}.savedDrawing .mark svg{width:72%;height:72%;overflow:visible}.savedDrawing .mark svg line,.savedDrawing .mark svg path{stroke:currentColor;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}.savedDrawing .mark.f{font-size:42px;font-weight:900}.transomTools{margin-top:10px;padding:10px;border:1px solid #d1d5db;border-radius:10px;background:#fff}.transomDrag{position:absolute;left:0;right:0;height:22px;margin-top:-11px;cursor:ns-resize;z-index:3}.transomDrag:before{content:"";position:absolute;left:0;right:0;top:10px;border-top:4px dashed #2563eb}.transomHandle{position:absolute;left:50%;top:2px;transform:translateX(-50%);background:#2563eb;color:#fff;border-radius:99px;padding:2px 8px;font-size:11px;font-weight:700;white-space:nowrap}.transomLine{position:absolute;left:0;right:0;border-top:2px solid #111827;z-index:2;pointer-events:none}.topnav{display:flex;gap:8px;margin-bottom:12px}.topnav button{flex:1}.muted{color:#6b7280;font-size:13px}
+
+.savedMeasureWrap{position:relative;margin:30px 0 8px 34px}
+.savedMeasureWrap .savedDrawing{margin-top:0}
+.savedWidthLabel{position:absolute;left:0;right:0;top:-25px;text-align:center;font-size:13px;font-weight:700;color:#111827}
+.savedHeightLabel{position:absolute;top:0;bottom:0;left:-34px;width:28px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#111827;writing-mode:vertical-rl;transform:rotate(180deg)}
+
+.photoGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}.photoItem{position:relative}.photoItem img{width:100%;height:140px;object-fit:cover;border-radius:10px;border:1px solid #d1d5db}.photoItem button{position:absolute;right:5px;top:5px;padding:6px 8px;background:#b91c1c}.sketchCanvas{width:100%;height:360px;border:2px solid #111827;border-radius:10px;background:#fff;touch-action:none}
+
+.summaryOpening{background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 8px #0001}
+.summaryOpening h3{margin:0 0 6px}.summaryPhotos{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.summaryPhotos img{width:100%;max-height:260px;object-fit:contain;border:1px solid #d1d5db;border-radius:8px;background:#fff}
+@media print{header,.topnav,#summary .toolbar{display:none!important}body{background:#fff}.wrap{max-width:none;padding:0}.card,.summaryOpening{box-shadow:none;break-inside:avoid}.savedMeasureWrap{break-inside:avoid}}
+
+.drawing.transom{grid-template-columns:repeat(var(--cols),1fr)}
+.drawing.transom .panel{border-bottom:0}
+
+.confirmBox{border:2px solid #111827;border-radius:12px;padding:14px;background:#f9fafb;margin-bottom:14px}
+.confirmedBadge{display:inline-block;background:#111827;color:#fff;border-radius:99px;padding:6px 10px;font-size:12px;font-weight:700}
+@media print{.confirmBox button{display:none!important}}
+
+.jobActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.jobActions button{flex:1;min-width:120px}
+.archiveBadge{background:#f3f4f6;color:#4b5563}
+@media print{.jobActions{display:none!important}}
+
+:root{--bg:#171a1d;--surface:#22272b;--surface2:#2b3035;--line:#3a4147;--text:#f5f7f8;--muted:#aeb6bd;--green:#55e62d}
+body{background:var(--bg);color:var(--text)}header{background:#101315;border-bottom:1px solid #2c3338}
+.card,.builder,.transomTools,.openingCard,.job,.confirmBox{background:var(--surface);border-color:var(--line);box-shadow:none}
+input,textarea,select{background:#15191c;color:var(--text);border-color:#4a5259}input::placeholder,textarea::placeholder{color:#7f8991}
+.muted,.hint{color:var(--muted)}button{background:var(--green);color:#0c130a}button.secondary{background:var(--surface2);color:var(--text);border:1px solid #4a5259}
+button.danger{background:#a93232;color:#fff}button.active{background:var(--green)!important;color:#0c130a!important;box-shadow:0 0 0 2px rgba(85,230,45,.18)}
+.pill{background:#343a40;color:#e9edef}.drawing,.savedDrawing{background:#fff;color:#111827}.panel.selected{background:#d9fbd0}.transomTools{background:var(--surface)}
+.homeDashboard{min-height:calc(100vh - 95px);display:flex;flex-direction:column;justify-content:center;padding:20px 0 38px}.brandHero{text-align:center;margin:2px 0 34px}
+.brandLogo{width:138px;height:138px;display:block;margin:0 auto 12px;filter:drop-shadow(0 8px 22px rgba(85,230,45,.16))}
+.brandName{font-size:36px;font-weight:900;letter-spacing:-1.5px;margin:0}.brandName .ai{color:var(--green)}.brandTag{font-size:12px;font-weight:800;letter-spacing:5px;color:#c4cbd0;margin-top:7px}
+.homeAction{width:100%;display:flex;align-items:center;gap:17px;text-align:left;padding:20px;border-radius:18px;margin:12px 0;background:linear-gradient(145deg,#252b2f,#1c2023);color:#fff;border:1px solid #454d53}
+.homeAction.primary{border:2px solid var(--green);background:linear-gradient(145deg,#1d2b1b,#18201a)}.homeIcon{width:56px;height:56px;flex:0 0 56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:30px;background:#111517;border:1px solid #485057}
+.homeAction.primary .homeIcon{color:var(--green);border-color:var(--green)}.homeActionText{flex:1}.homeActionTitle{font-size:22px;font-weight:900}.homeActionSub{display:block;font-size:14px;color:#b6bec4;margin-top:4px}.homeChevron{font-size:34px;color:var(--green)}
+.pageTitle{display:flex;align-items:center;gap:12px;margin-bottom:14px}.pageTitle h2{margin:0}#measure .card{margin-top:8px}
+@media(max-width:480px){.brandLogo{width:118px;height:118px}.brandName{font-size:32px}.homeDashboard{justify-content:flex-start;padding-top:36px}}
+
+
+.savedWidthLabel,.savedHeightLabel{color:#fff!important;text-shadow:0 1px 2px rgba(0,0,0,.7)}
+
+#currentJobNotes{min-height:140px;white-space:pre-wrap;line-height:1.45}
+
+.confirmJobNotes{margin-top:16px;padding:16px;border-radius:12px;background:#171c1f;border:1px solid #454d53;text-align:left}
+.confirmNotesTitle{font-size:18px;font-weight:900;color:#fff;margin-bottom:7px}
+.confirmNotesText{font-size:20px;line-height:1.5;color:#f5f7f8;white-space:pre-wrap}
+
+.confirmSummaryNotes,.confirmHeaderNotes,.jobConfirmHeader .jobNotes{display:none!important}
+
+.job{background:#22272b;border:1px solid #3a4147;border-radius:14px;padding:15px;margin:10px 0;cursor:pointer}
+.jobTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.jobTitle{font-size:18px;font-weight:900;color:#fff}.jobCustomer{font-size:15px;color:#e9edef;margin-top:5px}
+.jobPhone{font-size:14px;color:#aeb6bd;margin-top:3px}.jobMeta{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+.statusCurrent{background:#343a40}.statusCompleted{background:#183d18;color:#7dff61;border:1px solid #3e8e35}.statusArchived{background:#343a40;color:#b8c0c6}
+.jobArrow{font-size:28px;color:#55e62d;line-height:1}
+.savedSketchWrap{background:#fff;border-radius:10px;padding:10px;margin-top:10px;overflow:hidden}
+
+/* V67 — Confirm Job readability */
+#confirmJob .openingCard, #confirmJob .openingCard *,
+#confirm .openingCard, #confirm .openingCard *,
+.confirmedJob .openingCard, .confirmedJob .openingCard * {
+  color:#111827;
+  text-shadow:none;
+}
+#confirmJob .savedWidthLabel, #confirmJob .savedHeightLabel,
+#confirm .savedWidthLabel, #confirm .savedHeightLabel,
+.confirmedJob .savedWidthLabel, .confirmedJob .savedHeightLabel {
+  color:#111827 !important;
+  background:#fff !important;
+  text-shadow:none !important;
+  font-weight:800;
+  padding:2px 6px;
+  border-radius:5px;
+  z-index:30;
+}
+
+
+/* V69 — Confirm Job contrast only */
+section[id*="confirm" i] .openingCard > b,
+section[id*="confirm" i] .openingCard > .muted,
+section[id*="complete" i] .openingCard > b,
+section[id*="complete" i] .openingCard > .muted {
+  color:#111827 !important;
+  opacity:1 !important;
+}
+
+
+/* V69: Saved Openings back to original dark-card look */
+.openingCard > b,
+.openingCard > .muted {
+  color:#f3f4f6 !important;
+  opacity:1 !important;
+  text-shadow:none !important;
+}
+.openingCard .savedWidthLabel,
+.openingCard .savedHeightLabel {
+  color:#f3f4f6 !important;
+  background:transparent !important;
+  opacity:1 !important;
+  text-shadow:0 1px 2px #000 !important;
+  padding:0 !important;
+  border-radius:0 !important;
+}
+
+/* V69: ONLY Confirm Job cards get dark readable text on their white cards */
+.confirmContrast .openingCard > b,
+.confirmContrast .openingCard > .muted {
+  color:#111827 !important;
+  opacity:1 !important;
+  text-shadow:none !important;
+}
+.confirmContrast .openingCard .savedWidthLabel,
+.confirmContrast .openingCard .savedHeightLabel {
+  color:#111827 !important;
+  background:#fff !important;
+  opacity:1 !important;
+  text-shadow:none !important;
+  font-weight:900 !important;
+  padding:2px 7px !important;
+  border-radius:5px !important;
+  z-index:40 !important;
+}
+
+
+/* V70 — target the ACTUAL white cards rendered on Confirm Job */
+.actualConfirmCard .confirmDarkHeading,
+.actualConfirmCard .confirmDarkDetails {
+  color:#111827 !important;
+  opacity:1 !important;
+  text-shadow:none !important;
+}
+.actualConfirmCard .confirmDarkDimension {
+  color:#111827 !important;
+  background:#ffffff !important;
+  opacity:1 !important;
+  text-shadow:none !important;
+  font-weight:900 !important;
+  padding:2px 6px !important;
+  border-radius:4px !important;
+}
+
+
+.detailChecks{display:grid;gap:8px;margin:14px 0}.detailChecks label,.checkRow{display:flex;align-items:center;gap:10px;background:#20262b;border:1px solid #46505a;border-radius:10px;padding:12px;color:#fff;font-weight:700}.detailChecks input,.checkRow input{width:auto;transform:scale(1.25)}
+.bayViews{display:grid;grid-template-columns:1fr;gap:18px;margin-top:12px;width:100%;overflow:visible}.bayViews>div{width:100%}.bayViewTitle{text-align:center;font-weight:800;color:#f5f7f8;margin:6px 0}.baySvg{display:block;width:100%;height:auto;background:#fff;border:2px solid #111827;border-radius:5px;box-sizing:border-box}.bayDimRow{display:grid;grid-template-columns:1fr 2.35fr 1fr;gap:4px;margin:0 4px 5px;color:#f5f7f8;font-weight:800;text-align:center}.bayFrontGrid{width:100%;aspect-ratio:2.45;background:#fff;border:3px solid #111827;border-radius:5px;display:grid;overflow:hidden;color:#111827}.bayFrontGrid .panel{border-color:#111827}.savedRightHeightLabel{position:absolute;top:0;bottom:0;right:-38px;width:32px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.7);writing-mode:vertical-rl}.bayBuilderExtra{margin:4px 0 14px}.bayBuilderExtra .bayViewTitle,.bayBuilderExtra .bayDimRow{color:#f5f7f8}
+.jobDetailsSummary{background:#fff;color:#111827;border-radius:12px;padding:15px;margin-bottom:14px}.jobDetailsSummary h3{margin-top:0}.jobDetailsSummary .detailLine{margin:5px 0;font-size:16px}
+
+#jobDetails .toolbar button.active{
+ background:#22c55e !important;
+ color:#07130b !important;
+ box-shadow:0 0 0 2px #86efac inset !important;
+}
+
+.deleteSavedBtn{background:#7f1d1d !important;border-color:#ef4444 !important;color:white !important;padding-left:18px !important;padding-right:18px !important}
+
+/* V81: rake/gable side measurements */
+.savedMeasureWrap .savedHeightLabel,
+.savedMeasureWrap .savedRightHeightLabel{
+  color:#111827 !important;
+  background:#fff !important;
+  text-shadow:none !important;
+  font-weight:800 !important;
+  border-radius:6px;
+  padding:4px 3px;
+  z-index:30 !important;
+}
+
+/* V82 rake/gable dimension layout: side sizes inside drawing, width underneath */
+.savedBottomWidthLabel{
+  color:#111827!important;background:#fff!important;text-shadow:none!important;
+  font-weight:800!important;text-align:center;font-size:16px;line-height:1.25;
+  margin:7px auto 0;padding:3px 8px;border-radius:5px;width:max-content;max-width:90%;
+}
+@media print{
+  .savedBottomWidthLabel{color:#000!important;background:#fff!important;text-shadow:none!important;font-size:11pt}
+  .savedDrawing svg text{fill:#000!important}
+}
+
+.backupPanel{margin-top:14px;padding:14px;border:1px solid #46505a;border-radius:12px;background:#1d2327}
+.backupTitle{font-size:17px;font-weight:900;margin-bottom:5px}
+.backupActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.backupActions button{flex:1;min-width:135px}
+
+.confirmedLockBanner{margin:12px 0;padding:16px;border:1px solid #55e62d;border-radius:14px;background:#18251a;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.confirmedLockBanner.hidden{display:none!important}.confirmedLockBanner b{font-size:18px;color:#7dff61}
+#job.jobLocked .card:not(:first-child){pointer-events:none;opacity:.48}
+#job.jobLocked .card:not(:first-child) button,#job.jobLocked .card:not(:first-child) input,#job.jobLocked .card:not(:first-child) select,#job.jobLocked .card:not(:first-child) textarea{pointer-events:none!important}
+#job.jobLocked .jobActions button:first-child{display:none}
+
+.costingCard{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.costingTitle{font-size:18px;font-weight:900;margin-bottom:10px}
+.costingRow{display:grid;grid-template-columns:1fr auto;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);align-items:start}
+.costingRow:last-child{border-bottom:0}.costingAmount{font-weight:800;white-space:nowrap}.costingMeta{font-size:13px;color:var(--muted);margin-top:3px}
+.costingTotals{margin-top:14px;padding:14px;border:2px solid #55e62d;border-radius:12px}.costingGrand{font-size:22px;font-weight:900;margin-top:8px}
+@media print{.costingCard,.costingTotals{break-inside:avoid}
+body.print-measure .costingCard,body.print-measure .costingTotals{display:none!important}
+body.print-cost #confirmStatus,body.print-cost #summaryContent>.openingCard{display:none!important}
+body.print-cost #summaryContent .costingCard{display:block!important}
+body.print-cost .toolbar{display:none!important}}
+
+/* V107: compact, darker PDFs + mobile preview zoom */
+.pdfZoomBar{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px}.pdfZoomBar button{padding:8px 10px}.pdfZoomBar span{min-width:54px;text-align:center;font-weight:900;color:#fff}
+#summaryContent{transform-origin:top left}
+@media print{
+  @page{size:A4;margin:8mm}
+  html,body{background:#fff!important;color:#000!important;font-size:9pt!important}
+  #summary .card{padding:6px!important;margin-bottom:5px!important;border-radius:0!important}
+  #summary h2{font-size:15pt!important;margin:2px 0 4px!important;color:#000!important}
+  #summaryJobInfo,#summary .muted,.costingMeta{color:#222!important}
+  #summaryContent{zoom:1!important;transform:none!important;width:auto!important}
+  .pdfZoomBar{display:none!important}
+  .jobDetailsSummary{padding:7px!important;margin-bottom:6px!important;border-radius:0!important;color:#000!important}
+  .jobDetailsSummary h3{font-size:11pt!important;margin:0 0 3px!important}.jobDetailsSummary .detailLine{font-size:8.5pt!important;margin:2px 0!important;line-height:1.2!important}
+  .summaryOpening{padding:7px!important;margin-bottom:6px!important;border:1px solid #555!important;border-radius:0!important;color:#000!important;break-inside:avoid!important;page-break-inside:avoid!important}
+  .summaryOpening h3{font-size:11pt!important;margin:0 0 2px!important;color:#000!important}.summaryOpening>.muted{font-size:8pt!important;line-height:1.15!important}
+  .summaryOpening .pill{font-size:7.5pt!important;padding:2px 5px!important;margin-top:2px!important;color:#000!important;background:#eee!important}
+  .summaryOpening .savedMeasureWrap{width:52%!important;max-width:300px!important;margin:18px auto 3px 28px!important}
+  .summaryOpening .savedDrawing{border-width:1px!important;margin-top:0!important}.summaryOpening .savedDrawing .panel{border-width:1px!important}
+  .summaryOpening .savedWidthLabel,.summaryOpening .savedHeightLabel,.summaryOpening .savedRightHeightLabel,.summaryOpening .savedBottomWidthLabel{font-size:7.5pt!important;color:#000!important;background:#fff!important;padding:1px 2px!important;text-shadow:none!important}
+  .summaryOpening .savedWidthLabel{top:-17px!important}.summaryOpening .savedHeightLabel{left:-27px!important;width:22px!important}
+  .summaryOpening .savedSketchWrap{width:52%!important;margin:3px auto!important}.summaryOpening .savedSketch{max-height:120px!important;object-fit:contain!important;margin-top:2px!important;border-width:1px!important}
+  .summaryPhotos{grid-template-columns:repeat(3,1fr)!important;gap:4px!important}.summaryPhotos img{max-height:105px!important;border-radius:0!important}
+  .costingCard{padding:6px!important;margin-top:5px!important;border:1px solid #555!important;border-radius:0!important;background:#fff!important;color:#000!important;break-inside:avoid!important}
+  .costingTitle{font-size:10pt!important;margin-bottom:2px!important;color:#000!important}.costingRow{gap:7px!important;padding:2px 0!important;border-color:#aaa!important;line-height:1.15!important;font-size:8pt!important}.costingMeta{font-size:7pt!important;margin-top:1px!important}.costingAmount{color:#000!important}
+  .costingTotals{padding:7px!important;margin-top:6px!important;border:1.5px solid #000!important;border-radius:0!important;color:#000!important;break-inside:avoid!important}.costingTotals h3{font-size:10.5pt!important;margin:0 0 2px!important}.costingGrand{font-size:12pt!important;margin-top:3px!important;color:#000!important}
+}
+
+/* V112: denser PDF layout + clearer mobile preview */
+#summary .card{color:#f3f4f6}
+#summaryContent{overflow:visible}
+@media screen and (max-width:700px){
+  #summary{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  #summaryContent{min-width:0;transform-origin:top left}
+  .pdfZoomBar{position:sticky;top:4px;z-index:50;background:#15191c;padding:7px;border-radius:10px;flex-wrap:wrap}
+  .pdfZoomBar button{min-width:auto;font-size:13px;padding:7px 9px}
+}
+@media print{
+  @page{size:A4 portrait;margin:6mm}
+  #summary .card{padding:4px!important;margin:0 0 4px!important}
+  .jobDetailsSummary{padding:5px!important;margin-bottom:4px!important}
+  .summaryOpening{padding:5px!important;margin:0 0 4px!important;min-height:0!important;break-inside:avoid!important;page-break-inside:avoid!important}
+  .summaryOpening h3{font-size:10pt!important;line-height:1.05!important;margin:0 0 1px!important}
+  .summaryOpening>.muted{font-size:7.2pt!important;line-height:1.05!important;margin:0!important}
+  .summaryOpening .pill{font-size:7pt!important;line-height:1!important;padding:1px 4px!important}
+  .summaryOpening .savedMeasureWrap{width:43%!important;max-width:230px!important;margin:14px auto 1px 30px!important}
+  .summaryOpening .savedDrawing{max-height:118px!important;overflow:hidden!important}
+  .summaryOpening .gableDrawing{max-height:none!important;overflow:visible!important}
+  .summaryOpening .savedSketchWrap{width:43%!important;margin:2px auto 2px 30px!important}
+  .summaryOpening .savedSketch{max-height:100px!important}
+  .summaryPhotos img{max-height:88px!important}
+  .summaryOpening .costingCard{padding:4px!important;margin-top:3px!important}
+  .summaryOpening .costingTitle{font-size:9pt!important;margin-bottom:1px!important}
+  .summaryOpening .costingRow{padding:1px 0!important;font-size:7.2pt!important;line-height:1.05!important}
+  .summaryOpening .costingMeta{font-size:6.4pt!important;line-height:1.05!important}
+  .costingTotals{padding:5px!important;margin-top:4px!important}
+}
+
+.restrictedMark{position:absolute;top:7px;right:8px;z-index:8;display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#c62828;color:#fff;font-size:18px;font-weight:1000;line-height:1;border:2px solid #fff;box-shadow:0 1px 3px #0008}
+.panel{position:relative}
+</style><!-- TradieAIApp V135 -->
+</head><body><header><div class="wrap" style="padding:0"><h1>Tradie<span style="color:#55e62d">AI</span>App</h1></div></header><main class="wrap">
+<section id="home"><div class="homeDashboard">
+<div class="brandHero"><img class="brandLogo" src="tradieai-logo.svg" alt="TradieAIApp"><div class="brandName">Tradie<span class="ai">AI</span>App</div><div class="brandTag">MEASURE • MANAGE</div></div>
+<button class="homeAction primary" type="button" onclick="show('measure')"><span class="homeIcon">📐</span><span class="homeActionText"><span class="homeActionTitle">MEASURE UP</span><span class="homeActionSub">Start a new site measure</span></span><span class="homeChevron">›</span></button>
+<button class="homeAction" type="button" onclick="show('jobs')"><span class="homeIcon">📁</span><span class="homeActionText"><span class="homeActionTitle">JOBS</span><span class="homeActionSub">View and manage existing jobs</span></span><span class="homeChevron">›</span></button>
+<button class="homeAction" type="button" onclick="openTodoList()"><span class="homeIcon">📝</span><span class="homeActionText"><span class="homeActionTitle">TO DO LIST</span><span class="homeActionSub">Add notes and things to remember</span></span><span class="homeChevron">›</span></button>
+<button class="homeAction" type="button" onclick="openStaffSettings()"><span class="homeIcon">👥</span><span class="homeActionText"><span class="homeActionTitle">STAFF / USERS</span><span class="homeActionSub">Set users and who is using this device</span></span><span class="homeChevron">›</span></button>
+<button class="homeAction" type="button" onclick="openCostSettings()"><span class="homeIcon">⚙️</span><span class="homeActionText"><span class="homeActionTitle">COSTING SETTINGS</span><span class="homeActionSub">Edit labour and material rates</span></span><span class="homeChevron">›</span></button>
+</div></section>
+<section id="todo" class="hidden"><div class="card"><div class="pageTitle"><button class="secondary" type="button" style="flex:0 0 auto" onclick="show('home')">←</button><h2>To Do List</h2></div><div class="muted">Create general tasks or link them to a job and assign them to a staff member.</div><textarea id="todoNewText" rows="3" style="margin-top:14px" placeholder="What needs to be done?"></textarea><div class="grid" style="margin-top:10px"><div><label>Job (optional)</label><select id="todoJob"></select></div><div><label>Assign to</label><select id="todoAssignee"></select></div></div><button type="button" style="width:100%;margin-top:12px" onclick="addTodoTask()">Save Task</button><div id="todoSaved" class="muted" style="margin-top:8px"></div><div class="toolbar" style="margin-top:18px"><button id="todoAllBtn" type="button" onclick="setTodoScope('all')">All To Dos</button><button id="todoMineBtn" class="secondary" type="button" onclick="setTodoScope('mine')">My To Dos</button><button id="todoActiveBtn" type="button" onclick="setTodoView('active')">Active</button><button id="todoCompletedBtn" class="secondary" type="button" onclick="setTodoView('completed')">Completed</button></div><div id="todoList" style="margin-top:14px"></div></div></section>
+<section id="staffSettings" class="hidden"><div class="card"><div class="pageTitle"><button class="secondary" type="button" style="flex:0 0 auto" onclick="show('home')">←</button><h2>Staff / Users</h2></div><div class="muted">These names are used for job and To Do assignments on this device.</div><label>This device is being used by</label><select id="currentStaffSelect" onchange="setCurrentStaff(this.value)"></select><label style="margin-top:16px">Add staff member</label><div class="row"><input id="newStaffName" placeholder="Name"><button type="button" onclick="addStaffMember()">Add</button></div><div id="staffList" style="margin-top:16px"></div></div></section>
+<section id="costSettings" class="hidden"><div class="card"><div class="pageTitle"><button class="secondary" type="button" style="flex:0 0 auto" onclick="show('home')">←</button><h2>Costing Settings</h2></div><div class="muted">These rates are used automatically for new and existing job costings on this device.</div><div class="grid"><div><label>Installation labour ($ per item)</label><input id="setLabour" type="number" inputmode="decimal" min="0" step="0.01"></div><div><label>Angles ($ per item)</label><input id="setAngles" type="number" inputmode="decimal" min="0" step="0.01"></div><div><label>Caulking ($ per item)</label><input id="setCaulking" type="number" inputmode="decimal" min="0" step="0.01"></div><div><label>Primed arch ($ per linear metre)</label><input id="setPrimed" type="number" inputmode="decimal" min="0" step="0.01"></div><div><label>Hardwood arch ($ per linear metre)</label><input id="setHardwood" type="number" inputmode="decimal" min="0" step="0.01"></div><div><label>Architrave length size (m)</label><input id="setLength" type="number" inputmode="decimal" min="0.1" step="0.1"></div><div><label>Cutting allowance (mm)</label><input id="setAllowance" type="number" inputmode="numeric" min="0" step="1"></div></div><div class="toolbar" style="margin-top:18px"><button type="button" onclick="saveCostSettings()">Save Settings</button><button class="secondary" type="button" onclick="resetCostSettings()">Reset Defaults</button></div><div id="costSettingsStatus" class="muted" style="margin-top:10px"></div></div></section>
+<section id="measure" class="hidden"><div class="card"><div class="pageTitle"><button class="secondary" type="button" style="flex:0 0 auto" onclick="show('home')">←</button><h2>Measure Up</h2></div><div class="muted">Start a new site measure. Saved and existing jobs are kept in Jobs.</div><button type="button" style="width:100%;margin-top:18px" onclick="newJob()">+ Start New Measure Up</button></div></section>
+<section id="jobs" class="hidden"><div class="card"><div class="pageTitle"><button class="secondary" type="button" style="flex:0 0 auto" onclick="show('home')">←</button><h2>Jobs</h2></div><div class="row"><input id="search" placeholder="Search customer, address or phone" oninput="renderJobs()"></div><div class="toolbar" style="margin-top:10px"><button id="jobsScopeAll" type="button" onclick="setJobsScope('all')">All Jobs</button><button id="jobsScopeMine" class="secondary" type="button" onclick="setJobsScope('mine')">My Jobs</button></div><div class="toolbar" style="margin-top:10px"><button id="allJobsBtn" type="button" onclick="setJobFilter('all')">All</button><button id="activeJobsBtn" class="secondary" type="button" onclick="setJobFilter('active')">In Progress</button><button id="measuredJobsBtn" class="secondary" type="button" onclick="setJobFilter('measured')">Measured</button><button id="confirmedJobsBtn" class="secondary" type="button" onclick="setJobFilter('confirmed')">Confirmed</button><button id="completedJobsBtn" class="secondary" type="button" onclick="setJobFilter('completed')">Completed</button><button id="archivedJobsBtn" class="secondary" type="button" onclick="setJobFilter('archived')">Archived</button></div><div class="row" style="margin-top:10px"><label style="margin:0;flex:0 0 auto">Sort</label><select id="jobSort" onchange="renderJobs()"><option value="updated">Last updated</option><option value="newest">Newest job</option><option value="customer">Customer A–Z</option><option value="status">Status</option></select></div><div class="backupPanel"><div class="backupTitle">Backup & Restore</div><div class="muted">Save a copy of all jobs, openings, sketches and job details to your phone. Restore it later on this phone or another device.</div><div class="backupActions"><button type="button" onclick="exportBackup()">⬇ Backup Jobs</button><button class="secondary" type="button" onclick="document.getElementById('backupFile').click()">⬆ Restore Backup</button><input id="backupFile" type="file" accept=".json,application/json" class="hidden" onchange="restoreBackupFile(this.files&&this.files[0]);this.value=''"></div><div id="backupStatus" class="muted" style="margin-top:8px"></div></div></div><div id="jobList"></div></section>
+<section id="new" class="hidden"><div class="card"><div class="toolbar"><button class="secondary" onclick="show('measure')">← Back</button></div><h2>New Measure Up</h2><label>Customer</label><input id="customer" placeholder="Customer name"><label>Phone Number</label><input id="phone" type="tel" inputmode="tel" placeholder="Phone number"><label>Job / Site</label><input id="site" placeholder="Job name or address"><button style="width:100%;margin-top:12px" onclick="createJob()">Create Job</button></div></section>
+<section id="job" class="hidden"><div class="card"><div class="toolbar"><button class="secondary" onclick="show('jobs');renderJobs()">← Jobs</button><button class="secondary" onclick="show('home')">Home</button></div><h2 id="jobTitle"></h2><div id="jobInfo" class="muted"></div>
+<div class="grid" style="margin-top:14px"><div><label>Job Status</label><select id="jobWorkflowStatus" onchange="setCurrentJobWorkflowStatus(this.value)"></select></div><div><label>Assigned to</label><select id="jobAssignee" onchange="setCurrentJobAssignee(this.value)"></select></div></div><button type="button" style="width:100%;margin-top:10px" onclick="addTodoForCurrentJob()">+ Add To Do for this Job</button><div class="jobActions"><button class="secondary" type="button" onclick="editJobDetails()">Edit Job Details</button><button class="secondary" type="button" onclick="toggleArchiveCurrentJob()">Archive Job</button><button class="secondary" type="button" onclick="recoverPreviousJobVersion()">↶ Recover Previous</button><button class="danger" type="button" onclick="deleteCurrentJob()">Delete Job</button></div></div><div id="confirmedLockBanner" class="confirmedLockBanner hidden"><div><b>🔒 Confirmed Job</b><div class="muted">Protected from accidental changes.</div></div><button type="button" onclick="unlockConfirmedJobFromJob()">Re-open / Edit Job</button></div><div class="card"><h3>Add Opening</h3><label>Room name</label><div class="row"><input id="room" placeholder="Kitchen"><button class="voice" onclick="voiceField('room')">🎙️</button></div><label>Type</label><select id="type" onchange="typeChanged()"><option>Sliding Window</option><option>Fixed Window</option><option>Awning Window</option><option>Casement Window</option><option>Double Hung Window</option><option>Bifold Window</option><option>Louvre Window</option><option>Rake Window</option><option>Gable Rake Frame</option><option>Bay Window</option><option>Door</option><option>Hinged Door</option><option>Sliding Door</option><option>Other / Sketch</option></select><div id="standardMeasurements"><div class="grid">
+<label style="grid-column:1 / -1">Panel layout</label><div class="toolbar panelBtns" style="grid-column:1 / -1;width:100%;margin-top:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px"><button id="layoutBtn1" type="button" onclick="setLayout(1)" style="min-width:0;white-space:nowrap;padding-left:6px;padding-right:6px">1 panel</button><button id="layoutBtn2" type="button" onclick="setLayout(2)" style="min-width:0;white-space:nowrap;padding-left:6px;padding-right:6px">2 panels</button><button id="layoutBtn3" type="button" onclick="setLayout(3)" style="min-width:0;white-space:nowrap;padding-left:6px;padding-right:6px">3 panels</button><button id="layoutBtn4" type="button" onclick="setLayout(4)" style="min-width:0;white-space:nowrap;padding-left:6px;padding-right:6px">4 panels</button></div><div id="layoutSelectedText" class="pill" style="grid-column:1 / -1;margin-top:0">Selected: 1 panel</div>
+<div><label>Height (mm)</label><div class="row"><input id="height" inputmode="numeric" placeholder="1200"><button class="voice" onclick="voiceField('height')">🎙️</button></div></div><div><label>Width (mm)</label><div class="row"><input id="width" inputmode="numeric" placeholder="1800"><button class="voice" onclick="voiceField('width')">🎙️</button></div></div></div></div><div class="transomTools"><label style="margin-top:0"><input type="checkbox" id="hasTransom" onchange="toggleTransom()" style="width:auto;margin-right:8px">Add transom</label><div id="transomControls" class="hidden"><div class="hint">Enter the height from the bottom of the window to the centre of the transom.</div><label>Transom 1 Height (mm)</label><input id="transomHeight1" type="number" min="1" inputmode="numeric" placeholder="e.g. 650" oninput="setTransomHeight(0,this.value)"><label style="margin-top:10px"><input type="checkbox" id="hasSecondTransom" onchange="toggleSecondTransom()" style="width:auto;margin-right:8px">Add second transom</label><div id="transom2Controls" class="hidden"><label>Transom 2 Height (mm)</label><input id="transomHeight2" type="number" min="1" inputmode="numeric" placeholder="e.g. 1250" oninput="setTransomHeight(1,this.value)"></div><div id="transomLabel" class="pill" style="margin-top:10px">Enter transom height</div></div></div><div id="rakeMeasurements" class="hidden"><div class="grid"><div><label>Left side (mm)</label><input id="rakeLeft" inputmode="numeric" placeholder="2100"></div><div><label>Right side (mm)</label><input id="rakeRight" inputmode="numeric" placeholder="1500"></div></div><label>Bottom (mm)</label><input id="rakeBottom" inputmode="numeric" placeholder="1800"></div>
+<div id="gableMeasurements" class="hidden"><div class="grid"><div><label>Left side (mm)</label><input id="gableLeft" inputmode="numeric" placeholder="1500"></div><div><label>Peak / centre height (mm)</label><input id="gablePeak" inputmode="numeric" placeholder="2200"></div><div><label>Right side (mm)</label><input id="gableRight" inputmode="numeric" placeholder="1500"></div><div><label>Bottom width (mm)</label><input id="gableWidth" inputmode="numeric" placeholder="2400"></div></div></div>
+<div id="bayMeasurements" class="hidden"><div class="grid"><div><label>Height (mm)</label><input id="bayHeight" inputmode="numeric" placeholder="1500"></div><div><label>Left wing width (mm)</label><input id="bayLeftWing" inputmode="numeric" placeholder="600"></div><div><label>Centre width (mm)</label><input id="bayCentre" inputmode="numeric" placeholder="1800"></div><div><label>Right wing width (mm)</label><input id="bayRightWing" inputmode="numeric" placeholder="600"></div></div></div><label>Frame Material</label><div id="materialButtons" class="toolbar"><button type="button" onclick="setFrameMaterial('Aluminium')">Aluminium</button><button type="button" onclick="setFrameMaterial('Meranti')">Meranti</button><button type="button" onclick="setFrameMaterial('Hardwood')">Hardwood</button><button type="button" onclick="setFrameMaterial('Other')">Other</button></div><input id="otherMaterial" class="hidden" placeholder="Enter frame material" oninput="setOtherFrameMaterial(this.value)"><div id="materialText" class="pill">Choose frame material</div>
+<label>Glazing</label><div id="glazingButtons" class="toolbar"><button type="button" onclick="setGlazing('Single Glazed')">Single Glazed</button><button type="button" onclick="setGlazing('Double Glazed')">Double Glazed</button></div><div id="glazingText" class="pill">Choose glazing</div><div id="glassTypeSection" class="hidden"><label>Glass Type</label><div id="glassTypeButtons" class="toolbar"><button type="button" onclick="setGlassType('Clear')">Clear</button><button type="button" onclick="setGlassType('Frosted')">Frosted</button><button type="button" onclick="setGlassType('Clear Laminate')">Clear Laminate</button><button type="button" onclick="setGlassType('White Laminate')">White Laminate</button><button type="button" onclick="setGlassType('E-Tech')">E-Tech</button><button type="button" onclick="setGlassType('Other')">Other</button></div><input id="otherGlassType" class="hidden" placeholder="Enter glass type" oninput="setOtherGlassType(this.value)"><div id="glassTypeText" class="pill">Choose glass type</div></div>
+<div id="frameColourSection"><label>Frame Colour</label><div id="colourButtons" class="toolbar"><button type="button" onclick="setFrameColour('White')">White</button><button type="button" onclick="setFrameColour('Black')">Black</button><button type="button" onclick="setFrameColour('Monument')">Monument</button><button type="button" onclick="setFrameColour('Woodland Grey')">Woodland Grey</button><button type="button" onclick="setFrameColour('Surfmist')">Surfmist</button><button type="button" onclick="setFrameColour('Other')">Other</button></div><input id="otherColour" class="hidden" placeholder="Enter frame colour" oninput="setOtherFrameColour(this.value)"><div id="colourText" class="pill">Choose frame colour</div></div>
+<div id="hardwareColourSection" class="hidden"><label id="hardwareColourLabel">Hardware Colour</label><div id="hardwareButtons" class="toolbar"><button type="button" onclick="setHardwareColour('Black')">Black</button><button type="button" onclick="setHardwareColour('White')">White</button><button type="button" onclick="setHardwareColour('Silver')">Silver</button><button type="button" onclick="setHardwareColour('Other')">Other</button></div><input id="otherHardwareColour" class="hidden" placeholder="Enter hardware colour" oninput="setOtherHardwareColour(this.value)"><div id="hardwareColourText" class="pill">Choose hardware colour</div></div>
+<button style="width:100%;margin-top:12px" onclick="openBuilder()">Build Opening</button></div><div class="card"><h3>Site Photos</h3><div class="muted">Add photos from your camera or camera roll.</div>
+<input id="sitePhotoInput" type="file" accept="image/*" multiple style="margin-top:10px" onchange="addSitePhotos(event)">
+<div id="sitePhotos" class="photoGrid"></div></div><div class="card"><h3>Saved Openings</h3><div id="openings"></div><button type="button" style="width:100%;margin-top:16px" onclick="openJobDetails()">Next → Job Details</button></div></section>
+<section id="builder" class="hidden"><div class="card"><button class="secondary" onclick="show('job')">← Back</button><h2>Build Opening</h2><div class="hint">Tap each panel to give it its own type. One window can have an awning panel beside a fixed panel.</div><div id="drawing" class="drawing vertical"></div><div class="hint">Tap a panel to edit it.</div><div id="panelEditor" class="builder hidden"><b id="selectedPanelLabel">Panel 1</b><label>Panel type</label><div id="panelTypeButtons" class="toolbar"></div><div id="panelDirectionArea"><label>Opening direction</label><div id="directionButtons" class="toolbar"></div><div id="directionText" class="pill">Choose direction</div></div></div><div id="hingedDoorOptions" class="hidden" style="margin-top:12px">
+<label>Hinged door options</label>
+<div class="toolbar" style="margin-top:8px">
+<button type="button" id="hingeLeftBtn" onclick="setDoorHinge('Left')">Hinged Left</button>
+<button type="button" id="hingeRightBtn" onclick="setDoorHinge('Right')">Hinged Right</button>
+</div>
+<div class="toolbar" style="margin-top:8px">
+<button type="button" id="swingInBtn" onclick="setDoorSwing('In')">Opening In</button>
+<button type="button" id="swingOutBtn" onclick="setDoorSwing('Out')">Opening Out</button>
+</div>
+<div id="hingedDoorText" class="pill">Choose hinge side and opening direction</div>
+</div><div id="editGlassPanel" class="card hidden" style="margin-top:14px;padding:12px"><b>Glass Type</b><div class="hint" style="margin-top:4px">Change the glass type for this opening.</div><div id="editGlassTypeButtons" class="toolbar" style="margin-top:8px"><button type="button" onclick="setEditGlassType('Clear')">Clear</button><button type="button" onclick="setEditGlassType('Frosted')">Frosted</button><button type="button" onclick="setEditGlassType('Clear Laminate')">Clear Laminate</button><button type="button" onclick="setEditGlassType('White Laminate')">White Laminate</button><button type="button" onclick="setEditGlassType('E-Tech')">E-Tech</button><button type="button" onclick="setEditGlassType('Other')">Other</button></div><input id="editOtherGlassType" class="hidden" placeholder="Enter glass type" oninput="setEditOtherGlassType(this.value)"><div id="editGlassTypeText" class="pill">Not specified</div></div><button type="button" id="saveOpeningBtn" style="width:100%;margin-top:12px" onclick="saveOpening(event); return false;">Save Opening</button></div></section>
+<section id="jobDetails" class="hidden"><div class="card"><div class="toolbar"><button class="secondary" onclick="show('job')">← Back to Openings</button></div><h2>Job Details</h2><div class="muted">Add the installation details that apply to this job.</div>
+<label>Reveal Size</label><div id="revealButtons" class="toolbar"><button type="button" onclick="setRevealSize('90mm')">90mm</button><button type="button" onclick="setRevealSize('100mm')">100mm</button><button type="button" onclick="setRevealSize('120mm')">120mm</button><button type="button" onclick="setRevealSize('135mm')">135mm</button><button type="button" onclick="setRevealSize('Other')">Other</button></div><input id="revealOther" class="hidden" placeholder="Enter reveal size" oninput="setRevealOther(this.value)"><div id="revealMaterialSection" class="hidden"><label>Reveal Material</label><div id="revealMaterialButtons" class="toolbar"><button type="button" onclick="setRevealMaterial('Primed')">Primed</button><button type="button" onclick="setRevealMaterial('Hardwood')">Hardwood</button></div><div id="revealMaterialText" class="pill">Choose reveal material</div></div>
+<div class="detailChecks"><label><input type="checkbox" id="flyscreens"> Flyscreens</label><label><input type="checkbox" id="flydoors"> Flydoors</label><label><input type="checkbox" id="zFlashing"> Z Flashing</label><label><input type="checkbox" id="revealClosers"> Reveal Closers</label></div>
+<label>Cladding Type</label><div id="claddingButtons" class="toolbar"><button type="button" onclick="setCladding('Brick')">Brick</button><button type="button" onclick="setCladding('Weatherboard')">Weatherboard</button><button type="button" onclick="setCladding('Other')">Other</button></div><input id="claddingOther" class="hidden" placeholder="Enter cladding type" oninput="setCladdingOther(this.value)">
+<label class="checkRow"><input type="checkbox" id="architraves" onchange="toggleArchitraves()"> Architraves</label>
+<div id="architraveOptions" class="hidden"><label>Architrave Size</label><div id="archSizeButtons" class="toolbar"><button type="button" onclick="setArchSize('42mm')">42mm</button><button type="button" onclick="setArchSize('67mm')">67mm</button><button type="button" onclick="setArchSize('Other')">Other</button></div><input id="archSizeOther" class="hidden" placeholder="Enter architrave size" oninput="setArchSizeOther(this.value)">
+<label>Architrave Type</label><div id="archTypeButtons" class="toolbar"><button type="button" onclick="setArchType('Square')">Square</button><button type="button" onclick="setArchType('Bevelled')">Bevelled</button><button type="button" onclick="setArchType('Bullnose')">Bullnose</button><button type="button" onclick="setArchType('Lambs Tongue')">Lambs Tongue</button><button type="button" onclick="setArchType('Colonial')">Colonial</button><button type="button" onclick="setArchType('Other')">Other</button></div><input id="archTypeOther" class="hidden" placeholder="Enter architrave type" oninput="setArchTypeOther(this.value)">
+          <div class="label" style="margin-top:14px">Architrave material</div>
+          <div class="toolbar" id="archMaterialButtons">
+            <button onclick="setArchMaterial('Primed')">Primed</button>
+            <button onclick="setArchMaterial('Hardwood')">Hardwood</button>
+          </div></div>
+<label>Job Notes</label><textarea id="detailsJobNotes" rows="7" placeholder="Type job notes here..."></textarea>
+<button type="button" style="width:100%;margin-top:12px" onclick="saveJobDetails()">Save Job Details</button><div id="jobDetailsSaved" class="muted" style="margin-top:8px"></div>
+<button type="button" style="width:100%;margin-top:16px" onclick="continueToConfirm()">Continue to Confirm Job →</button></div></section>
+<section id="summary" class="hidden"><div class="card">
+<div class="toolbar"><button class="secondary" onclick="show('job')">← Back to Job</button><button type="button" onclick="printMeasurementPDF()">Measurement PDF</button><button type="button" onclick="printCostingPDF()">Costing PDF</button></div><div class="pdfZoomBar"><button class="secondary" type="button" onclick="changePdfPreviewZoom(-0.15)">− Zoom</button><span id="pdfZoomLabel">100%</span><button class="secondary" type="button" onclick="changePdfPreviewZoom(0.15)">+ Zoom</button><button class="secondary" type="button" onclick="resetPdfPreviewZoom()">Reset</button></div>
+<h2>Confirm Job</h2><div id="summaryJobInfo" class="muted"></div></div>
+<div id="confirmStatus"></div><div id="summaryContent"></div></section>
+<section id="sketch" class="hidden"><div class="card"><button class="secondary" onclick="show('job')">← Back</button><h2>Other / Sketch</h2><div class="hint">Draw the opening with your finger.</div><div class="toolbar" style="margin:10px 0"><button id="sketchDrawBtn" type="button" onclick="setSketchMode('draw')">✏️ Draw</button><button id="sketchMeasureBtn" class="secondary" type="button" onclick="setSketchMode('measure')">📏 Measure</button></div>
+<div id="sketchModeText" class="pill" style="margin-bottom:8px">Draw mode</div>
+<canvas id="sketchCanvas" class="sketchCanvas"></canvas>
+<div class="toolbar" style="margin-top:10px"><button class="secondary" type="button" onclick="undoSketchStroke()">Undo Last</button><button class="secondary" type="button" onclick="undoSketchDimension()">Undo Last Dimension</button><button class="secondary" type="button" onclick="clearSketch()">Clear</button><button type="button" onclick="saveSketchOpening()">Save Sketch</button></div></div></section>
+</main><script>
+let jobs=[]; try { const raw=localStorage.getItem('tradieJobs'); jobs=raw?JSON.parse(raw):[]; if(!Array.isArray(jobs)) jobs=[]; } catch(e) { jobs=[]; } let current=null, editingOpening=-1, builtOpeningType='';
+const DEFAULT_COST_SETTINGS={labour:720,angles:85,caulking:50,primed:6.50,hardwood:8.30,lengthSize:5.4,allowance:200};
+let costSettings={...DEFAULT_COST_SETTINGS};
+try{const saved=JSON.parse(localStorage.getItem('tradieCostSettings')||'null');if(saved&&typeof saved==='object')costSettings={...DEFAULT_COST_SETTINGS,...saved};}catch(e){}
+let todoTasks=[];let todoView='active',todoScope='all';
+let staffMembers=[];let currentStaff='';let jobsScope='all';
+try{const raw=JSON.parse(localStorage.getItem('tradieStaffMembers')||'[]');if(Array.isArray(raw))staffMembers=raw.filter(Boolean);}catch(e){}
+if(!staffMembers.length)staffMembers=['Greg'];
+currentStaff=localStorage.getItem('tradieCurrentStaff')||staffMembers[0];if(!staffMembers.includes(currentStaff))currentStaff=staffMembers[0];
+function saveStaff(){localStorage.setItem('tradieStaffMembers',JSON.stringify(staffMembers));localStorage.setItem('tradieCurrentStaff',currentStaff||'');}
+saveStaff();
+try{const raw=JSON.parse(localStorage.getItem('tradieTodoTasks')||'[]');if(Array.isArray(raw))todoTasks=raw;}catch(e){}
+(function migrateOldTodo(){if(todoTasks.length)return;const old=(localStorage.getItem('tradieTodoList')||'').trim();if(!old)return;todoTasks=old.split(/\n+/).map(x=>x.trim()).filter(Boolean).map((text,i)=>({id:Date.now()+i,text,status:'inprogress',createdAt:new Date().toISOString(),completedAt:null,createdBy:currentStaff,assignedTo:currentStaff,jobId:null}));saveTodoTasks();})();
+function saveTodoTasks(){localStorage.setItem('tradieTodoTasks',JSON.stringify(todoTasks));}
+function staffOptions(selected,blank){return (blank?'<option value="">Unassigned</option>':'')+staffMembers.map(n=>'<option value="'+esc(n)+'"'+(n===selected?' selected':'')+'>'+esc(n)+'</option>').join('');}
+function openStaffSettings(){show('staffSettings');renderStaffSettings();}
+function renderStaffSettings(){const sel=document.getElementById('currentStaffSelect');if(sel)sel.innerHTML=staffOptions(currentStaff,false);const list=document.getElementById('staffList');if(list)list.innerHTML=staffMembers.map(n=>'<div class="card" style="padding:12px;margin:0 0 8px"><b>'+esc(n)+'</b>'+(n===currentStaff?' <span class="pill">This device</span>':'')+(staffMembers.length>1?'<button class="danger" style="float:right;padding:6px 10px" onclick="removeStaffMember(\''+String(n).replace(/'/g,"\\'")+'\')">Remove</button>':'')+'</div>').join('');}
+function addStaffMember(){const i=document.getElementById('newStaffName'),n=(i.value||'').trim();if(!n)return;if(!staffMembers.some(x=>x.toLowerCase()===n.toLowerCase()))staffMembers.push(n);i.value='';saveStaff();renderStaffSettings();}
+function removeStaffMember(n){if(n===currentStaff){alert('Choose another user for this device before removing '+n+'.');return;}if(!confirm('Remove '+n+' from the staff list? Existing assignments will keep the name.'))return;staffMembers=staffMembers.filter(x=>x!==n);saveStaff();renderStaffSettings();}
+function setCurrentStaff(n){if(n){currentStaff=n;saveStaff();renderStaffSettings();renderJobs();renderTodoTasks();}}
+function populateTodoSelectors(jobId){const j=document.getElementById('todoJob'),a=document.getElementById('todoAssignee');if(j)j.innerHTML='<option value="">General / no job</option>'+jobs.filter(x=>!x.archived).map(x=>'<option value="'+x.id+'"'+(String(x.id)===String(jobId||'')?' selected':'')+'>'+esc((x.site||x.customer||'Untitled Job'))+'</option>').join('');if(a)a.innerHTML=staffOptions(currentStaff,true);}
+function openTodoList(jobId){document.getElementById('todoNewText').value='';document.getElementById('todoSaved').textContent='';todoView='active';show('todo');populateTodoSelectors(jobId);renderTodoTasks();}
+function addTodoForCurrentJob(){if(!current)return;openTodoList(current.id);}
+function todoStatusLabel(v){return v==='waiting'?'Waiting on Others':v==='completed'?'Completed':'In Progress';}
+function setTodoView(v){todoView=v==='completed'?'completed':'active';renderTodoTasks();}
+function setTodoScope(v){todoScope=v==='mine'?'mine':'all';renderTodoTasks();}
+function addTodoTask(){const box=document.getElementById('todoNewText');const text=(box.value||'').trim();if(!text){alert('Enter something for the task.');return;}const jobId=(document.getElementById('todoJob')||{}).value||null,assignedTo=(document.getElementById('todoAssignee')||{}).value||'';todoTasks.unshift({id:Date.now(),text,status:'inprogress',createdAt:new Date().toISOString(),completedAt:null,createdBy:currentStaff,assignedTo,jobId});saveTodoTasks();box.value='';document.getElementById('todoSaved').textContent='✓ Task saved';setTimeout(()=>document.getElementById('todoSaved').textContent='',1400);todoView='active';renderTodoTasks();}
+function updateTodoStatus(id,status){const t=todoTasks.find(x=>String(x.id)===String(id));if(!t)return;t.status=status;t.completedAt=status==='completed'?new Date().toISOString():null;saveTodoTasks();renderTodoTasks();}
+function updateTodoAssignee(id,v){const t=todoTasks.find(x=>String(x.id)===String(id));if(!t)return;t.assignedTo=v;saveTodoTasks();renderTodoTasks();}
+function restoreTodoTask(id){updateTodoStatus(id,'inprogress');todoView='active';renderTodoTasks();}
+function deleteTodoTask(id){if(!confirm('Delete this task permanently?'))return;todoTasks=todoTasks.filter(x=>String(x.id)!==String(id));saveTodoTasks();renderTodoTasks();}
+function todoJobName(t){const j=jobs.find(x=>String(x.id)===String(t.jobId));return j?(j.site||j.customer||'Untitled Job'):'';}
+function openTodoJob(id){const t=todoTasks.find(x=>String(x.id)===String(id));if(!t||!t.jobId)return;openJob(t.jobId);}
+function renderTodoTasks(){const list=document.getElementById('todoList');if(!list)return;['todoActiveBtn','todoCompletedBtn','todoAllBtn','todoMineBtn'].forEach(()=>{});document.getElementById('todoActiveBtn')?.classList.toggle('secondary',todoView!=='active');document.getElementById('todoCompletedBtn')?.classList.toggle('secondary',todoView!=='completed');document.getElementById('todoAllBtn')?.classList.toggle('secondary',todoScope!=='all');document.getElementById('todoMineBtn')?.classList.toggle('secondary',todoScope!=='mine');const items=todoTasks.filter(t=>(todoView==='completed'?t.status==='completed':t.status!=='completed')&&(todoScope==='all'||t.assignedTo===currentStaff));if(!items.length){list.innerHTML='<div class="muted" style="padding:16px 0">No '+(todoView==='completed'?'completed':'active')+' tasks'+(todoScope==='mine'?' assigned to '+esc(currentStaff):'')+'.</div>';return;}list.innerHTML=items.map(t=>{const date=t.completedAt?new Date(t.completedAt).toLocaleDateString('en-AU'):'',jn=todoJobName(t);let meta='<div class="muted" style="margin-top:7px">Created by '+esc(t.createdBy||'Unknown')+(t.assignedTo?' · Assigned to '+esc(t.assignedTo):' · Unassigned')+'</div>'+(jn?'<button class="secondary" style="margin-top:8px" onclick="openTodoJob('+t.id+')">📁 '+esc(jn)+'</button>':'');if(todoView==='completed')return '<div class="card" style="padding:16px;margin:0 0 12px"><div style="font-size:18px;font-weight:800;white-space:pre-wrap">'+esc(t.text)+'</div>'+meta+'<div class="muted" style="margin-top:7px">✓ Completed'+(date?' · '+date:'')+'</div><div class="toolbar" style="margin-top:12px"><button onclick="restoreTodoTask('+t.id+')">Restore</button><button class="danger" onclick="deleteTodoTask('+t.id+')">Delete</button></div></div>';return '<div class="card" style="padding:16px;margin:0 0 12px"><div style="font-size:18px;font-weight:800;white-space:pre-wrap">'+esc(t.text)+'</div>'+meta+'<div class="grid" style="margin-top:10px"><div><label>Status</label><select onchange="updateTodoStatus('+t.id+',this.value)"><option value="inprogress"'+(t.status==='inprogress'?' selected':'')+'>In Progress</option><option value="waiting"'+(t.status==='waiting'?' selected':'')+'>Waiting on Others</option><option value="completed">Completed</option></select></div><div><label>Assigned to</label><select onchange="updateTodoAssignee('+t.id+',this.value)">'+staffOptions(t.assignedTo,true)+'</select></div></div><button class="danger" style="width:100%;margin-top:12px" onclick="deleteTodoTask('+t.id+')">Delete Task</button></div>';}).join('');}
+function validCost(v,fallback,min=0){v=Number(v);return Number.isFinite(v)&&v>=min?v:fallback}
+function openCostSettings(){
+ document.getElementById('setLabour').value=costSettings.labour;document.getElementById('setAngles').value=costSettings.angles;document.getElementById('setCaulking').value=costSettings.caulking;document.getElementById('setPrimed').value=costSettings.primed;document.getElementById('setHardwood').value=costSettings.hardwood;document.getElementById('setLength').value=costSettings.lengthSize;document.getElementById('setAllowance').value=costSettings.allowance;document.getElementById('costSettingsStatus').textContent='';show('costSettings');
+}
+function saveCostSettings(){
+ costSettings={labour:validCost(document.getElementById('setLabour').value,costSettings.labour),angles:validCost(document.getElementById('setAngles').value,costSettings.angles),caulking:validCost(document.getElementById('setCaulking').value,costSettings.caulking),primed:validCost(document.getElementById('setPrimed').value,costSettings.primed),hardwood:validCost(document.getElementById('setHardwood').value,costSettings.hardwood),lengthSize:validCost(document.getElementById('setLength').value,costSettings.lengthSize,0.1),allowance:validCost(document.getElementById('setAllowance').value,costSettings.allowance)};
+ localStorage.setItem('tradieCostSettings',JSON.stringify(costSettings));document.getElementById('costSettingsStatus').textContent='✓ Costing settings saved.';
+}
+function resetCostSettings(){if(!confirm('Reset all costing settings to the original defaults?'))return;costSettings={...DEFAULT_COST_SETTINGS};localStorage.setItem('tradieCostSettings',JSON.stringify(costSettings));openCostSettings();document.getElementById('costSettingsStatus').textContent='✓ Defaults restored.';}
+
+const typeDirections={
+  'Window':[['Left','← Left'],['Right','Right →'],['Fixed','F — Fixed']],
+  'Fixed Window':[['Fixed','F — Fixed']],
+  'Awning Window':[['Awning','Awning V']],
+  'Casement Window':[['Left','Casement V'],['Right','Casement V'],['Fixed','F — Fixed']],
+  'Double Hung Window':[['Vertical','Vertical — Up / Down'],['Horizontal','Horizontal — Left / Right'],['Fixed','F — Fixed']],
+  'Sliding Window':[['Sliding Left','← Sliding Left'],['Sliding Right','Sliding Right →'],['Fixed','F — Fixed']],
+  'Restricted Awning Window':[['Awning','Restricted Awning']],
+  'Restricted Casement Window':[['Left','Restricted Casement V'],['Right','Restricted Casement V'],['Fixed','F — Fixed']],
+  'Restricted Sliding Window':[['Sliding Left','← Restricted Sliding'],['Sliding Right','Restricted Sliding →'],['Fixed','F — Fixed']],
+  'Restricted Double Hung Window':[['Vertical','Vertical — Up / Down'],['Horizontal','Horizontal — Left / Right'],['Fixed','F — Fixed']],
+  'Bifold Window':[['Left','← Bifold Left'],['Right','Bifold Right →'],['Fixed','F — Fixed']],
+  'Door':[['Left','← Left'],['Right','Right →'],['Fixed','F — Fixed']],
+  'Hinged Door':[['Left','← Hinged Left'],['Right','Hinged Right →'],['Fixed','F — Fixed']],
+  'Sliding Door':[['Sliding Left','← Sliding Left'],['Sliding Right','Sliding Right →'],['Fixed','F — Fixed']]
+};
+let panels=2,layoutCols=2,layoutRows=1,selectedPanel=0,panelConfigs=[],hasTransom=false,hasSecondTransom=false,transomPct=50,transomHeights=[null,null];
+
+let openingGlazing='',openingGlassType='',openingGlassOther=false,openingFrameColour='',openingColourOther=false,openingFrameMaterial='',openingMaterialOther=false,openingHardwareColour='',openingHardwareOther=false;
+
+function multiVals(s){return String(s||'').split(',').map(x=>x.trim()).filter(Boolean)}
+function hasMulti(s,v){return multiVals(s).includes(v)}
+function toggleMulti(s,v){let a=multiVals(s);const i=a.indexOf(v);if(i>=0)a.splice(i,1);else a.push(v);return a.join(', ')}
+function paintMultiButtons(sel,value){const vals=multiVals(value);[...document.querySelectorAll(sel+' button')].forEach(b=>b.classList.toggle('active',vals.includes(b.textContent)))}
+function isTimberMaterial(){const a=multiVals(openingFrameMaterial);return a.length>0&&a.every(x=>x==='Meranti'||x==='Hardwood')}
+function updateMaterialFields(){const lab=document.getElementById('hardwareColourLabel');if(lab)lab.textContent=currentType()==='Louvre Window'?'Gallery Colour':'Hardware Colour';document.getElementById('frameColourSection').classList.remove('hidden');document.getElementById('hardwareColourSection').classList.remove('hidden')}
+function setFrameMaterial(v){
+ if(v==='Other'){openingMaterialOther=!openingMaterialOther;document.getElementById('otherMaterial').classList.toggle('hidden',!openingMaterialOther);if(openingMaterialOther){document.getElementById('otherMaterial').focus()}else{const custom=document.getElementById('otherMaterial').value.trim();if(custom)openingFrameMaterial=multiVals(openingFrameMaterial).filter(x=>x!==custom).join(', ');document.getElementById('otherMaterial').value=''}}
+ else openingFrameMaterial=toggleMulti(openingFrameMaterial,v);
+ paintMultiButtons('#materialButtons',openingFrameMaterial);const ob=[...document.querySelectorAll('#materialButtons button')].find(b=>b.textContent==='Other');if(ob)ob.classList.toggle('active',openingMaterialOther);
+ document.getElementById('materialText').textContent=openingFrameMaterial||'Not specified';updateMaterialFields();
+}
+function setOtherFrameMaterial(v){const val=v.trim();let a=multiVals(openingFrameMaterial).filter(x=>!x.startsWith('Other: '));if(val)a.push('Other: '+val);openingFrameMaterial=a.join(', ');document.getElementById('materialText').textContent=openingFrameMaterial||'Not specified'}
+function setHardwareColour(v){
+ if(v==='Other'){openingHardwareOther=!openingHardwareOther;document.getElementById('otherHardwareColour').classList.toggle('hidden',!openingHardwareOther);if(openingHardwareOther)document.getElementById('otherHardwareColour').focus()}
+ else openingHardwareColour=toggleMulti(openingHardwareColour,v);
+ paintMultiButtons('#hardwareButtons',openingHardwareColour);const ob=[...document.querySelectorAll('#hardwareButtons button')].find(b=>b.textContent==='Other');if(ob)ob.classList.toggle('active',openingHardwareOther);document.getElementById('hardwareColourText').textContent=openingHardwareColour||'Not specified';
+}
+function setOtherHardwareColour(v){const val=v.trim();let a=multiVals(openingHardwareColour).filter(x=>!x.startsWith('Other: '));if(val)a.push('Other: '+val);openingHardwareColour=a.join(', ');document.getElementById('hardwareColourText').textContent=openingHardwareColour||'Not specified'}
+function setGlazing(v){openingGlazing=toggleMulti(openingGlazing,v);paintMultiButtons('#glazingButtons',openingGlazing);document.getElementById('glazingText').textContent=openingGlazing||'Not specified';document.getElementById('glassTypeSection').classList.toggle('hidden',!openingGlazing);if(!openingGlazing){openingGlassType='';openingGlassOther=false;document.getElementById('glassTypeText').textContent='Not specified';document.getElementById('otherGlassType').value='';document.getElementById('otherGlassType').classList.add('hidden');paintMultiButtons('#glassTypeButtons','')}}
+function setGlassType(v){if(v==='Other'){openingGlassOther=!openingGlassOther;document.getElementById('otherGlassType').classList.toggle('hidden',!openingGlassOther);if(openingGlassOther)document.getElementById('otherGlassType').focus();else{let a=multiVals(openingGlassType).filter(x=>!x.startsWith('Other: '));openingGlassType=a.join(', ');document.getElementById('otherGlassType').value=''}}else openingGlassType=toggleMulti(openingGlassType,v);paintMultiButtons('#glassTypeButtons',openingGlassType);const ob=[...document.querySelectorAll('#glassTypeButtons button')].find(b=>b.textContent==='Other');if(ob)ob.classList.toggle('active',openingGlassOther);document.getElementById('glassTypeText').textContent=openingGlassType||'Not specified'}
+function setOtherGlassType(v){const val=v.trim();let a=multiVals(openingGlassType).filter(x=>!x.startsWith('Other: '));if(val)a.push('Other: '+val);openingGlassType=a.join(', ');document.getElementById('glassTypeText').textContent=openingGlassType||'Not specified'}
+function setFrameColour(v){
+ if(v==='Other'){openingColourOther=!openingColourOther;document.getElementById('otherColour').classList.toggle('hidden',!openingColourOther);if(openingColourOther)document.getElementById('otherColour').focus()}
+ else openingFrameColour=toggleMulti(openingFrameColour,v);
+ paintMultiButtons('#colourButtons',openingFrameColour);const ob=[...document.querySelectorAll('#colourButtons button')].find(b=>b.textContent==='Other');if(ob)ob.classList.toggle('active',openingColourOther);document.getElementById('colourText').textContent=openingFrameColour||'Not specified';
+}
+function setOtherFrameColour(v){const val=v.trim();let a=multiVals(openingFrameColour).filter(x=>!x.startsWith('Other: '));if(val)a.push('Other: '+val);openingFrameColour=a.join(', ');document.getElementById('colourText').textContent=openingFrameColour||'Not specified'}
+function resetOpeningDetails(){
+ openingGlazing='';openingGlassType='';openingGlassOther=false;openingFrameColour='';openingColourOther=false;openingFrameMaterial='';openingMaterialOther=false;openingHardwareColour='';openingHardwareOther=false;
+ document.getElementById('glazingText').textContent='Not specified';document.getElementById('glassTypeText').textContent='Not specified';document.getElementById('glassTypeSection').classList.add('hidden');document.getElementById('otherGlassType').value='';document.getElementById('otherGlassType').classList.add('hidden');document.getElementById('colourText').textContent='Not specified';
+ document.getElementById('otherColour').value='';document.getElementById('otherColour').classList.add('hidden');document.getElementById('otherMaterial').value='';document.getElementById('otherMaterial').classList.add('hidden');document.getElementById('otherHardwareColour').value='';document.getElementById('otherHardwareColour').classList.add('hidden');document.getElementById('materialText').textContent='Not specified';document.getElementById('hardwareColourText').textContent='Not specified';document.getElementById('frameColourSection').classList.remove('hidden');document.getElementById('hardwareColourSection').classList.remove('hidden');
+ [...document.querySelectorAll('#glazingButtons button,#glassTypeButtons button,#colourButtons button,#materialButtons button,#hardwareButtons button')].forEach(b=>b.classList.remove('active'));
+}
+function loadOpeningDetails(o){
+ openingGlazing=o.glazing==='Not specified'?'':(o.glazing||'');openingGlassType=o.glassType==='Not specified'?'':(o.glassType||'');openingGlassOther=false;openingFrameColour=o.frameColour==='Not specified'?'':(o.frameColour||'');openingFrameMaterial=o.frameMaterial==='Not specified'?'':(o.frameMaterial||'');openingHardwareColour=o.hardwareColour==='Not specified'?'':(o.hardwareColour||'');openingColourOther=false;openingMaterialOther=false;openingHardwareOther=false;
+ paintMultiButtons('#glazingButtons',openingGlazing);paintMultiButtons('#glassTypeButtons',openingGlassType);document.getElementById('glassTypeSection').classList.toggle('hidden',!openingGlazing);paintMultiButtons('#materialButtons',openingFrameMaterial);paintMultiButtons('#colourButtons',openingFrameColour);paintMultiButtons('#hardwareButtons',openingHardwareColour);
+ document.getElementById('glazingText').textContent=openingGlazing||'Not specified';document.getElementById('glassTypeText').textContent=openingGlassType||'Not specified';document.getElementById('materialText').textContent=openingFrameMaterial||'Not specified';document.getElementById('colourText').textContent=openingFrameColour||'Not specified';document.getElementById('hardwareColourText').textContent=openingHardwareColour||'Not specified';updateMaterialFields();
+}
+function currentType(){return document.getElementById('type').value}
+function defaultPanelType(){return currentType()}
+function makeConfig(type){const t=type||defaultPanelType(),b=t.replace(/^Restricted /,''); return {type:t,direction:(b==='Fixed Window'||b==='Fixed')?'Fixed':(b==='Awning Window'?'Awning':(b==='Louvre Window'?'Louvre':(b==='Rake Window'?'Rake':(b==='Double Hung Window'?'Vertical':''))))}}
+function resetConfigs(){panelConfigs=Array.from({length:panels},()=>makeConfig(defaultPanelType()));selectedPanel=0}
+function typeChanged(){
+ let t=currentType();
+ document.getElementById('standardMeasurements')?.classList.toggle('hidden',['Rake Window','Gable Rake Frame','Bay Window'].includes(t));
+ document.getElementById('rakeMeasurements')?.classList.toggle('hidden',t!=='Rake Window');
+ document.getElementById('gableMeasurements')?.classList.toggle('hidden',t!=='Gable Rake Frame');
+ document.getElementById('bayMeasurements')?.classList.toggle('hidden',t!=='Bay Window');
+ const lab=document.getElementById('hardwareColourLabel');if(lab)lab.textContent=t==='Louvre Window'?'Gallery Colour':'Hardware Colour';
+ setLayout(1,1);
+}
+function setLayout(cols){
+  // Panel count only controls vertical columns. Transom rows are independent and must persist.
+  layoutCols=cols;
+  [1,2,3,4].forEach(i=>document.getElementById('layoutBtn'+i)?.classList.toggle('active',i===cols));
+  const lst=document.getElementById('layoutSelectedText');if(lst)lst.textContent='Selected: '+cols+' '+(cols===1?'panel':'panels');
+  layoutRows=hasTransom?(transomHeights[1]?3:2):1;
+  const n=(currentType()==='Double Hung Window')?layoutCols*layoutRows*2:layoutCols*layoutRows;
+  const old=panelConfigs.map(c=>({...c}));
+  panels=n;
+  panelConfigs=Array.from({length:n},(_,i)=>old[i]||makeConfig(defaultPanelType()));
+  if(selectedPanel>=n) selectedPanel=Math.max(0,n-1);
+  draw();showPanelEditor();
+}
+function setPanels(n){setLayout(n,1)}
+function showPanelEditor(){
+  const ed=document.getElementById('panelEditor');ed.classList.remove('hidden');
+  document.getElementById('selectedPanelLabel').textContent=currentType()==='Double Hung Window'?`Double Hung Sash ${selectedPanel+1}`:`Panel ${selectedPanel+1}`;
+  renderPanelTypeOptions();renderDirections();updateHingedDoorOptions();
+}
+function renderPanelTypeOptions(){
+  const wrap=document.getElementById('panelTypeButtons');
+  const base=currentType();
+  const byOpening={
+    'Fixed Window':['Fixed Window'],
+    'Sliding Window':['Fixed Window','Sliding Window','Restricted Sliding Window'],
+    'Awning Window':['Fixed Window','Awning Window','Restricted Awning Window'],
+    'Casement Window':['Fixed Window','Casement Window','Restricted Casement Window'],
+    'Double Hung Window':['Fixed Window','Double Hung Window','Restricted Double Hung Window'],
+    'Bifold Window':['Fixed Window','Bifold Window'],
+    'Louvre Window':['Fixed Window','Louvre Window'],
+    'Rake Window':['Fixed Window','Rake Window'],
+    'Gable Rake Frame':['Fixed Window','Gable Rake Frame'],
+    'Bay Window':['Fixed Window','Bay Window'],
+    'Door':['Fixed Window','Door'],
+    'Hinged Door':['Fixed Window','Hinged Door'],
+    'Sliding Door':['Fixed Window','Sliding Door']
+  };
+  const allowed=byOpening[base]||['Fixed Window',base];
+  const currentSel=panelConfigs[selectedPanel]?.type||defaultPanelType();
+  wrap.innerHTML=allowed.map(x=>`<button class="${x===currentSel?'active':''}" onclick="setPanelType('${x}')">${x.replace(' Window','')}</button>`).join('');
+}
+function renderDirections(){
+  const type=panelConfigs[selectedPanel]?.type||defaultPanelType();
+  const baseType=type.replace(/^Restricted /,'');
+  const area=document.getElementById('panelDirectionArea');
+  const btns=document.getElementById('directionButtons');
+  if(baseType==='Awning Window'){area.classList.add('hidden');panelConfigs[selectedPanel].direction='Awning';return;}
+  if(type==='Louvre Window'){area.classList.add('hidden');panelConfigs[selectedPanel].direction='Louvre';return;}
+  if(type==='Rake Window'){area.classList.add('hidden');panelConfigs[selectedPanel].direction='Rake';return;}
+  if(type==='Gable Rake Frame'){area.classList.add('hidden');panelConfigs[selectedPanel].direction='Gable';return;}
+  if(type==='Bay Window'){area.classList.add('hidden');panelConfigs[selectedPanel].direction='Bay';return;}if(type==='Hinged Door'){area.classList.add('hidden');return;}
+  area.classList.remove('hidden');
+  const dirs=typeDirections[type]||typeDirections[baseType]||typeDirections['Window'];
+  if(type==='Fixed Window'){
+    area.querySelector('label').textContent='Panel status';btns.innerHTML='';document.getElementById('directionText').textContent='F — Fixed / non-opening';panelConfigs[selectedPanel].direction='Fixed';return;
+  }
+  area.querySelector('label').textContent='Opening direction';
+  btns.innerHTML=dirs.map(([v,l])=>`<button onclick="setPanelDirection('${v}')">${l}</button>`).join('');
+  const d=panelConfigs[selectedPanel].direction;document.getElementById('directionText').textContent=d?(dirs.find(x=>x[0]===d)?.[1]||d):'Choose direction';
+}
+function syncEditGlassPanel(){
+ const box=document.getElementById('editGlassPanel');if(!box)return;
+ const vals=multiVals(openingGlassType);
+ [...document.querySelectorAll('#editGlassTypeButtons button')].forEach(b=>{const t=b.textContent.trim();b.classList.toggle('active',t==='Other'?openingGlassOther:vals.includes(t))});
+ const other=document.getElementById('editOtherGlassType');const otherVal=vals.find(x=>x.startsWith('Other: '));
+ if(other){other.classList.toggle('hidden',!openingGlassOther);other.value=otherVal?otherVal.slice(7):'';}
+ const txt=document.getElementById('editGlassTypeText');if(txt)txt.textContent=openingGlassType||'Not specified';
+}
+function setEditGlassType(v){
+ if(v==='Other'){
+  openingGlassOther=!openingGlassOther;
+  if(!openingGlassOther){openingGlassType=multiVals(openingGlassType).filter(x=>!x.startsWith('Other: ')).join(', ');}
+ }else openingGlassType=toggleMulti(openingGlassType,v);
+ paintMultiButtons('#glassTypeButtons',openingGlassType);
+ document.getElementById('glassTypeText').textContent=openingGlassType||'Not specified';
+ syncEditGlassPanel();draw();
+ if(v==='Other'&&openingGlassOther)setTimeout(()=>document.getElementById('editOtherGlassType')?.focus(),0);
+}
+function setEditOtherGlassType(v){
+ const val=v.trim();let a=multiVals(openingGlassType).filter(x=>!x.startsWith('Other: '));if(val)a.push('Other: '+val);openingGlassType=a.join(', ');
+ document.getElementById('glassTypeText').textContent=openingGlassType||'Not specified';syncEditGlassPanel();draw();
+}
+function openBuilder(){
+  if(!current)return;
+  const egp=document.getElementById('editGlassPanel');if(egp)egp.classList.add('hidden');
+  if(currentType()==='Other / Sketch'){openSketch();return;}
+let room=document.getElementById('room').value.trim(),h=document.getElementById('height').value.trim(),w=document.getElementById('width').value.trim(),type=currentType();
+  if(type==='Rake Window'){const rl=document.getElementById('rakeLeft').value.trim(),rb=document.getElementById('rakeBottom').value.trim(),rr=document.getElementById('rakeRight').value.trim();if(!room||!rl||!rb||!rr){alert('Enter room, left side, bottom and right side measurements first.');return}h=Math.max(+rl||0,+rr||0).toString();w=rb;}
+  else if(type==='Gable Rake Frame'){const gl=document.getElementById('gableLeft').value.trim(),gp=document.getElementById('gablePeak').value.trim(),gr=document.getElementById('gableRight').value.trim(),gw=document.getElementById('gableWidth').value.trim();if(!room||!gl||!gp||!gr||!gw){alert('Enter room, left side, peak height, right side and bottom width first.');return}h=gp;w=gw;}
+  else if(type==='Bay Window'){const bh=document.getElementById('bayHeight').value.trim(),bl=document.getElementById('bayLeftWing').value.trim(),bc=document.getElementById('bayCentre').value.trim(),br=document.getElementById('bayRightWing').value.trim();if(!room||!bh||!bl||!bc||!br){alert('Enter room, height, left wing, centre and right wing measurements first.');return}h=bh;w=bc;}
+  else if(!room||!h||!w){alert('Enter room, height and width first.');return}
+  // Preserve the transom measurements entered on the Add Opening page when moving into the builder.
+  const transomChecked=!!document.getElementById('hasTransom')?.checked;
+  const secondChecked=!!document.getElementById('hasSecondTransom')?.checked;
+  const th1=(document.getElementById('transomHeight1')?.value||'').trim();
+  const th2=(document.getElementById('transomHeight2')?.value||'').trim();
+  // Keep the panel layout selected on the Add Opening page.
+  setLayout(layoutCols||1);
+  hasTransom=transomChecked;
+  hasSecondTransom=hasTransom&&secondChecked;
+  transomPct=50;
+  transomHeights=[hasTransom&&th1!==''?Number(th1):null,hasTransom&&hasSecondTransom&&th2!==''?Number(th2):null];
+  rebuildTransomPanels();
+  syncTransomUI();
+  draw();
+  showPanelEditor();show('builder');
+}
+function openingMarkBase(type,dir,dhSide){
+  if(dir==='Fixed'||type==='Fixed Window') return '<span class="mark f">F</span>';
+  if(type==='Awning Window') return '<span class="mark fullV"><svg viewBox="0 0 100 100"><line x1="4" y1="4" x2="50" y2="96"/><line x1="96" y1="4" x2="50" y2="96"/></svg></span>';
+  if(type==='Louvre Window') return '<span class="mark fullV"><svg viewBox="0 0 100 100"><line x1="12" y1="25" x2="88" y2="25"/><line x1="12" y1="42" x2="88" y2="42"/><line x1="12" y1="59" x2="88" y2="59"/><line x1="12" y1="76" x2="88" y2="76"/></svg></span>';
+  if(type==='Rake Window') return '';
+  if(type==='Casement Window'){const left=dir==='Left';return '<span class="mark fullV"><svg viewBox="0 0 100 100"><line x1="'+(left?'4':'96')+'" y1="4" x2="'+(left?'96':'4')+'" y2="50"/><line x1="'+(left?'96':'4')+'" y1="50" x2="'+(left?'4':'96')+'" y2="96"/></svg></span>'}
+  if(type==='Double Hung Window'){
+    if(dir==='Horizontal'){
+      const inwardRight=dhSide==='left';
+      return '<span class="mark fullV"><svg viewBox="0 0 100 100"><line x1="'+(inwardRight?'8':'92')+'" y1="50" x2="'+(inwardRight?'92':'8')+'" y2="50"/><line x1="'+(inwardRight?'92':'8')+'" y1="50" x2="'+(inwardRight?'80':'20')+'" y2="42"/><line x1="'+(inwardRight?'92':'8')+'" y1="50" x2="'+(inwardRight?'80':'20')+'" y2="58"/></svg></span>';
+    }
+    const inwardDown=dhSide==='top';
+    return '<span class="mark fullV"><svg viewBox="0 0 100 100"><line x1="50" y1="'+(inwardDown?'8':'92')+'" x2="50" y2="'+(inwardDown?'92':'8')+'"/><path d="'+(inwardDown?'M42 80 L50 92 L58 80':'M42 20 L50 8 L58 20')+'"/></svg></span>';
+  }
+  if(type==='Sliding Window'||type==='Sliding Door'){let arrow=dir==='Sliding Left'?'←':dir==='Sliding Right'?'→':'';if(dhSide==='left')arrow='→';if(dhSide==='right')arrow='←';return arrow?'<span class="mark" style="font-size:42px;font-weight:900">'+arrow+'</span>':''}
+  if(type==='Window'&&dir==='Left') return '<span class="mark fullV"><svg viewBox="0 0 100 100"><line x1="4" y1="50" x2="50" y2="8"/><line x1="4" y1="50" x2="50" y2="92"/></svg></span>';
+  if(type==='Window'&&dir==='Right') return '<span class="mark fullV"><svg viewBox="0 0 100 100"><line x1="96" y1="50" x2="50" y2="8"/><line x1="96" y1="50" x2="50" y2="92"/></svg></span>';
+  if(type==='Hinged Door'){const hingeLeft=dir==='Left';return '<span class="mark fullV doorMark"><svg viewBox="0 0 100 100"><line x1="'+(hingeLeft?'4':'96')+'" y1="4" x2="'+(hingeLeft?'96':'4')+'" y2="50"/><line x1="'+(hingeLeft?'96':'4')+'" y1="50" x2="'+(hingeLeft?'4':'96')+'" y2="96"/></svg></span>'}
+  const arrow=dir==='Left'?'←':dir==='Right'?'→':'';return arrow?'<span class="mark" style="font-size:42px;font-weight:900">'+arrow+'</span>':'';
+}
+function openingMark(type,dir,dhSide){
+  const restricted=String(type||'').startsWith('Restricted ');
+  const base=String(type||'').replace(/^Restricted /,'');
+  const mark=openingMarkBase(base,dir,dhSide);
+  return mark+(restricted?'<span class="restrictedMark">R</span>':'');
+}
+function overallOpeningHeight(){const t=currentType();if(t==='Rake Window')return Math.max(Number(document.getElementById('rakeLeft')?.value)||0,Number(document.getElementById('rakeRight')?.value)||0);if(t==='Gable Rake Frame')return Number(document.getElementById('gablePeak')?.value)||0;if(t==='Bay Window')return Number(document.getElementById('bayHeight')?.value)||0;return Number(document.getElementById('height')?.value)||0}
+function validTransomHeights(total=overallOpeningHeight()){return transomHeights.map(Number).filter(v=>Number.isFinite(v)&&v>0&&(!total||v<total)).sort((a,b)=>a-b).slice(0,2)}
+function transomRows(total=overallOpeningHeight(),hs=validTransomHeights(total)){if(!hasTransom||!total||!hs.length)return '1fr';if(hs.length===1)return `${total-hs[0]}fr ${hs[0]}fr`;return `${total-hs[1]}fr ${hs[1]-hs[0]}fr ${hs[0]}fr`}
+function rebuildTransomPanels(){layoutRows=hasTransom?(transomHeights[1]?3:2):1;const n=(currentType()==='Double Hung Window')?layoutCols*layoutRows*2:layoutCols*layoutRows;panels=n;panelConfigs=Array.from({length:n},(_,i)=>panelConfigs[i]||makeConfig());if(selectedPanel>=n)selectedPanel=Math.max(0,n-1)}
+function draw(){
+  const d=document.getElementById('drawing');document.getElementById('bayBuilderExtra')?.remove();document.getElementById('bayBuilderExtraTitle')?.remove();document.getElementById('bayBuilderExtraDims')?.remove();
+  const isDH=currentType()==='Double Hung Window';
+  d.className='drawing '+(layoutRows>1?'transom':'vertical');
+  d.style.setProperty('--cols',layoutCols);
+  d.style.gridTemplateColumns=`repeat(${layoutCols},1fr)`;
+  d.style.gridTemplateRows=layoutRows>1?transomRows():'1fr';
+  d.innerHTML='';
+  if(isDH){
+    // A Double Hung opening is one frame with two independently selectable sashes.
+    // Vertical DH: horizontal centre transom; Horizontal DH: vertical centre transom.
+    const units=layoutCols*layoutRows;
+    const orient=panelConfigs[0]?.direction||'Vertical';
+    for(let u=0;u<units;u++){
+      const frame=document.createElement('div');
+      frame.className='panel dhFrame';
+      frame.style.position='relative';
+      frame.style.borderRight=(u%layoutCols===layoutCols-1?'0':'2px solid #111827');
+      frame.style.borderBottom=(layoutRows>1 && Math.floor(u/layoutCols)<layoutRows-1?'2px solid #111827':'0');
+      frame.style.display='block';
+      const a=document.createElement('div'),b=document.createElement('div');
+      a.className='dhSash'+(selectedPanel===u*2?' selected':'');
+      b.className='dhSash'+(selectedPanel===u*2+1?' selected':'');
+      a.innerHTML=openingMark(panelConfigs[u*2]?.type||'Double Hung Window',panelConfigs[u*2]?.direction||orient,orient==='Horizontal'?'left':'top');
+      b.innerHTML=openingMark(panelConfigs[u*2+1]?.type||'Double Hung Window',panelConfigs[u*2+1]?.direction||orient,orient==='Horizontal'?'right':'bottom');
+      a.onclick=(e)=>{e.stopPropagation();selectedPanel=u*2;showPanelEditor();draw()};
+      b.onclick=(e)=>{e.stopPropagation();selectedPanel=u*2+1;showPanelEditor();draw()};
+      if(orient==='Horizontal'){
+        frame.appendChild(a);frame.appendChild(b);frame.classList.add('dhHorizontal');
+      }else{
+        frame.appendChild(a);frame.appendChild(b);frame.classList.add('dhVertical');
+      }
+      d.appendChild(frame);
+    }
+    syncTransomUI();
+    return;
+  }
+  for(let i=0;i<panels;i++){const cfg=panelConfigs[i]||makeConfig();let p=document.createElement('div');p.className='panel'+(selectedPanel===i?' selected':'');const col=i%layoutCols,row=Math.floor(i/layoutCols);p.style.borderRight=(col===layoutCols-1)?'0':'2px solid #111827';p.style.borderBottom=(layoutRows>1&&row<layoutRows-1)?'2px solid #111827':'0';p.innerHTML=openingMark(cfg.type,cfg.direction,(layoutCols===2&&layoutRows===1)?(col===0?'left':'right'):undefined);p.onclick=()=>{selectedPanel=i;draw();showPanelEditor()};d.appendChild(p)}
+  if(currentType()==='Bay Window'){
+    const extra=document.createElement('div');extra.id='bayBuilderExtra';extra.className='bayBuilderExtra';
+    const bl=document.getElementById('bayLeftWing').value||'',bc=document.getElementById('bayCentre').value||'',br=document.getElementById('bayRightWing').value||'',bh=document.getElementById('bayHeight').value||'';
+    const title=document.createElement('div');title.className='bayViewTitle';title.textContent='Front View — H '+bh+' mm';
+    const dims=document.createElement('div');dims.className='bayDimRow';dims.innerHTML='<span>'+esc(bl)+' mm</span><span>'+esc(bc)+' mm</span><span>'+esc(br)+' mm</span>';
+    d.parentNode.insertBefore(title,d);d.parentNode.insertBefore(dims,d);
+    title.id='bayBuilderExtraTitle';dims.id='bayBuilderExtraDims';
+    extra.innerHTML=bayBirdEyeHTML({bayLeftWing:bl,bayCentre:bc,bayRightWing:br});d.parentNode.insertBefore(extra,d.nextSibling);
+  }
+  syncTransomUI();
+}
+function toggleTransom(){hasTransom=document.getElementById('hasTransom').checked;if(!hasTransom){transomHeights=[null,null];hasSecondTransom=false}rebuildTransomPanels();syncTransomUI();draw()}
+function toggleSecondTransom(){hasSecondTransom=!!document.getElementById('hasSecondTransom')?.checked;if(!hasSecondTransom)transomHeights[1]=null;rebuildTransomPanels();syncTransomUI();draw()}
+function setTransomHeight(i,v){const total=overallOpeningHeight(),n=Number(v);transomHeights[i]=(v!==''&&Number.isFinite(n))?n:null;if(transomHeights[i]&&total&&(transomHeights[i]<=0||transomHeights[i]>=total)){document.getElementById('transomLabel').textContent='Height must be between 1 and '+(total-1)+' mm';return}if(transomHeights[0]&&transomHeights[1]&&Number(transomHeights[0])===Number(transomHeights[1])){document.getElementById('transomLabel').textContent='Transom heights must be different';return}rebuildTransomPanels();draw()}
+function setTransomPct(v,redraw=true){transomPct=Number(v);const total=overallOpeningHeight();if(total)transomHeights[0]=Math.round(total*(1-transomPct/100));if(redraw)draw();else syncTransomUI()}
+function syncTransomUI(){const cb=document.getElementById('hasTransom'),ctl=document.getElementById('transomControls');if(!cb)return;cb.checked=hasTransom;ctl.classList.toggle('hidden',!hasTransom);if(!hasTransom)return;const second=hasSecondTransom||!!transomHeights[1],scb=document.getElementById('hasSecondTransom'),sctl=document.getElementById('transom2Controls');hasSecondTransom=second;if(scb)scb.checked=second;if(sctl)sctl.classList.toggle('hidden',!second);const i1=document.getElementById('transomHeight1'),i2=document.getElementById('transomHeight2');if(i1)i1.value=transomHeights[0]??'';if(i2)i2.value=transomHeights[1]??'';const vals=validTransomHeights();document.getElementById('transomLabel').textContent=vals.length?vals.map((v,i)=>'Transom '+(i+1)+': '+v+' mm from bottom').join(' · '):'Enter transom height'}
+function setPanelType(type){
+  panelConfigs[selectedPanel].type=type;
+  const b=type.replace(/^Restricted /,'');
+  let direction=(b==='Fixed Window')?'Fixed':(b==='Awning Window'?'Awning':(b==='Double Hung Window'?'Vertical':''));
+  if(b==='Sliding Window'||b==='Sliding Door'){
+    const col=selectedPanel%Math.max(1,layoutCols);
+    const mid=(Math.max(1,layoutCols)-1)/2;
+    direction=col>mid?'Sliding Left':'Sliding Right';
+  }
+  panelConfigs[selectedPanel].direction=direction;
+  renderPanelTypeOptions();
+  renderDirections();
+  updateHingedDoorOptions();
+  draw();
+}
+function panelTypeChanged(){const idx=selectedPanel;const type=document.getElementById('panelType').value;if(!panelConfigs[idx]) panelConfigs[idx]=makeConfig();panelConfigs[idx]={...panelConfigs[idx],type,direction:type==='Fixed Window'?'Fixed':(type==='Awning Window'?'Awning':'')};renderDirections();draw()}
+function setPanelDirection(d){panelConfigs[selectedPanel].direction=d;if(currentType()==='Sliding Window'&&layoutCols===2&&layoutRows===1&&d!=='Fixed'){const other=selectedPanel===0?1:0;panelConfigs[other]={...(panelConfigs[other]||makeConfig('Fixed Window')),type:'Fixed Window',direction:'Fixed'};}document.getElementById('directionText').textContent=(typeDirections[panelConfigs[selectedPanel].type]||[]).find(x=>x[0]===d)?.[1]||d;draw()}
+
+function updateHingedDoorOptions(){
+ const box=document.getElementById('hingedDoorOptions'); if(!box)return;
+ const cfg=panelConfigs[selectedPanel];
+ const on=cfg&&cfg.type==='Hinged Door';
+ box.classList.toggle('hidden',!on); if(!on)return;
+ if(cfg.hinge) cfg.direction=cfg.hinge;
+ ['hingeLeftBtn','hingeRightBtn','swingInBtn','swingOutBtn'].forEach(id=>document.getElementById(id).classList.remove('active'));
+ if(cfg.hinge==='Left')document.getElementById('hingeLeftBtn').classList.add('active');
+ if(cfg.hinge==='Right')document.getElementById('hingeRightBtn').classList.add('active');
+ if(cfg.swing==='In')document.getElementById('swingInBtn').classList.add('active');
+ if(cfg.swing==='Out')document.getElementById('swingOutBtn').classList.add('active');
+ document.getElementById('hingedDoorText').textContent=(cfg.swing?'Opening '+cfg.swing:'Choose opening direction')+(cfg.hinge?' · '+cfg.hinge+' hand hinged':'');
+}
+function setDoorHinge(v){if(panelConfigs[selectedPanel]){panelConfigs[selectedPanel].hinge=v;panelConfigs[selectedPanel].direction=v;updateHingedDoorOptions();draw();}}
+function setDoorSwing(v){if(panelConfigs[selectedPanel]){panelConfigs[selectedPanel].swing=v;updateHingedDoorOptions();}}
+
+function saveOpening(e){
+  if(e&&e.preventDefault)e.preventDefault();
+  try{
+    const room=(document.getElementById('room')?.value||'').trim();
+    const height=(document.getElementById('height')?.value||'').trim();
+    const width=(document.getElementById('width')?.value||'').trim();
+    if(!panelConfigs.length){alert('Build the opening first.');return false;}
+    if(panelConfigs.some(c=>c.type==='Hinged Door'&&(!c.hinge||!c.swing))){alert('Choose hinge side and opening direction for each hinged door.');return false;}
+    const needsDirection=c=>{
+      if(!c||!c.type)return false;
+      if(['Fixed','Fixed Window','Awning Window','Louvre Window','Rake Window','Gable Rake Frame','Bay Window','Hinged Door'].includes(c.type))return false;
+      return c.direction!=='Fixed'&&!c.direction;
+    };
+    if(panelConfigs.some(needsDirection)){alert('Choose an opening direction for each opening panel.');return false;}
+    const types=[...new Set(panelConfigs.map(c=>c.type).filter(Boolean))];
+    const summary=types.length===1?types[0]:types.join(' + ');
+    const doorNote=panelConfigs.filter(c=>c.type==='Hinged Door'&&c.swing&&c.hinge).map(c=>'Opening '+c.swing+' · '+c.hinge+' hand hinged').join(' / ');
+    const baseType=builtOpeningType||currentType();
+    const isRake=baseType==='Rake Window',isGable=baseType==='Gable Rake Frame',isBay=baseType==='Bay Window';
+    const val=id=>(document.getElementById(id)?.value||'').trim();
+    const rakeLeft=isRake?val('rakeLeft'):'',rakeBottom=isRake?val('rakeBottom'):'',rakeRight=isRake?val('rakeRight'):'';
+    const gableLeft=isGable?val('gableLeft'):'',gablePeak=isGable?val('gablePeak'):'',gableRight=isGable?val('gableRight'):'',gableWidth=isGable?val('gableWidth'):'';
+    const bayHeight=isBay?val('bayHeight'):'',bayLeftWing=isBay?val('bayLeftWing'):'',bayCentre=isBay?val('bayCentre'):'',bayRightWing=isBay?val('bayRightWing'):'';
+    const saveHeight=isRake?String(Math.max(+rakeLeft||0,+rakeRight||0)):isGable?gablePeak:isBay?bayHeight:height;
+    const saveWidth=isRake?rakeBottom:isGable?gableWidth:isBay?bayCentre:width;
+    const data={room,height:saveHeight,width:saveWidth,specialType:baseType,rakeLeft,rakeBottom,rakeRight,gableLeft,gablePeak,gableRight,gableWidth,bayHeight,bayLeftWing,bayCentre,bayRightWing,type:isBay?'Bay Window':(isGable?'Gable Rake Frame':(isRake?'Rake Window':summary)),doorNote,glazing:openingGlazing||'Not specified',glassType:openingGlassType||'Not specified',frameMaterial:openingFrameMaterial||'Not specified',frameColour:openingFrameColour||'Not specified',hardwareColour:openingHardwareColour||'Not specified',panels,layoutRows,layoutCols,hasTransom,transomPct,transomHeights:transomHeights.slice(),panelConfigs:panelConfigs.map(c=>({...c}))};
+    if(!current){alert('No job is currently open. Please return to the job and try again.');return false;}
+    if(!Array.isArray(current.openings))current.openings=[];
+    if(editingOpening>=0)current.openings[editingOpening]=data;else current.openings.push(data);
+    editingOpening=-1;
+    builtOpeningType='';
+    persist();
+    const roomEl=document.getElementById('room'),hEl=document.getElementById('height'),wEl=document.getElementById('width');
+    if(roomEl)roomEl.value='';if(hEl)hEl.value='';if(wEl)wEl.value='';
+    ['rakeLeft','rakeBottom','rakeRight'].forEach(k=>{const el=document.getElementById(k);if(el)el.value=''});
+    resetOpeningDetails();renderOpenings();show('job');
+    return false;
+  }catch(err){
+    console.error('Save Opening failed:',err);
+    alert('Could not save opening: '+(err&&err.message?err.message:String(err)));
+    return false;
+  }
+}
+
+function addSitePhotos(e){
+ if(!current)return;
+ current.photos=current.photos||[];
+ const files=[...(e.target.files||[])];
+ let remaining=files.length;if(!remaining)return;
+ files.forEach(file=>{const r=new FileReader();r.onload=ev=>{current.photos.push(ev.target.result);remaining--;if(remaining===0){persist();renderSitePhotos();e.target.value='';}};r.readAsDataURL(file);});
+}
+function removeSitePhoto(i){if(!current)return;current.photos=current.photos||[];current.photos.splice(i,1);persist();renderSitePhotos();}
+function renderSitePhotos(){
+ const el=document.getElementById('sitePhotos');if(!el||!current)return;
+ const photos=current.photos||[];el.innerHTML='';
+ photos.forEach((src,i)=>{const w=document.createElement('div');w.className='photoItem';const im=document.createElement('img');im.src=src;const b=document.createElement('button');b.type='button';b.textContent='×';b.onclick=()=>removeSitePhoto(i);w.append(im,b);el.appendChild(w);});
+}
+let sketchCtx=null,sketchDrawing=false,sketchMode='draw',sketchDimensions=[],measureFirst=null,sketchStrokes=[],currentStroke=null;
+function setSketchMode(mode){
+ sketchMode=mode;measureFirst=null;
+ document.getElementById('sketchDrawBtn')?.classList.toggle('secondary',mode!=='draw');
+ document.getElementById('sketchMeasureBtn')?.classList.toggle('secondary',mode!=='measure');
+ document.getElementById('sketchModeText').textContent=mode==='draw'?'Draw mode':'Measure mode — tap two points';
+ redrawSketch();
+}
+function sketchPoint(e,c){const r=c.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top}}
+function setupSketch(){
+ const c=document.getElementById('sketchCanvas');const ratio=window.devicePixelRatio||1;const rect=c.getBoundingClientRect();
+ c.width=Math.max(1,Math.round(rect.width*ratio));c.height=Math.max(1,Math.round(360*ratio));
+ sketchCtx=c.getContext('2d');sketchCtx.setTransform(ratio,0,0,ratio,0,0);
+ sketchDimensions=[];measureFirst=null;sketchStrokes=[];currentStroke=null;setSketchMode('draw');
+ c.onpointerdown=e=>{
+   const pt=sketchPoint(e,c);
+   if(sketchMode==='measure'){
+     if(!measureFirst){measureFirst=pt;redrawSketch();return}
+     const second=pt;const value=prompt('Measurement (mm)','');
+     if(value!==null && String(value).trim()!=='') sketchDimensions.push({a:measureFirst,b:second,text:String(value).trim()+' mm'});
+     measureFirst=null;redrawSketch();return;
+   }
+   sketchDrawing=true;currentStroke=[pt];c.setPointerCapture?.(e.pointerId);redrawSketch();
+ };
+ c.onpointermove=e=>{
+   if(!sketchDrawing||sketchMode!=='draw'||!currentStroke)return;
+   currentStroke.push(sketchPoint(e,c));redrawSketch();
+ };
+ c.onpointerup=e=>{
+   if(sketchDrawing&&currentStroke){
+     if(currentStroke.length===1) currentStroke.push({...currentStroke[0]});
+     sketchStrokes.push(currentStroke);currentStroke=null;sketchDrawing=false;redrawSketch();
+   }
+ };
+ c.onpointercancel=c.onpointerup;
+}
+function drawStroke(points){
+ if(!points||!points.length)return;
+ sketchCtx.save();sketchCtx.strokeStyle='#111827';sketchCtx.lineWidth=3;sketchCtx.lineCap='round';sketchCtx.lineJoin='round';
+ sketchCtx.beginPath();sketchCtx.moveTo(points[0].x,points[0].y);
+ for(let i=1;i<points.length;i++)sketchCtx.lineTo(points[i].x,points[i].y);
+ sketchCtx.stroke();sketchCtx.restore();
+}
+function redrawSketch(){
+ const c=document.getElementById('sketchCanvas');if(!c||!sketchCtx)return;
+ const ratio=window.devicePixelRatio||1,w=c.width/ratio,h=c.height/ratio;
+ sketchCtx.clearRect(0,0,w,h);
+ sketchStrokes.forEach(drawStroke);if(currentStroke)drawStroke(currentStroke);
+ sketchCtx.save();sketchCtx.strokeStyle='#2563eb';sketchCtx.fillStyle='#111827';sketchCtx.lineWidth=2;sketchCtx.font='bold 14px Arial';
+ sketchDimensions.forEach(d=>{
+   sketchCtx.beginPath();sketchCtx.moveTo(d.a.x,d.a.y);sketchCtx.lineTo(d.b.x,d.b.y);sketchCtx.stroke();
+   [d.a,d.b].forEach(pt=>{sketchCtx.beginPath();sketchCtx.arc(pt.x,pt.y,4,0,Math.PI*2);sketchCtx.fillStyle='#2563eb';sketchCtx.fill();});
+   const mx=(d.a.x+d.b.x)/2,my=(d.a.y+d.b.y)/2,tw=sketchCtx.measureText(d.text).width;
+   sketchCtx.fillStyle='white';sketchCtx.fillRect(mx-tw/2-4,my-18,tw+8,20);sketchCtx.fillStyle='#111827';sketchCtx.fillText(d.text,mx-tw/2,my-3);
+ });
+ if(measureFirst){sketchCtx.fillStyle='#2563eb';sketchCtx.beginPath();sketchCtx.arc(measureFirst.x,measureFirst.y,5,0,Math.PI*2);sketchCtx.fill();}
+ sketchCtx.restore();
+}
+function undoSketchStroke(){if(sketchStrokes.length)sketchStrokes.pop();currentStroke=null;redrawSketch()}
+function undoSketchDimension(){if(sketchDimensions.length)sketchDimensions.pop();measureFirst=null;redrawSketch()}
+function clearSketch(){sketchStrokes=[];sketchDimensions=[];currentStroke=null;measureFirst=null;redrawSketch()}
+function openSketch(){show('sketch');setTimeout(setupSketch,30)}
+let editingSketch=-1;
+function editSketch(idx){
+ const o=current.openings[idx];if(!o||!o.isSketch)return;
+ editingSketch=idx;
+ document.getElementById('room').value=o.room||'';
+ openingGlazing=o.glazing||'';openingGlassType=o.glassType||'';openingFrameMaterial=o.frameMaterial||'';openingFrameColour=o.frameColour||'';openingHardwareColour=o.hardwareColour||'';
+ openSketch();
+ const c=document.getElementById('sketchCanvas'),ctx=c.getContext('2d'),img=new Image();
+ img.onload=()=>{c._editBase=img;ctx.clearRect(0,0,c.width,c.height);ctx.drawImage(img,0,0,c.width,c.height);};
+ img.src=o.sketch;
+}
+function saveSketchOpening(){
+ if(!current)return;
+ const room=document.getElementById('room').value.trim();
+ if(!room){alert('Enter the room name first.');return}
+ const c=document.getElementById('sketchCanvas');redrawSketch();
+ const data={room,type:'Other / Sketch',isSketch:true,glazing:openingGlazing||'Not specified',glassType:openingGlassType||'Not specified',frameMaterial:openingFrameMaterial||'Not specified',frameColour:openingFrameColour||'Not specified',hardwareColour:openingHardwareColour||'Not specified',sketch:c.toDataURL('image/png')};
+ if(editingSketch>=0){current.openings[editingSketch]=data;editingSketch=-1;}else{current.openings.push(data);}persist();
+ document.getElementById('room').value='';document.getElementById('height').value='';document.getElementById('width').value='';resetOpeningDetails();
+ const sc=document.getElementById('sketchCanvas');if(sc)sc._editBase=null;renderOpenings();show('job');
+}
+
+
+
+
+function detailObj(){if(!current.jobDetails)current.jobDetails={};return current.jobDetails}
+function selectDetailButton(groupId,label){
+ const group=document.getElementById(groupId);if(!group)return;
+ group.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.textContent.trim()===label));
+}
+function setRevealSize(v){
+ const d=detailObj();d.revealChoice=v;d.revealOther=v==='Other';
+ document.getElementById('revealOther').classList.toggle('hidden',v!=='Other');
+ if(v!=='Other')d.revealSize=v;
+ selectDetailButton('revealButtons',v);
+ const rms=document.getElementById('revealMaterialSection');if(rms)rms.classList.remove('hidden');
+}
+function setRevealOther(v){const d=detailObj();d.revealSize=v;d.revealChoice='Other';d.revealOther=true;selectDetailButton('revealButtons','Other');const rms=document.getElementById('revealMaterialSection');if(rms)rms.classList.remove('hidden')}
+function setRevealMaterial(v){const d=detailObj();d.revealMaterial=v;selectDetailButton('revealMaterialButtons',v);const t=document.getElementById('revealMaterialText');if(t)t.textContent=v}
+function setCladding(v){
+ const d=detailObj();d.claddingChoice=v;d.claddingOther=v==='Other';
+ document.getElementById('claddingOther').classList.toggle('hidden',v!=='Other');
+ if(v!=='Other')d.cladding=v;
+ selectDetailButton('claddingButtons',v);
+}
+function setCladdingOther(v){const d=detailObj();d.cladding=v;d.claddingChoice='Other';d.claddingOther=true;selectDetailButton('claddingButtons','Other')}
+function toggleArchitraves(){document.getElementById('architraveOptions').classList.toggle('hidden',!document.getElementById('architraves').checked)}
+function setArchSize(v){
+ const d=detailObj();d.archSizeChoice=v;d.archSizeOther=v==='Other';
+ document.getElementById('archSizeOther').classList.toggle('hidden',v!=='Other');
+ if(v!=='Other')d.archSize=v;
+ selectDetailButton('archSizeButtons',v);
+}
+function setArchSizeOther(v){const d=detailObj();d.archSize=v;d.archSizeChoice='Other';d.archSizeOther=true;selectDetailButton('archSizeButtons','Other')}
+function setArchType(v){
+ const d=detailObj();d.archTypeChoice=v;d.archTypeOther=v==='Other';
+ document.getElementById('archTypeOther').classList.toggle('hidden',v!=='Other');
+ if(v!=='Other')d.archType=v;
+ selectDetailButton('archTypeButtons',v);
+}
+function setArchTypeOther(v){const d=detailObj();d.archType=v;d.archTypeChoice='Other';d.archTypeOther=true;selectDetailButton('archTypeButtons','Other')}
+function setArchMaterial(v){
+ const d=detailObj();d.archMaterial=v;
+ selectDetailButton('archMaterialButtons',v);
+}
+function loadJobDetails(){
+ const d=detailObj();
+ document.getElementById('flyscreens').checked=!!d.flyscreens;
+ document.getElementById('flydoors').checked=!!d.flydoors;
+ document.getElementById('zFlashing').checked=!!d.zFlashing;
+ document.getElementById('revealClosers').checked=!!d.revealClosers;
+ document.getElementById('architraves').checked=!!d.architraves;toggleArchitraves(); if(d.archMaterial)selectDetailButton('archMaterialButtons',d.archMaterial);
+ document.getElementById('detailsJobNotes').value=current.notes||'';
+ const rc=d.revealChoice||(d.revealOther?'Other':d.revealSize);if(rc){setRevealSize(rc);if(rc==='Other'){document.getElementById('revealOther').value=d.revealSize||'';}} if(d.revealMaterial){setRevealMaterial(d.revealMaterial);}
+ const cc=d.claddingChoice||(d.claddingOther?'Other':d.cladding);if(cc){setCladding(cc);if(cc==='Other'){document.getElementById('claddingOther').value=d.cladding||'';}}
+ const ac=d.archSizeChoice||(d.archSizeOther?'Other':d.archSize);if(ac){setArchSize(ac);if(ac==='Other'){document.getElementById('archSizeOther').value=d.archSize||'';}}
+ const tc=d.archTypeChoice||(d.archTypeOther?'Other':d.archType);if(tc){setArchType(tc);if(tc==='Other'){document.getElementById('archTypeOther').value=d.archType||'';}}
+}
+function saveJobDetails(){
+ if(!current)return false;const d=detailObj();
+ d.flyscreens=document.getElementById('flyscreens').checked;
+ d.flydoors=document.getElementById('flydoors').checked;
+ d.zFlashing=document.getElementById('zFlashing').checked;
+ d.revealClosers=document.getElementById('revealClosers').checked;
+ d.architraves=document.getElementById('architraves').checked;
+ current.notes=document.getElementById('detailsJobNotes').value;
+ persist();
+ const m=document.getElementById('jobDetailsSaved');if(m){m.textContent='✓ Job details saved';setTimeout(()=>m.textContent='',1800)}
+ return true;
+}
+function openJobDetails(){if(!current)return;if(!(current.openings||[]).length){alert('Add at least one opening first.');return}show('jobDetails');loadJobDetails()}
+function continueToConfirm(){if(!saveJobDetails())return;if(current&&!current.confirmed){current.measured=true;current.measuredAt=current.measuredAt||new Date().toISOString();persist();}openJobSummary()}
+function jobDetailsSummaryHTML(){
+ const d=current.jobDetails||{},lines=[];
+ if(d.revealSize)lines.push('Reveal: '+esc(d.revealSize)+(d.revealMaterial?' — '+esc(d.revealMaterial):''));
+ if(d.cladding)lines.push('Cladding: '+esc(d.cladding));
+ if(d.flyscreens)lines.push('Flyscreens: Yes');if(d.flydoors)lines.push('Flydoors: Yes');if(d.zFlashing)lines.push('Z Flashing: Yes');if(d.revealClosers)lines.push('Reveal Closers: Yes');
+ if(d.architraves)lines.push('Architraves: '+esc([d.archSize,d.archType,d.archMaterial].filter(Boolean).join(' — ')||'Yes'));
+ return '<div class="jobDetailsSummary"><h3>Job Details</h3>'+(lines.length?lines.map(x=>'<div class="detailLine">'+x+'</div>').join(''):'<div class="muted">No extra job details selected.</div>')+(current.notes?'<h3 style="margin:14px 0 5px">Job Notes</h3><div class="detailLine">'+esc(current.notes).replace(/\n/g,'<br>')+'</div>':'')+'</div>';
+}
+
+function money(v){return '$'+Number(v||0).toFixed(2)}
+function openingArchMetres(o){
+ if(!o||o.isSketch)return 0;
+ const n=v=>Number(v)||0;
+ const extra=costSettings.allowance;
+ if(o.gablePeak){
+   const l=n(o.gableLeft),p=n(o.gablePeak),r=n(o.gableRight),w=n(o.gableWidth);
+   if(!(l&&p&&r&&w))return 0;
+   const ll=l+extra,pp=p+extra,rr=r+extra,ww=w+extra;
+   return (ll+rr+ww+Math.hypot(ww/2,pp-ll)+Math.hypot(ww/2,pp-rr))/1000;
+ }
+ if(o.rakeLeft){
+   const l=n(o.rakeLeft),r=n(o.rakeRight),b=n(o.rakeBottom);
+   if(!(l&&r&&b))return 0;
+   const ll=l+extra,rr=r+extra,bb=b+extra;
+   return (ll+rr+bb+Math.hypot(bb,ll-rr))/1000;
+ }
+ if(o.bayCentre){
+   const h=n(o.bayHeight),w=n(o.bayLeftWing)+n(o.bayCentre)+n(o.bayRightWing);
+   if(!(h&&w))return 0;
+   return (2*(h+extra)+2*(w+extra))/1000;
+ }
+ const h=n(o.height),w=n(o.width);
+ return h&&w?(2*(h+extra)+2*(w+extra))/1000:0;
+}
+function archRate(){
+ const d=(current&&current.jobDetails)||{};
+ if(!d.architraves)return 0;
+ if(d.archMaterial==='Primed')return costSettings.primed;
+ if(d.archMaterial==='Hardwood')return costSettings.hardwood;
+ return 0;
+}
+function openingCost(o){
+ const labour=costSettings.labour,angles=costSettings.angles,caulking=costSettings.caulking;
+ const lm=((current&&current.jobDetails&&current.jobDetails.architraves)?openingArchMetres(o):0);
+ const lengths=lm>0?Math.ceil(lm/costSettings.lengthSize):0;
+ const purchasedMetres=lengths*costSettings.lengthSize,rate=archRate(),archCost=purchasedMetres*rate;
+ return {labour,angles,caulking,lm,lengths,purchasedMetres,rate,archCost,materials:angles+caulking+archCost,total:labour+angles+caulking+archCost};
+}
+function costingHTML(o,label){
+ const c=openingCost(o),d=(current&&current.jobDetails)||{};
+ let arch='';
+ if(d.architraves){
+   if(c.lm>0){
+     const mat=d.archMaterial||'Material not selected';
+     arch='<div class="costingRow"><div><b>Architraves</b><div class="costingMeta">'+c.lm.toFixed(2)+' lm ('+c.lengths+' × '+Number(costSettings.lengthSize).toFixed(1)+'m length'+(c.lengths===1?'':'s')+') · '+esc(mat)+(c.rate?' · '+money(c.rate)+'/lm':'')+'</div></div><div class="costingAmount">'+(c.rate?money(c.archCost):'—')+'</div></div>';
+   }else arch='<div class="costingRow"><div><b>Architraves</b><div class="costingMeta">Meterage unavailable for this saved item</div></div><div class="costingAmount">—</div></div>';
+ }
+ return '<div class="costingCard"><div class="costingTitle">'+esc(label||'Costing')+'</div>'+
+ '<div class="costingRow"><div><b>Installation labour</b><div class="costingMeta">Fixed per saved item</div></div><div class="costingAmount">'+money(c.labour)+'</div></div>'+
+ '<div class="costingRow"><div><b>Angles</b><div class="costingMeta">Fixed per saved item</div></div><div class="costingAmount">'+money(c.angles)+'</div></div>'+
+ '<div class="costingRow"><div><b>Caulking</b><div class="costingMeta">Fixed per saved item</div></div><div class="costingAmount">'+money(c.caulking)+'</div></div>'+arch+
+ '<div class="costingRow"><div><b>Item total</b></div><div class="costingAmount">'+money(c.total)+'</div></div></div>';
+}
+function jobCostingHTML(){
+ const openings=(current&&current.openings)||[];
+ let labour=0,materials=0,archLm=0,archLengths=0;
+ openings.forEach(o=>{const c=openingCost(o);labour+=c.labour;materials+=c.materials;archLm+=c.lm;archLengths+=c.lengths;});
+ const d=(current&&current.jobDetails)||{};
+ const disposal=openings.length===0?0:(openings.length<=4?350:(openings.length<=6?450:900));
+ const disposalLabel=openings.length>=7?'Skip / disposal':'Disposal';
+ return '<div class="costingTotals"><h3 style="margin-top:0">Labour & Materials Total</h3>'+
+ '<div class="costingRow"><div><b>Total labour</b><div class="costingMeta">'+openings.length+' saved item'+(openings.length===1?'':'s')+' × '+money(costSettings.labour)+'</div></div><div class="costingAmount">'+money(labour)+'</div></div>'+
+ '<div class="costingRow"><div><b>Total materials</b><div class="costingMeta">Angles + caulking'+(d.architraves?' + architraves':'')+'</div></div><div class="costingAmount">'+money(materials)+'</div></div>'+
+ (d.architraves?'<div class="costingRow"><div><b>Total architrave requirement</b></div><div class="costingAmount">'+archLm.toFixed(2)+' lm ('+archLengths+' lengths)</div></div>':'')+
+ (disposal?'<div class="costingRow"><div><b>'+disposalLabel+'</b><div class="costingMeta">'+openings.length+' total item'+(openings.length===1?'':'s')+'</div></div><div class="costingAmount">'+money(disposal)+'</div></div>':'')+
+ '<div class="costingGrand">Job total: '+money(labour+materials+disposal)+'</div></div>';
+}
+
+function renderConfirmStatus(){
+ const el=document.getElementById('confirmStatus');if(!el||!current)return;const note=current.notes||'';
+ if(current.confirmed){
+   const when=current.confirmedAt?new Date(current.confirmedAt).toLocaleString('en-AU'):'';
+   el.innerHTML='<div class="confirmBox"><span class="confirmedBadge">✓ '+(current.completed?'Completed':'Confirmed')+'</span>'+(when?'<div class="muted" style="margin-top:8px">Confirmed '+esc(when)+'</div>':'')+(current.completed?'':'<button style="margin-top:10px" type="button" onclick="markCurrentJobCompleted()">Mark Completed</button>')+'<button class="secondary" style="margin-top:10px" type="button" onclick="unlockConfirmedJob()">Re-open Job</button></div>';
+ }else{
+   el.innerHTML='<div class="confirmBox"><b>Final check</b><div class="muted" style="margin-top:5px">Check the openings, sketches and site photos below. Confirming marks this measure-up as complete.</div><button style="width:100%;margin-top:12px" type="button" onclick="confirmCurrentJob()">✓ Confirm Job</button>'+(note?'<div class="confirmJobNotes"><div class="confirmNotesTitle">Job Notes</div><div class="confirmNotesText">'+esc(note).replace(/\\n/g,'<br>')+'</div></div>':'')+'</div>';
+ }
+}
+function confirmCurrentJob(){
+ if(!current)return;
+ if(!(current.openings||[]).length){alert('Add at least one opening before confirming the job.');return}
+ current.measured=true;current.confirmed=true;current.completed=false;current.confirmedAt=new Date().toISOString();persist();renderConfirmStatus();renderJobs();updateConfirmedJobLock();
+}
+function unlockConfirmedJob(){if(!current)return;if(!confirm('Re-open this confirmed job for editing?'))return;current.confirmed=false;current.completed=false;current.confirmedAt=null;persist();renderConfirmStatus();renderJobs();updateConfirmedJobLock();show('job');}
+
+function markCurrentJobCompleted(){if(!current||!current.confirmed)return;current.completed=true;current.completedAt=new Date().toISOString();persist();renderConfirmStatus();renderJobs();}
+let pdfPreviewZoom=1;
+function applyPdfPreviewZoom(){const el=document.getElementById('summaryContent');const lab=document.getElementById('pdfZoomLabel');if(el){el.style.zoom=pdfPreviewZoom;el.style.width=(100/pdfPreviewZoom)+'%';}if(lab)lab.textContent=Math.round(pdfPreviewZoom*100)+'%';}
+function changePdfPreviewZoom(delta){pdfPreviewZoom=Math.max(.7,Math.min(2.2,Math.round((pdfPreviewZoom+delta)*100)/100));applyPdfPreviewZoom();}
+function resetPdfPreviewZoom(){pdfPreviewZoom=1;applyPdfPreviewZoom();}
+function printWithMode(mode){document.body.classList.remove('print-measure','print-cost');document.body.classList.add(mode);const clean=()=>document.body.classList.remove('print-measure','print-cost');window.addEventListener('afterprint',clean,{once:true});window.print();setTimeout(clean,1500);}
+function printMeasurementPDF(){printWithMode('print-measure')}
+function printCostingPDF(){printWithMode('print-cost')}
+function openJobSummary(){
+ if(!current)return;
+ resetPdfPreviewZoom();
+ document.getElementById('summaryJobInfo').innerHTML='<b>'+esc(current.site||'Untitled Job')+'</b><br>'+esc(current.customer||'')+(current.phone?'<br>'+esc(current.phone):'');
+ renderConfirmStatus();
+ const root=document.getElementById('summaryContent');root.innerHTML=jobDetailsSummaryHTML();
+ const openings=current.openings||[];
+ if(!openings.length){root.innerHTML='<div class="card muted">No openings saved yet.</div>';}
+ openings.forEach((o,i)=>{
+   const card=document.createElement('div');card.className='summaryOpening';
+   if(o.isSketch){
+     card.innerHTML='<h3>'+esc(o.room||('Sketch '+(i+1)))+'</h3><div class="muted">Other / Sketch'+(o.frameMaterial?' · '+esc(o.frameMaterial):'')+(o.glazing?' · '+esc(o.glazing):'')+(o.glassType&&o.glassType!=='Not specified'?' · '+esc(o.glassType):'')+(o.frameColour?' · '+esc(o.frameColour):'')+(o.hardwareColour?' · Hardware: '+esc(o.hardwareColour):'')+'</div>';
+     const sw=document.createElement('div');sw.className='savedSketchWrap';const im=document.createElement('img');im.className='savedSketch';im.src=o.sketch;sw.appendChild(im);card.appendChild(sw);
+   }else{
+     const sd=o.gablePeak?('L '+esc(o.gableLeft)+' · Peak '+esc(o.gablePeak)+' · R '+esc(o.gableRight)+' · W '+esc(o.gableWidth)+' mm'):o.bayCentre?('H '+esc(o.bayHeight)+' · Wings '+esc(o.bayLeftWing)+' / '+esc(o.bayRightWing)+' · Centre '+esc(o.bayCentre)+' mm'):o.rakeLeft?('L '+esc(o.rakeLeft)+' · B '+esc(o.rakeBottom)+' · R '+esc(o.rakeRight)+' mm'):(esc(o.height||'')+' H × '+esc(o.width||'')+' W mm');card.innerHTML='<h3>Opening '+(i+1)+' — '+esc(o.room||'')+'</h3><div class="muted">'+sd+' · '+esc(o.type||'')+(o.frameMaterial?' · '+esc(o.frameMaterial):'')+(o.glazing?' · '+esc(o.glazing):'')+(o.glassType&&o.glassType!=='Not specified'?' · '+esc(o.glassType):'')+(o.frameColour?' · '+esc(o.frameColour):'')+(o.hardwareColour?' · Hardware: '+esc(o.hardwareColour):'')+'</div>'+(o.doorNote?'<div class="pill">'+esc(o.doorNote)+'</div>':'');
+     card.appendChild(makeSavedDrawing(o));
+   }
+   const costWrap=document.createElement('div');costWrap.innerHTML=costingHTML(o,'Opening '+(i+1)+' Costing');card.appendChild(costWrap.firstElementChild);
+   root.appendChild(card);
+ });
+ const totals=document.createElement('div');totals.innerHTML=jobCostingHTML();if(totals.firstElementChild)root.appendChild(totals.firstElementChild);
+ const photos=current.photos||[];
+ if(photos.length){
+   const pc=document.createElement('div');pc.className='card';pc.innerHTML='<h3>Site Photos</h3>';
+   const grid=document.createElement('div');grid.className='summaryPhotos';
+   photos.forEach(src=>{const im=document.createElement('img');im.src=src;grid.appendChild(im)});
+   pc.appendChild(grid);root.appendChild(pc);
+ }
+ show('summary');
+}
+
+function saveCurrentJobNotes(){
+ if(!current)return;
+ current.notes=document.getElementById('currentJobNotes').value;
+ persist();
+ const msg=document.getElementById('jobNotesSaved');
+ if(msg){msg.textContent='✓ Note saved';setTimeout(()=>{if(msg)msg.textContent=''},1800);}
+}
+const JOB_HISTORY_KEY='tradieJobHistoryV1';
+function readJobHistory(){try{const h=JSON.parse(localStorage.getItem(JOB_HISTORY_KEY)||'{}');return h&&typeof h==='object'?h:{}}catch(e){return {}}}
+function comparableJob(j){if(!j)return null;const c=JSON.parse(JSON.stringify(j));delete c.updatedAt;delete c._skipTouch;return c;}
+function snapshotPreviousStoredJob(){
+ if(!current||!jobs.some(j=>String(j.id)===String(current.id)))return;
+ try{
+  const stored=JSON.parse(localStorage.getItem('tradieJobs')||'[]');
+  const old=Array.isArray(stored)?stored.find(j=>String(j.id)===String(current.id)):null;
+  if(!old)return;
+  if(JSON.stringify(comparableJob(old))===JSON.stringify(comparableJob(current)))return;
+  const h=readJobHistory(),key=String(current.id),arr=Array.isArray(h[key])?h[key]:[];
+  const last=arr.length?arr[arr.length-1].job:null;
+  if(!last||JSON.stringify(comparableJob(last))!==JSON.stringify(comparableJob(old))){arr.push({savedAt:new Date().toISOString(),job:old});}
+  h[key]=arr.slice(-20);localStorage.setItem(JOB_HISTORY_KEY,JSON.stringify(h));
+ }catch(e){console.warn('Could not create job recovery snapshot',e)}
+}
+function persist(){
+ snapshotPreviousStoredJob();
+ if(current&&jobs.some(j=>j.id===current.id)&&!current._skipTouch)current.updatedAt=new Date().toISOString();
+ if(current&&current._skipTouch)delete current._skipTouch;
+ localStorage.setItem('tradieJobs',JSON.stringify(jobs));
+}
+function recoverPreviousJobVersion(){
+ if(!current)return;
+ const h=readJobHistory(),key=String(current.id),arr=Array.isArray(h[key])?h[key]:[];
+ if(!arr.length){alert('No earlier version is available for this job yet. Recovery versions are created automatically after changes made in V111.');return;}
+ const snap=arr[arr.length-1],when=snap.savedAt?new Date(snap.savedAt).toLocaleString():'an earlier save';
+ const count=Array.isArray(snap.job&&snap.job.openings)?snap.job.openings.length:0;
+ if(!confirm('Recover the previous version of this job from '+when+'?\n\nThat version has '+count+' saved opening'+(count===1?'':'s')+'.\n\nYour current version will also be kept so this recovery can be undone.'))return;
+ try{
+  const currentCopy=JSON.parse(JSON.stringify(current));
+  arr.pop();arr.push({savedAt:new Date().toISOString(),job:currentCopy});h[key]=arr.slice(-20);localStorage.setItem(JOB_HISTORY_KEY,JSON.stringify(h));
+  const restored=JSON.parse(JSON.stringify(snap.job));
+  const idx=jobs.findIndex(j=>String(j.id)===key);if(idx<0)throw new Error('Job not found');
+  jobs[idx]=restored;current=jobs[idx];localStorage.setItem('tradieJobs',JSON.stringify(jobs));show('job');
+  alert('Previous job version recovered.');
+ }catch(e){alert('Could not recover this job: '+(e&&e.message?e.message:String(e)))}
+}
+function renderOpenings(){
+ const el=document.getElementById('openings');
+ if(!el||!current)return;
+ const openings=Array.isArray(current.openings)?current.openings:[];
+ el.innerHTML='';
+ const status=document.createElement('div');status.className='muted';status.style.marginBottom='10px';status.textContent='Found '+openings.length+' saved opening'+(openings.length===1?'':'s')+' in this job.';el.appendChild(status);
+ if(!openings.length){const none=document.createElement('div');none.className='muted';none.textContent='No openings saved yet.';el.appendChild(none);return}
+ openings.forEach((raw,idx)=>{
+  const o=(raw&&typeof raw==='object')?raw:{};
+  const card=document.createElement('div');card.className='openingCard';
+  /* Append FIRST so one old/bad drawing can never blank the whole list. */
+  el.appendChild(card);
+  try{
+   if(o.isSketch){
+    card.innerHTML='<b>Opening '+(idx+1)+' — '+esc(o.room||'Sketch')+'</b><div class="muted">Other / Sketch'+(o.frameMaterial?' · '+esc(o.frameMaterial):'')+(o.glazing?' · '+esc(o.glazing):'')+(o.glassType&&o.glassType!=='Not specified'?' · '+esc(o.glassType):'')+(o.frameColour?' · '+esc(o.frameColour):'')+'</div>';
+    if(o.sketch){const sw=document.createElement('div');sw.className='savedSketchWrap';const im=document.createElement('img');im.className='savedSketch';im.src=o.sketch;sw.appendChild(im);card.appendChild(sw);}
+   }else{
+    const dimText=o.gablePeak?('L '+esc(o.gableLeft||'')+' · Peak '+esc(o.gablePeak||'')+' · R '+esc(o.gableRight||'')+' · W '+esc(o.gableWidth||'')+' mm'):o.bayCentre?('H '+esc(o.bayHeight||'')+' · Wings '+esc(o.bayLeftWing||'')+' / '+esc(o.bayRightWing||'')+' · Centre '+esc(o.bayCentre||'')+' mm'):o.rakeLeft?('L '+esc(o.rakeLeft||'')+' · B '+esc(o.rakeBottom||'')+' · R '+esc(o.rakeRight||'')+' mm'):(esc(o.height||'')+' H × '+esc(o.width||'')+' W mm');
+    card.innerHTML='<b>Opening '+(idx+1)+' — '+esc(o.room||'Unnamed')+'</b><div class="muted">'+dimText+(o.type?' · '+esc(o.type):'')+(o.frameMaterial?' · '+esc(o.frameMaterial):'')+(o.glazing?' · '+esc(o.glazing):'')+(o.glassType&&o.glassType!=='Not specified'?' · '+esc(o.glassType):'')+(o.frameColour?' · '+esc(o.frameColour):'')+'</div>';
+    try{const d=makeSavedDrawing(o);if(d)card.appendChild(d);}catch(drawErr){console.error('Saved drawing '+idx+' failed',drawErr);const w=document.createElement('div');w.className='muted';w.textContent='Preview unavailable — measurements recovered.';card.appendChild(w);}
+   }
+   const actions=document.createElement('div');actions.style.display='flex';actions.style.gap='10px';actions.style.marginTop='8px';
+   const eb=document.createElement('button');eb.className='secondary';eb.style.flex='1';eb.textContent=o.isSketch?'Edit Sketch':'Edit Opening / Transom';eb.onclick=()=>o.isSketch?editSketch(idx):editOpening(idx);actions.appendChild(eb);
+   const db=document.createElement('button');db.className='secondary deleteSavedBtn';db.textContent='Delete';db.onclick=()=>deleteSavedOpening(idx);actions.appendChild(db);card.appendChild(actions);
+  }catch(err){console.error('Saved opening '+idx+' failed',err);card.innerHTML='<b>Opening '+(idx+1)+'</b><div class="muted">Saved data found, but this older opening could not be fully displayed.</div>';}
+ });
+}
+
+function deleteSavedOpening(idx){
+ if(!current||!current.openings||!current.openings[idx])return;
+ if(!confirm('Delete this saved item?'))return;
+ current.openings.splice(idx,1);persist();renderOpenings();
+}
+function editOpening(idx){const o=current.openings[idx];editingOpening=idx;builtOpeningType=o.specialType||(o.bayCentre?'Bay Window':o.gablePeak?'Gable Rake Frame':o.rakeLeft?'Rake Window':'');document.getElementById('room').value=o.room||'';document.getElementById('height').value=o.height||'';document.getElementById('width').value=o.width||'';['rakeLeft','rakeBottom','rakeRight','gableLeft','gablePeak','gableRight','gableWidth','bayHeight','bayLeftWing','bayCentre','bayRightWing'].forEach(k=>{const e=document.getElementById(k);if(e)e.value=o[k]||''});document.getElementById('type').value=o.type||((o.panelConfigs&&o.panelConfigs[0]&&o.panelConfigs[0].type)||'Sliding Window');typeChanged();loadOpeningDetails(o);layoutCols=o.layoutCols||1;hasTransom=!!o.hasTransom;transomPct=o.transomPct||50;const oh=Number(o.height)||Number(o.bayHeight)||Number(o.gablePeak)||Math.max(Number(o.rakeLeft)||0,Number(o.rakeRight)||0);transomHeights=Array.isArray(o.transomHeights)?o.transomHeights.slice(0,2):[hasTransom&&oh?Math.round(oh*(1-transomPct/100)):null,null];hasSecondTransom=!!transomHeights[1];layoutRows=hasTransom?(transomHeights[1]?3:2):1;panels=(o.panelConfigs||[]).length||layoutCols*layoutRows;panelConfigs=(o.panelConfigs||[]).map(c=>({...c}));selectedPanel=0;[1,2,3,4].forEach(i=>document.getElementById('layoutBtn'+i)?.classList.toggle('active',i===layoutCols));const lst=document.getElementById('layoutSelectedText');if(lst)lst.textContent='Selected: '+layoutCols+' '+(layoutCols===1?'panel':'panels');const egp=document.getElementById('editGlassPanel');if(egp)egp.classList.add('hidden');openingGlassOther=multiVals(openingGlassType).some(x=>x.startsWith('Other: '));syncEditGlassPanel();draw();showPanelEditor();show('job')}
+function savedTransomHeights(o){const total=Number(o.height)||Number(o.bayHeight)||Number(o.gablePeak)||Math.max(Number(o.rakeLeft)||0,Number(o.rakeRight)||0);if(Array.isArray(o.transomHeights)&&o.transomHeights.length)return o.transomHeights.map(Number).filter(v=>v>0&&(!total||v<total)).sort((a,b)=>a-b).slice(0,2);if(o.hasTransom&&total){const pct=Number(o.transomPct)||50;return [Math.round(total*(1-pct/100))]}return []}
+function savedTransomRows(o){const total=Number(o.height)||Number(o.bayHeight)||Number(o.gablePeak)||Math.max(Number(o.rakeLeft)||0,Number(o.rakeRight)||0),hs=savedTransomHeights(o);if(!o.hasTransom||!total||!hs.length)return '1fr';if(hs.length===1)return `${total-hs[0]}fr ${hs[0]}fr`;return `${total-hs[1]}fr ${hs[1]-hs[0]}fr ${hs[0]}fr`}
+function buildBayFrontGrid(o){
+ const grid=document.createElement('div');grid.className='bayFrontGrid';
+ const cols=Math.max(1,Number(o.layoutCols)||3),rows=o.hasTransom?(savedTransomHeights(o).length+1):1,configs=o.panelConfigs||[];
+ grid.style.gridTemplateColumns=`repeat(${cols},1fr)`;grid.style.gridTemplateRows=o.hasTransom?savedTransomRows(o):'1fr';
+ for(let i=0;i<cols*rows;i++){
+   const cfg=configs[i]||{type:'Fixed Window',direction:'Fixed'},cell=document.createElement('div');cell.className='panel';
+   const col=i%cols,row=Math.floor(i/cols);cell.style.borderRight=(col===cols-1)?'0':'2px solid #111827';cell.style.borderBottom=(rows>1&&row<rows-1)?'2px solid #111827':'0';
+   if(cfg.type==='Double Hung Window'){
+     const frame=document.createElement('div');frame.className='dhFrame dhVertical';frame.style.cssText='width:100%;height:100%;position:relative;overflow:hidden';
+     const a=document.createElement('div'),b=document.createElement('div');a.className='dhSash';b.className='dhSash';a.innerHTML=openingMark('Double Hung Window',cfg.direction||'Vertical','top');b.innerHTML=openingMark('Double Hung Window',cfg.direction||'Vertical','bottom');frame.append(a,b);cell.appendChild(frame);
+   }else cell.innerHTML=openingMark(cfg.type,cfg.direction,(cols===2&&rows===1)?(col===0?'left':'right'):undefined);
+   grid.appendChild(cell);
+ }
+ return grid;
+}
+function bayBirdEyeHTML(o){return `<div class="bayViewTitle" style="color:#f5f7f8!important">Bird's-Eye View</div><div class="bayDimRow"><span>${esc(o.bayLeftWing)} mm</span><span>${esc(o.bayCentre)} mm</span><span>${esc(o.bayRightWing)} mm</span></div><svg class="baySvg" viewBox="0 0 300 105"><polyline points="20,90 75,25 225,25 280,90" fill="none" stroke="#111827" stroke-width="4"/><line x1="75" y1="25" x2="225" y2="25" stroke="#111827" stroke-width="4"/></svg>`}
+function makeSpecialDrawing(o){
+ const wrap=document.createElement('div');wrap.className='savedMeasureWrap';
+ if(o.gablePeak){
+   const d=document.createElement('div');d.className='savedDrawing gableDrawing';d.style.position='relative';d.style.border='0';d.style.overflow='visible';
+   const l=+o.gableLeft||1,p=+o.gablePeak||1,r=+o.gableRight||1,m=Math.max(l,p,r);
+   const ly=98-(l/m*86),py=98-(p/m*86),ry=98-(r/m*86);
+   d.innerHTML=`<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%;height:100%;overflow:visible">
+     <path d="M2 ${ly} L50 ${py} L98 ${ry} L98 98 L2 98 Z" fill="white" stroke="#111827" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+     <text x="6" y="${Math.min(91,ly+24)}" fill="#111827" font-size="4.6" font-weight="800" text-anchor="middle" transform="rotate(-90 6 ${Math.min(91,ly+24)})">L ${esc(o.gableLeft)} mm</text>
+     <text x="94" y="${Math.min(91,ry+24)}" fill="#111827" font-size="4.6" font-weight="800" text-anchor="middle" transform="rotate(90 94 ${Math.min(91,ry+24)})">R ${esc(o.gableRight)} mm</text>
+     <text x="50" y="55" fill="#111827" font-size="4.6" font-weight="800" text-anchor="middle" transform="rotate(-90 50 55)">Peak ${esc(o.gablePeak)} mm</text>
+   </svg>`;
+   wrap.appendChild(d);
+   const wl=document.createElement('div');wl.className='savedBottomWidthLabel';wl.textContent=o.gableWidth+' mm';wrap.appendChild(wl);
+   return wrap;
+ }
+ if(o.specialType==='Bay Window'||o.bayCentre){
+   const box=document.createElement('div');box.className='bayViews';
+   const front=document.createElement('div');front.innerHTML=`<div class="bayViewTitle">Front View — H ${esc(o.bayHeight)} mm</div><div class="bayDimRow"><span>${esc(o.bayLeftWing)} mm</span><span>${esc(o.bayCentre)} mm</span><span>${esc(o.bayRightWing)} mm</span></div>`;front.appendChild(buildBayFrontGrid(o));box.appendChild(front);
+   const bird=document.createElement('div');bird.innerHTML=bayBirdEyeHTML(o);box.appendChild(bird);return box;
+ }
+ return null;
+}
+function makeSavedDrawing(o){
+ const special=makeSpecialDrawing(o);if(special)return special;
+ const wrap=document.createElement('div');wrap.className='savedMeasureWrap';
+ if(!o.rakeLeft){
+   const wl=document.createElement('div');wl.className='savedWidthLabel';wl.textContent=(o.width||'')+' mm';
+   const hl=document.createElement('div');hl.className='savedHeightLabel';hl.textContent=(o.height||'')+' mm';
+   wrap.appendChild(wl);wrap.appendChild(hl);
+ }
+ const d=document.createElement('div');d.className='savedDrawing gableDrawing';d.style.position='relative';
+ const configs=o.panelConfigs||[];
+ const cols=Math.max(1,Number(o.layoutCols)||1);
+ const rows=o.hasTransom?(savedTransomHeights(o).length+1):1;
+ const isDH=(o.type==='Double Hung Window')||configs.some(c=>c.type==='Double Hung Window');
+
+ d.style.display='grid';
+ d.style.gridTemplateColumns=`repeat(${cols},1fr)`;
+ d.style.gridTemplateRows=o.hasTransom?savedTransomRows(o):'1fr';
+
+ if(isDH){
+   // One double-hung unit per selected layout column/cell.
+   // Each unit always contains two sashes, so 2/3/4 panel layouts save correctly.
+   const units=cols*rows;
+   for(let u=0;u<units;u++){
+     const cfgA=configs[u*2]||configs[0]||{type:'Double Hung Window',direction:'Vertical'};
+     const cfgB=configs[u*2+1]||configs[1]||cfgA;
+     const orient=cfgA.direction||'Vertical';
+     const frame=document.createElement('div');
+     frame.className='dhFrame '+(orient==='Horizontal'?'dhHorizontal':'dhVertical');
+     frame.style.position='relative';frame.style.overflow='hidden';
+     frame.style.borderRight=(u%cols===cols-1)?'0':'2px solid #111827';
+     frame.style.borderBottom=(rows>1 && Math.floor(u/cols)<rows-1)?'2px solid #111827':'0';
+     const a=document.createElement('div'),b=document.createElement('div');
+     a.className='dhSash';b.className='dhSash';
+     a.innerHTML=openingMark(cfgA.type||'Double Hung Window',cfgA.direction||orient,orient==='Horizontal'?'left':'top');
+     b.innerHTML=openingMark(cfgB.type||'Double Hung Window',cfgB.direction||orient,orient==='Horizontal'?'right':'bottom');
+     frame.appendChild(a);frame.appendChild(b);d.appendChild(frame);
+   }
+ }else{
+   const count=cols*rows;
+   for(let i=0;i<count;i++){
+     const cfg=configs[i]||{type:'Fixed Window',direction:'Fixed'};
+     const cell=document.createElement('div');
+     cell.className='panel';
+     const col=i%cols,row=Math.floor(i/cols);
+     // Explicit borders avoid CSS nth-child/transom rules deleting dividers.
+     cell.style.borderRight=(col===cols-1)?'0':'2px solid #111827';
+     cell.style.borderBottom=(rows>1 && row<rows-1)?'2px solid #111827':'0';
+     cell.innerHTML=openingMark(cfg.type,cfg.direction,(cols===2&&rows===1)?(col===0?'left':'right'):undefined);
+     d.appendChild(cell);
+   }
+ }
+ wrap.appendChild(d);
+if(o.rakeLeft && o.rakeRight){
+  const left=Number(o.rakeLeft)||1, right=Number(o.rakeRight)||1;
+  const maxSide=Math.max(left,right);
+  const leftY=4 + (1-left/maxSide)*70;
+  const rightY=4 + (1-right/maxSide)*70;
+
+  const rakeSvg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  rakeSvg.setAttribute('viewBox','0 0 100 100');
+  rakeSvg.setAttribute('preserveAspectRatio','none');
+  rakeSvg.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;z-index:15;pointer-events:none;overflow:visible';
+
+  const outline=document.createElementNS('http://www.w3.org/2000/svg','path');
+  outline.setAttribute('d',`M 1 ${leftY} L 99 ${rightY} L 99 99 L 1 99 Z`);
+  outline.setAttribute('fill','none');
+  outline.setAttribute('stroke','#111827');
+  outline.setAttribute('stroke-width','1.4');
+  outline.setAttribute('vector-effect','non-scaling-stroke');
+  outline.setAttribute('stroke-linejoin','miter');
+  rakeSvg.appendChild(outline);
+
+  const addSideText=(txt,x,y,rot)=>{
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',x);t.setAttribute('y',y);
+    t.setAttribute('fill','#111827');t.setAttribute('font-size','4.8');t.setAttribute('font-weight','800');
+    t.setAttribute('text-anchor','middle');t.setAttribute('transform',`rotate(${rot} ${x} ${y})`);
+    t.textContent=txt;rakeSvg.appendChild(t);
+  };
+  const rakeSideY=Math.min(91,leftY+24);
+  addSideText('L '+o.rakeLeft+' mm',6,rakeSideY,-90);
+  addSideText('R '+o.rakeRight+' mm',94,rakeSideY,90);
+
+  d.style.border='none';
+  d.style.overflow='visible';
+  d.appendChild(rakeSvg);
+  const bottom=document.createElement('div');bottom.className='savedBottomWidthLabel';bottom.textContent=o.rakeBottom+' mm';wrap.appendChild(bottom);
+}
+return wrap;
+}
+function voiceField(id){if(!('webkitSpeechRecognition'in window||'SpeechRecognition'in window)){alert('Voice recognition is not supported by this browser. Try Chrome on Android.');return}let R=window.SpeechRecognition||window.webkitSpeechRecognition,r=new R();r.lang='en-AU';r.interimResults=false;r.maxAlternatives=1;r.onresult=e=>{let t=e.results[0][0].transcript.trim();if(id==='room')document.getElementById(id).value=t;else document.getElementById(id).value=parseNumber(t)||t};r.onerror=()=>alert('Voice recognition could not hear that. Try again.');r.start()}
+function parseNumber(s){s=s.toLowerCase().replace(/,/g,' ').trim();let m=s.match(/\d+(?:\.\d+)?/);if(m)return m[0];let nums={zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19,twenty:20,thirty:30,forty:40,fifty:50,sixty:60,seventy:70,eighty:80,ninety:90};let words=s.replace(/-/g,' ').split(/\s+/),total=0,cur=0;for(let w of words){if(nums[w]!=null)cur+=nums[w];else if(w==='hundred'){cur*=100}else if(w==='thousand'){total+=cur*1000;cur=0}}let n=total+cur;return n||''}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function updateConfirmedJobLock(){
+ const locked=!!(current&&current.confirmed),job=document.getElementById('job'),banner=document.getElementById('confirmedLockBanner');
+ if(job)job.classList.toggle('jobLocked',locked);
+ if(banner)banner.classList.toggle('hidden',!locked);
+}
+function unlockConfirmedJobFromJob(){
+ if(!current||!current.confirmed)return;
+ if(!confirm('Re-open this confirmed job for editing?'))return;
+ current.confirmed=false;current.completed=false;current.confirmedAt=null;persist();updateConfirmedJobLock();renderJobs();show('job');
+}
+function show(id){const target=document.getElementById(id);if(!target)return;document.querySelectorAll('main>section').forEach(x=>x.classList.add('hidden'));target.classList.remove('hidden');window.scrollTo({top:0,left:0,behavior:'instant'});if(id==='jobs')renderJobs();if(id==='job'&&current){updateConfirmedJobLock();document.getElementById('jobTitle').textContent=current.site||'Job';document.getElementById('jobInfo').textContent=[current.customer,current.phone,formatMeasuredDate(current),jobStatus(current)].filter(Boolean).join(' · ');const ab=[...document.querySelectorAll('.jobActions button')].find(b=>b.textContent.includes('Archive')||b.textContent.includes('Restore'));if(ab)ab.textContent=current.archived?'Restore Job':'Archive Job';populateCurrentJobManagement();renderOpenings();renderSitePhotos()}}
+
+const JOB_WORKFLOW_STATUSES=['Measuring','Quote Required','Quote Sent','Waiting on Customer','Approved','Completed'];
+function workflowStatus(j){return j.workflowStatus||(j.completed?'Completed':j.confirmed?'Quote Sent':j.measured?'Quote Required':'Measuring');}
+function populateCurrentJobManagement(){if(!current)return;const st=document.getElementById('jobWorkflowStatus'),as=document.getElementById('jobAssignee');if(st)st.innerHTML=JOB_WORKFLOW_STATUSES.map(x=>'<option'+(x===workflowStatus(current)?' selected':'')+'>'+x+'</option>').join('');if(as)as.innerHTML=staffOptions(current.assignedTo||'',true);}
+function setCurrentJobWorkflowStatus(v){if(!current)return;current.workflowStatus=v;current.completed=v==='Completed';persist();show('job');}
+function setCurrentJobAssignee(v){if(!current)return;current.assignedTo=v;persist();renderJobs();}
+function setJobsScope(v){jobsScope=v==='mine'?'mine':'all';document.getElementById('jobsScopeAll')?.classList.toggle('secondary',jobsScope!=='all');document.getElementById('jobsScopeMine')?.classList.toggle('secondary',jobsScope!=='mine');renderJobs();}
+let jobFilter='all';
+function setJobFilter(v){
+ jobFilter=v;
+ const ids=['all','active','measured','confirmed','completed','archived'];
+ ids.forEach(x=>{const el=document.getElementById(x+'JobsBtn');if(el)el.classList.toggle('secondary',x!==v);});
+ renderJobs();
+}
+function jobStatus(j){if(j.archived)return 'Archived';return workflowStatus(j);}
+function jobUpdatedMs(j){
+ const raw=j.updatedAt||j.confirmedAt||j.measuredAt||j.createdAt||j.id||0;
+ const d=new Date(raw);return isNaN(d)?0:d.getTime();
+}
+function formatUpdatedDate(j){
+ const ms=jobUpdatedMs(j);if(!ms)return '';
+ return 'Updated '+new Date(ms).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'});
+}
+function formatMeasuredDate(j){
+ const raw=j&&j.measuredAt;if(!raw)return '';
+ const d=new Date(raw);if(isNaN(d))return '';
+ return 'Measured '+d.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'});
+}
+function touchCurrentJob(){
+ if(current)current.updatedAt=new Date().toISOString();
+}
+function editJobDetails(){
+ if(!current)return;
+ const customer=prompt('Customer name',current.customer||'');if(customer===null)return;
+ const phone=prompt('Phone number',current.phone||'');if(phone===null)return;
+ const site=prompt('Job / Site',current.site||'');if(site===null)return;
+ current.customer=customer.trim();current.phone=phone.trim();current.site=site.trim();persist();show('job');
+}
+function toggleArchiveCurrentJob(){
+ if(!current)return;
+ const archiving=!current.archived;
+ if(!confirm(archiving?'Archive this job? You can restore it later.':'Restore this job to Active Jobs?'))return;
+ current.archived=archiving;persist();renderJobs();
+ if(archiving){show('jobs');setJobFilter('active');}else show('job');
+}
+function deleteCurrentJob(){
+ if(!current)return;
+ if(!confirm('Delete this job permanently? This will remove its openings, sketches and site photos.'))return;
+ const id=current.id;jobs=jobs.filter(j=>j.id!==id);current=null;persist();show('jobs');renderJobs();
+}
+
+function newJob(){resetOpeningDetails();try{current=null;editingOpening=-1;document.getElementById('customer').value='';document.getElementById('phone').value='';document.getElementById('site').value='';show('new');setTimeout(()=>document.getElementById('customer').focus(),50)}catch(e){console.error(e);alert('New Job could not be opened. Please refresh the app.')}}
+function createJob(){const customer=document.getElementById('customer').value.trim(),phone=document.getElementById('phone').value.trim(),site=document.getElementById('site').value.trim(),notes='';if(!customer&&!site){alert('Enter a customer or job/site.');return}const now=Date.now();current={id:now,createdAt:new Date(now).toISOString(),measuredAt:new Date(now).toISOString(),updatedAt:new Date(now).toISOString(),customer,phone,site,notes,openings:[],photos:[],measured:false,confirmed:false,completed:false,archived:false,workflowStatus:'Measuring',assignedTo:currentStaff};jobs.unshift(current);persist();document.getElementById('customer').value='';document.getElementById('site').value='';show('job')}
+function openJob(id){current=jobs.find(j=>String(j.id)===String(id))||null;if(current)show('job')}
+function openRenderedJob(index){
+ const j=window._renderedJobs&&window._renderedJobs[index];
+ if(!j)return;
+ current=j;
+ show('job');
+}
+function backupStatus(msg){
+ const el=document.getElementById('backupStatus');if(el)el.textContent=msg||'';
+}
+function exportBackup(){
+ try{
+   const payload={
+     app:'TradieAIApp',
+     backupVersion:1,
+     exportedAt:new Date().toISOString(),
+     jobs:jobs,
+     todoTasks:todoTasks,staffMembers:staffMembers,currentStaff:currentStaff
+   };
+   const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+   const a=document.createElement('a');
+   const d=new Date(),pad=n=>String(n).padStart(2,'0');
+   const stamp=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'_'+pad(d.getHours())+'-'+pad(d.getMinutes());
+   a.href=URL.createObjectURL(blob);a.download='TradieAIApp-Backup-'+stamp+'.json';
+   document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+   backupStatus('✓ Backup created — '+jobs.length+' job'+(jobs.length===1?'':'s')+' included.');
+ }catch(e){console.error(e);alert('Backup could not be created.');}
+}
+function normalizeRestoredJobs(list){
+ return list.map((j,i)=>{
+   if(!j||typeof j!=='object')return null;
+   if(!j.id)j.id=Date.now()+i;
+   if(!Array.isArray(j.openings))j.openings=[];
+   if(!Array.isArray(j.photos)&&!Array.isArray(j.sitePhotos))j.photos=[];
+   if(!j.createdAt)j.createdAt=new Date(Number(j.id)||Date.now()).toISOString();
+   if(!j.measuredAt)j.measuredAt=j.createdAt;
+   if(!j.updatedAt)j.updatedAt=j.confirmedAt||j.measuredAt||j.createdAt;if(!j.workflowStatus)j.workflowStatus=j.completed?'Completed':j.confirmed?'Quote Sent':j.measured?'Quote Required':'Measuring';if(j.assignedTo===undefined)j.assignedTo='';
+   return j;
+ }).filter(Boolean);
+}
+function restoreBackupFile(file){
+ if(!file)return;
+ const reader=new FileReader();
+ reader.onload=()=>{
+   try{
+     const data=JSON.parse(reader.result);
+     const incoming=Array.isArray(data)?data:(data&&Array.isArray(data.jobs)?data.jobs:null);
+     if(!incoming)throw new Error('No jobs array');
+     const restored=normalizeRestoredJobs(incoming);
+     if(!confirm('Restore this backup?\\n\\nIt contains '+restored.length+' job'+(restored.length===1?'':'s')+'.\\n\\nThis will replace the jobs currently stored on this device.'))return;
+     jobs=restored;current=null;
+     localStorage.setItem('tradieJobs',JSON.stringify(jobs));
+     backupStatus('✓ Backup restored — '+jobs.length+' job'+(jobs.length===1?'':'s')+' loaded.');
+     renderJobs();
+   }catch(e){console.error(e);alert('That file is not a valid TradieAIApp backup.');}
+ };
+ reader.onerror=()=>alert('The backup file could not be read.');
+ reader.readAsText(file);
+}
+function renderJobs(){
+ const q=(document.getElementById('search').value||'').toLowerCase();
+ const list=document.getElementById('jobList');
+ const sortEl=document.getElementById('jobSort'),sort=sortEl?sortEl.value:'updated';
+ const matches=jobs.filter(j=>{
+   const st=jobStatus(j);
+   let statusMatch=jobFilter==='all'?!j.archived:jobFilter==='archived'?st==='Archived':jobFilter==='active'?!j.archived&&st!=='Completed':jobFilter==='measured'?st==='Measuring':jobFilter==='confirmed'?['Quote Sent','Waiting on Customer','Approved'].includes(st):jobFilter==='completed'?st==='Completed':true; if(jobsScope==='mine'&&j.assignedTo!==currentStaff)return false;
+   const searchMatch=[j.customer,j.phone,j.site,j.notes].join(' ').toLowerCase().includes(q);
+   return statusMatch&&searchMatch;
+ }).sort((a,b)=>{
+   if(sort==='customer')return (a.customer||'').localeCompare(b.customer||'');
+   if(sort==='newest')return Number(b.id||0)-Number(a.id||0);
+   if(sort==='status'){
+     const rank=j=>j.archived?2:j.confirmed?1:0;
+     return rank(a)-rank(b)||jobUpdatedMs(b)-jobUpdatedMs(a);
+   }
+   return jobUpdatedMs(b)-jobUpdatedMs(a);
+ });
+ window._renderedJobs=matches;
+ list.innerHTML=matches.length?matches.map((j,jobIndex)=>{
+   const status=jobStatus(j);
+   const statusClass=j.archived?'statusArchived':(j.confirmed||j.completed)?'statusCompleted':'statusCurrent';
+   return `<div class="job" onclick="openRenderedJob(${jobIndex})">
+    <div class="jobTop"><div><div class="jobTitle">${esc(j.site||'Untitled Job')}</div><div class="jobCustomer">${esc(j.customer||'No customer name')}</div>${j.phone?`<div class="jobPhone">☎ ${esc(j.phone)}</div>`:''}<div class="muted" style="margin-top:4px">${esc(formatUpdatedDate(j)||formatMeasuredDate(j))}</div></div><div class="jobArrow">›</div></div>
+    <div class="jobMeta"><span class="pill">${(j.openings||[]).length} openings</span><span class="pill ${statusClass}">${status==='Completed'?'✓ ':''}${status}</span>${j.assignedTo?`<span class="pill">👤 ${esc(j.assignedTo)}</span>`:''}${(j.photos||j.sitePhotos||[]).length?`<span class="pill">📷 ${(j.photos||j.sitePhotos||[]).length}</span>`:''}</div>
+   </div>`;
+ }).join(''):`<div class="card muted">No jobs in this status.</div>`;
+}
+document.getElementById('type').addEventListener('change',typeChanged);
+const newJobBtn=document.getElementById('newJobBtn');
+if(newJobBtn)newJobBtn.addEventListener('click',newJob);
+typeChanged();show('home');
+
+function applyConfirmContrast(){
+  document.querySelectorAll('h1,h2,h3,b,strong').forEach(el=>{
+    if((el.textContent||'').trim()==='Final check'){
+      let root=el.closest('section')||el.parentElement?.parentElement||el.parentElement;
+      if(root) root.classList.add('confirmContrast');
+    }
+  });
+}
+
+
+document.addEventListener('DOMContentLoaded',applyConfirmContrast);
+new MutationObserver(applyConfirmContrast).observe(document.querySelector('main')||document.body,{childList:true,subtree:true});
+
+
+function styleActualConfirmCards(){
+  const all=[...document.querySelectorAll('body *')];
+  const finalCheck=all.find(el => (el.textContent||'').trim()==='Final check');
+  if(!finalCheck) return;
+
+  // Find every visible element after Final check whose own direct text starts "Opening N —".
+  all.forEach(el=>{
+    const own=[...el.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent).join(' ').trim();
+    if(!/^Opening\s+\d+\s+[—-]/.test(own)) return;
+
+    // Walk upward to the white card (computed white-ish background).
+    let card=el;
+    for(let i=0;i<5 && card;i++,card=card.parentElement){
+      const bg=getComputedStyle(card).backgroundColor;
+      if(bg==='rgb(255, 255, 255)' || bg==='rgba(255, 255, 255, 1)'){
+        card.classList.add('actualConfirmCard');
+        break;
+      }
+    }
+  });
+
+  document.querySelectorAll('.actualConfirmCard').forEach(card=>{
+    // Heading/details are the text near the top of the white card.
+    [...card.querySelectorAll('*')].forEach(el=>{
+      const t=(el.textContent||'').trim();
+      if(/^Opening\s+\d+\s+[—-]/.test(t)) el.classList.add('confirmDarkHeading');
+      if((/\bmm\b/.test(t) && /[·×HW]/.test(t)) && el.children.length===0) el.classList.add('confirmDarkDetails');
+    });
+
+    // Dimension labels are recognizable by short "#### mm" or rake L/R text.
+    [...card.querySelectorAll('*')].forEach(el=>{
+      const t=(el.textContent||'').trim();
+      if(el.children.length===0 && (/^\d+\s*mm$/.test(t) || /^L\s*\d+.*R\s*\d+.*mm$/.test(t))){
+        el.classList.add('confirmDarkDimension');
+      }
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded',styleActualConfirmCards);
+new MutationObserver(styleActualConfirmCards).observe(document.querySelector('main')||document.body,{childList:true,subtree:true});
+
+</script><script>console.info("TradieAIApp V116 frame-renderer loaded");</script>
+<style id="v129-frame-colours">
+/* V129: render the window/door frame in the selected frame colour. */
+.frameColourApplied.drawing,.frameColourApplied.savedDrawing,.frameColourApplied .savedDrawing,.frameColourApplied.bayFrontGrid,.frameColourApplied .bayFrontGrid{
+  border-color:var(--frame-colour)!important;
+  box-shadow:inset 0 0 0 5px var(--frame-colour),inset 0 0 0 8px var(--frame-colour)!important;
+}
+.frameColourApplied .panel,.frameColourApplied.panel,.frameColourApplied .dhFrame,.frameColourApplied .dhSash{
+  border-color:var(--frame-colour)!important;
+  box-shadow:inset 0 0 0 7px var(--frame-colour),inset 0 0 0 10px var(--frame-colour)!important;
+}
+.frameColourApplied .dhSash{box-shadow:inset 0 0 0 6px var(--frame-colour),inset 0 0 0 9px var(--frame-colour)!important}
+.frameColourApplied .specialOutline path{stroke:var(--frame-colour)!important}
+</style>
+<script id="v129-enhancements">
+function frameColourCss(value){
+  const first=(value||'').split(',')[0].trim().replace(/^Other:\s*/i,'');
+  const map={'White':'#f4f4f1','Black':'#111111','Monument':'#323638','Woodland Grey':'#4b5148','Surfmist':'#d9d8cc'};
+  if(map[first])return map[first];
+  if(/^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(first))return first;
+  return '#596168';
+}
+function applyFrameColour(root,value){
+  if(!root)return root;
+  root.classList.add('frameColourApplied');root.style.setProperty('--frame-colour',frameColourCss(value));
+  root.querySelectorAll('.savedDrawing,.bayFrontGrid').forEach(x=>{x.classList.add('frameColourApplied');x.style.setProperty('--frame-colour',frameColourCss(value))});
+  return root;
+}
+const _v129SetFrameColour=setFrameColour;setFrameColour=function(v){_v129SetFrameColour(v);draw()};
+const _v129OtherFrameColour=setOtherFrameColour;setOtherFrameColour=function(v){_v129OtherFrameColour(v);draw()};
+const _v129Draw=draw;draw=function(){_v129Draw();applyFrameColour(document.getElementById('drawing'),openingFrameColour)};
+const _v129Saved=makeSavedDrawing;makeSavedDrawing=function(o){return applyFrameColour(_v129Saved(o),o.frameColour)};
+</script>
+</body></html>
+<style>
+/* V115 realistic glass visuals. One photographic scene is reused so every panel/window shape stays consistent. */
+.glass-clear,.glass-etech,.glass-frosted,.glass-white-lam{isolation:isolate;background:#fff!important;position:relative}
+.glass-clear:before,.glass-etech:before,.glass-frosted:before,.glass-white-lam:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background-position:center;background-size:cover;background-repeat:no-repeat}
+.glass-clear:before{background-image:linear-gradient(155deg,rgba(255,255,255,.12),rgba(255,255,255,0) 36%),url('glass-scene.jpg');filter:saturate(.96) contrast(1.02)}
+.glass-etech:before{background-image:linear-gradient(rgba(0,105,205,.27),rgba(0,92,185,.27)),linear-gradient(155deg,rgba(255,255,255,.16),rgba(255,255,255,0) 36%),url('glass-scene.jpg');filter:saturate(1.12) contrast(1.08)}
+.glass-frosted:before{inset:-7%;background-image:linear-gradient(rgba(222,229,231,.28),rgba(210,219,222,.28)),url('glass-scene.jpg');filter:blur(14px) saturate(.45) contrast(.78);transform:scale(1.08);opacity:.9}
+.glass-white-lam:before{background-image:linear-gradient(135deg,#fff 0%,#edf0f2 50%,#fafafa 100%)}
+.glass-clear>.mark,.glass-etech>.mark,.glass-frosted>.mark,.glass-white-lam>.mark,.glass-clear>.dhSash,.glass-etech>.dhSash,.glass-frosted>.dhSash,.glass-white-lam>.dhSash{z-index:2}
+.glass-shape{position:absolute;inset:0;z-index:0;pointer-events:none;clip-path:var(--glass-clip);background-position:center;background-size:cover;background-repeat:no-repeat}
+.glass-shape.glass-clear{background-image:linear-gradient(155deg,rgba(255,255,255,.12),rgba(255,255,255,0) 36%),url('glass-scene.jpg');filter:saturate(.96) contrast(1.02)}
+.glass-shape.glass-etech{background-image:linear-gradient(rgba(0,105,205,.27),rgba(0,92,185,.27)),linear-gradient(155deg,rgba(255,255,255,.16),rgba(255,255,255,0) 36%),url('glass-scene.jpg');filter:saturate(1.12) contrast(1.08)}
+.glass-shape.glass-frosted{inset:-5%;background-image:linear-gradient(rgba(222,229,231,.28),rgba(210,219,222,.28)),url('glass-scene.jpg');filter:blur(12px) saturate(.45) contrast(.78);transform:scale(1.06);opacity:.9}
+.glass-shape.glass-white-lam{background-image:linear-gradient(135deg,#fff,#e9edef,#fafafa)}
+.drawing,.savedDrawing,.glass-shape,.panel{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+@media print{.glass-frosted:before,.glass-shape.glass-frosted{filter:blur(8px) saturate(.5) contrast(.8)!important}}
+</style>
+<script>
+function glassVisualClass(v){v=String(v||'').toLowerCase();if(v.includes('white laminate'))return'glass-white-lam';if(v.includes('frosted'))return'glass-frosted';if(v.includes('e-tech')||v.includes('etech'))return'glass-etech';if(v.includes('clear'))return'glass-clear';return''}
+function applyGlassToRoot(root,v){if(!root)return;const cls=glassVisualClass(v);const all=['glass-clear','glass-frosted','glass-white-lam','glass-etech'];all.forEach(c=>root.classList.remove(c));if(cls)root.classList.add(cls);root.querySelectorAll('.panel,.dhSash').forEach(x=>all.forEach(c=>x.classList.remove(c)))}
+const _v114draw=draw;draw=function(){_v114draw();applyGlassToRoot(document.getElementById('drawing'),openingGlassType)};
+const _v114SetGlass=setGlassType;setGlassType=function(v){_v114SetGlass(v);draw()};
+const _v114OtherGlass=setOtherGlassType;setOtherGlassType=function(v){_v114OtherGlass(v);draw()};
+const _v114Saved=makeSavedDrawing;makeSavedDrawing=function(o){const r=_v114Saved(o);if(!r)return r;const cls=glassVisualClass(o.glassType);const drawing=r.matches&&r.matches('.savedDrawing')?r:r.querySelector&&r.querySelector('.savedDrawing');if(drawing){applyGlassToRoot(drawing,o.glassType);if((o.gablePeak||o.rakeLeft)&&cls){const shape=document.createElement('div');shape.className='glass-shape '+cls;let clip='polygon(2% 98%,2% 25%,50% 2%,98% 25%,98% 98%)';if(o.rakeLeft&&o.rakeRight){const l=+o.rakeLeft||1,rr=+o.rakeRight||1,m=Math.max(l,rr),ly=4+(1-l/m)*70,ry=4+(1-rr/m)*70;clip=`polygon(1% ${ly}%,99% ${ry}%,99% 99%,1% 99%)`}else if(o.gablePeak){const l=+o.gableLeft||1,p=+o.gablePeak||1,rr=+o.gableRight||1,m=Math.max(l,p,rr),ly=98-(l/m*86),py=98-(p/m*86),ry=98-(rr/m*86);clip=`polygon(2% ${ly}%,50% ${py}%,98% ${ry}%,98% 98%,2% 98%)`}shape.style.setProperty('--glass-clip',clip);drawing.insertBefore(shape,drawing.firstChild);const path=drawing.querySelector('svg path');if(path)path.setAttribute('fill','transparent')}}return r};
+const _v114Bay=buildBayFrontGrid;buildBayFrontGrid=function(o){const r=_v114Bay(o);applyGlassToRoot(r,o.glassType);return r};
+</script>
+
+<style id="v116-continuous-glass-fix">
+/* One continuous glass scene per whole opening; frame/sashes always render above it. */
+.drawing.glass-clear:before,.drawing.glass-etech:before,.drawing.glass-frosted:before,.drawing.glass-white-lam:before,
+.savedDrawing.glass-clear:before,.savedDrawing.glass-etech:before,.savedDrawing.glass-frosted:before,.savedDrawing.glass-white-lam:before,
+.bayFrontGrid.glass-clear:before,.bayFrontGrid.glass-etech:before,.bayFrontGrid.glass-frosted:before,.bayFrontGrid.glass-white-lam:before{z-index:0}
+.drawing>.panel,.savedDrawing>.panel,.bayFrontGrid>.panel,.drawing .dhSash,.savedDrawing .dhSash,.bayFrontGrid .dhSash{
+  z-index:1;background:transparent!important;isolation:auto!important;
+}
+.drawing>.panel:before,.savedDrawing>.panel:before,.bayFrontGrid>.panel:before,.drawing .dhSash:before,.savedDrawing .dhSash:before,.bayFrontGrid .dhSash:before{display:none!important}
+.panel .mark,.dhSash .mark,.transomLine{z-index:4!important}
+/* Strong aluminium-like sash/frame profile remains visible over every glass type. */
+.panel,.dhSash{box-shadow:inset 0 0 0 7px #20262b,inset 0 0 0 10px #697178!important}
+.drawing,.savedDrawing,.bayFrontGrid{box-shadow:inset 0 0 0 5px #20262b,inset 0 0 0 8px #697178}
+/* Clear/E-Tech stay crisp; only Frosted is deliberately blurred. */
+.glass-clear:before{filter:saturate(1.04) contrast(1.08) sharpen(1)!important}
+.glass-etech:before{filter:saturate(1.18) contrast(1.10)!important}
+</style>
+<style id="v127-rake-frame-fix">
+.specialShapeDrawing{border:0!important;overflow:hidden!important;background:#fff!important;box-shadow:none!important;isolation:isolate}
+.specialShapeDrawing .panel{background:transparent!important;z-index:2!important}
+.specialShapeDrawing .specialOutline{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none;overflow:visible}
+.specialShapeDrawing .mark{z-index:6!important}
+</style>
+
+<style id="v128-dimension-readability">
+/* V128: dimensions inside rake/gable drawings use white rounded labels; outside dimensions are clean bold text. */
+.savedBottomWidthLabel,
+.openingCard .savedBottomWidthLabel,
+.savedMeasureWrap .savedHeightLabel,
+.savedMeasureWrap .savedRightHeightLabel,
+.savedWidthLabel,
+.savedHeightLabel,
+.savedRightHeightLabel{
+  background:transparent!important;
+  color:#fff!important;
+  border-radius:0!important;
+  padding:0!important;
+  font-weight:900!important;
+  text-shadow:0 2px 3px rgba(0,0,0,.9)!important;
+}
+.savedBottomWidthLabel{font-size:18px!important;margin-top:8px!important}
+@media print{
+  .savedBottomWidthLabel,.savedWidthLabel,.savedHeightLabel,.savedRightHeightLabel,
+  .savedMeasureWrap .savedHeightLabel,.savedMeasureWrap .savedRightHeightLabel{
+    background:transparent!important;color:#000!important;text-shadow:none!important;font-weight:900!important;
+  }
+}
+</style>
+<script>
+function specialShapeData(kind,l,p,r){
+  l=Number(l)||1;r=Number(r)||1;p=Number(p)||0;
+  const m=Math.max(l,r,p||0,1);
+  if(kind==='gable'){
+    const ly=98-(l/m*86),py=98-(p/m*86),ry=98-(r/m*86);
+    return {clip:`polygon(2% ${ly}%,50% ${py}%,98% ${ry}%,98% 98%,2% 98%)`,path:`M2 ${ly} L50 ${py} L98 ${ry} L98 98 L2 98 Z`,ly,py,ry};
+  }
+  const ly=4+(1-l/m)*70,ry=4+(1-r/m)*70;
+  return {clip:`polygon(1% ${ly}%,99% ${ry}%,99% 99%,1% 99%)`,path:`M1 ${ly} L99 ${ry} L99 99 L1 99 Z`,ly,ry};
+}
+function addSpecialOutline(root,data){
+  const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox','0 0 100 100');svg.setAttribute('preserveAspectRatio','none');svg.classList.add('specialOutline');
+  const path=document.createElementNS(ns,'path');path.setAttribute('d',data.path);path.setAttribute('fill','none');path.setAttribute('stroke','#111827');path.setAttribute('stroke-width','1.6');path.setAttribute('vector-effect','non-scaling-stroke');path.setAttribute('stroke-linejoin','miter');svg.appendChild(path);root.appendChild(svg);
+}
+const _v127draw=draw;draw=function(){
+  _v127draw();
+  const t=currentType();if(t!=='Rake Window'&&t!=='Gable Rake Frame')return;
+  const d=document.getElementById('drawing');if(!d)return;
+  const data=t==='Gable Rake Frame'?specialShapeData('gable',document.getElementById('gableLeft')?.value,document.getElementById('gablePeak')?.value,document.getElementById('gableRight')?.value):specialShapeData('rake',document.getElementById('rakeLeft')?.value,0,document.getElementById('rakeRight')?.value);
+  d.classList.add('specialShapeDrawing');d.style.clipPath=data.clip;d.style.webkitClipPath=data.clip;
+  addSpecialOutline(d,data);
+};
+
+makeSpecialDrawing=function(o){
+  if(!(o.gablePeak||o.rakeLeft)){
+    if(o.specialType==='Bay Window'||o.bayCentre){const box=document.createElement('div');box.className='bayViews';const front=document.createElement('div');front.innerHTML=`<div class="bayViewTitle">Front View — H ${esc(o.bayHeight)} mm</div><div class="bayDimRow"><span>${esc(o.bayLeftWing)} mm</span><span>${esc(o.bayCentre)} mm</span><span>${esc(o.bayRightWing)} mm</span></div>`;front.appendChild(buildBayFrontGrid(o));box.appendChild(front);const bird=document.createElement('div');bird.innerHTML=bayBirdEyeHTML(o);box.appendChild(bird);return box;}return null;
+  }
+  const isG=!!o.gablePeak,data=isG?specialShapeData('gable',o.gableLeft,o.gablePeak,o.gableRight):specialShapeData('rake',o.rakeLeft,0,o.rakeRight);
+  const wrap=document.createElement('div');wrap.className='savedMeasureWrap';
+  const d=document.createElement('div');d.className='savedDrawing specialShapeDrawing';d.style.position='relative';d.style.display='grid';
+  const cols=Math.max(1,Number(o.layoutCols)||1),configs=o.panelConfigs||[];d.style.gridTemplateColumns=`repeat(${cols},1fr)`;d.style.gridTemplateRows='1fr';
+  for(let i=0;i<cols;i++){const cfg=configs[i]||{type:'Fixed Window',direction:'Fixed'},cell=document.createElement('div');cell.className='panel';cell.style.borderRight=(i===cols-1)?'0':'2px solid #111827';cell.innerHTML=openingMark(cfg.type,cfg.direction,(cols===2)?(i===0?'left':'right'):undefined);d.appendChild(cell)}
+  applyGlassToRoot(d,o.glassType);d.style.clipPath=data.clip;d.style.webkitClipPath=data.clip;addSpecialOutline(d,data);wrap.appendChild(d);
+  const ns='http://www.w3.org/2000/svg',dims=document.createElementNS(ns,'svg');dims.setAttribute('viewBox','0 0 100 100');dims.setAttribute('preserveAspectRatio','none');dims.style.cssText='position:absolute;inset:0;width:100%;height:100%;z-index:8;pointer-events:none;overflow:visible';
+  const tx=(txt,x,y,rot)=>{const g=document.createElementNS(ns,'g');g.setAttribute('transform',`rotate(${rot} ${x} ${y})`);const w=Math.max(18,txt.length*2.75),h=8;const r=document.createElementNS(ns,'rect');r.setAttribute('x',x-w/2);r.setAttribute('y',y-h/2-1.4);r.setAttribute('width',w);r.setAttribute('height',h);r.setAttribute('rx','2');r.setAttribute('fill','#fff');r.setAttribute('opacity','.96');g.appendChild(r);const e=document.createElementNS(ns,'text');e.setAttribute('x',x);e.setAttribute('y',y+1.2);e.setAttribute('fill','#111827');e.setAttribute('font-size','4.6');e.setAttribute('font-weight','900');e.setAttribute('text-anchor','middle');e.setAttribute('dominant-baseline','middle');e.textContent=txt;g.appendChild(e);dims.appendChild(g)};
+  if(isG){tx('L '+o.gableLeft+' mm',6,Math.min(91,data.ly+24),-90);tx('R '+o.gableRight+' mm',94,Math.min(91,data.ry+24),90);tx('Peak '+o.gablePeak+' mm',50,55,-90)}else{tx('L '+o.rakeLeft+' mm',6,Math.min(91,data.ly+24),-90);tx('R '+o.rakeRight+' mm',94,Math.min(91,data.ry+24),90)}
+  d.appendChild(dims);const bottom=document.createElement('div');bottom.className='savedBottomWidthLabel';bottom.textContent=(isG?o.gableWidth:o.rakeBottom)+' mm';wrap.appendChild(bottom);return wrap;
+};
+</script>
+
+<style id="v130-frame-black-edges">
+/* V130: crisp black edging on both sides of every coloured frame profile. */
+.frameColourApplied.drawing,.frameColourApplied.savedDrawing,.frameColourApplied .savedDrawing,
+.frameColourApplied.bayFrontGrid,.frameColourApplied .bayFrontGrid{
+  border:1px solid #111827!important;
+  box-shadow:inset 0 0 0 1px #111827,inset 0 0 0 7px var(--frame-colour),inset 0 0 0 8px #111827!important;
+}
+.frameColourApplied .panel,.frameColourApplied.panel,.frameColourApplied .dhFrame{
+  border-color:#111827!important;
+  box-shadow:inset 0 0 0 1px #111827,inset 0 0 0 8px var(--frame-colour),inset 0 0 0 9px #111827!important;
+}
+.frameColourApplied .dhSash{
+  border-color:#111827!important;
+  box-shadow:inset 0 0 0 1px #111827,inset 0 0 0 7px var(--frame-colour),inset 0 0 0 8px #111827!important;
+}
+/* Special rake/gable perimeter: black / selected colour / black, so both paper edge and glass edge stay visible. */
+.frameColourApplied .specialOutline .v130Outer{stroke:#111827!important;stroke-width:3.4!important}
+.frameColourApplied .specialOutline .v130Colour{stroke:var(--frame-colour)!important;stroke-width:2.5!important}
+.frameColourApplied .specialOutline .v130Inner{stroke:#111827!important;stroke-width:.75!important}
+</style>
+<script id="v130-frame-black-edges-js">
+function v130EdgeSpecialFrames(root){
+  if(!root||!root.querySelectorAll)return root;
+  root.querySelectorAll('.specialOutline').forEach(svg=>{
+    const base=svg.querySelector('path');if(!base||svg.querySelector('.v130Outer'))return;
+    const outer=base.cloneNode(true),colour=base.cloneNode(true),inner=base.cloneNode(true);
+    outer.classList.add('v130Outer');colour.classList.add('v130Colour');inner.classList.add('v130Inner');
+    base.remove();svg.append(outer,colour,inner);
+  });
+  return root;
+}
+const _v130ApplyFrameColour=applyFrameColour;
+applyFrameColour=function(root,value){const r=_v130ApplyFrameColour(root,value);v130EdgeSpecialFrames(r);return r};
+const _v130Draw=draw;
+draw=function(){_v130Draw();const d=document.getElementById('drawing');if(d){applyFrameColour(d,openingFrameColour);v130EdgeSpecialFrames(d)}};
+const _v130Saved=makeSavedDrawing;
+makeSavedDrawing=function(o){const r=_v130Saved(o);applyFrameColour(r,o.frameColour);v130EdgeSpecialFrames(r);return r};
+</script>
